@@ -3,7 +3,6 @@
 
 #include "framework.h"
 #include "MainGuestbook.h"
-using namespace std;
 
 
 #define MAX_LOADSTRING 100
@@ -127,6 +126,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE:
+    {
+        /// @TODO: 만들기
+        
+    }
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
