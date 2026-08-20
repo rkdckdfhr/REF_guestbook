@@ -3,6 +3,8 @@
 
 #include "framework.h"
 #include "MainGuestbook.h"
+#include "DRW_Tool.h"
+#include <vector>
 
 
 #define MAX_LOADSTRING 100
@@ -83,7 +85,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     return RegisterClassExW(&wcex);
 }
-
 //
 //   함수: InitInstance(HINSTANCE, int)
 //
@@ -122,6 +123,19 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+
+/// 선 저장용 구조체
+
+POINT DrwStart; /// 그리기 시작 좌표 저장
+POINT DrwEnd; /// 그리기 끝 좌표 저장
+
+std::vector<Line> Lines;
+std::vector<Line> gLines;
+
+bool isDrawing = false;
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -131,6 +145,54 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         /// @TODO: 만들기
         
     }
+    break;
+
+    case WM_LBUTTONDOWN:
+    {
+        isDrawing = true;
+        DrwStart.x = LOWORD(lParam);
+        DrwStart.y = HIWORD(lParam);
+    }
+    break;
+
+    case WM_MOUSEMOVE:
+    {
+        if (isDrawing)
+        {
+            HDC hdc = GetDC(hWnd);
+            DrwEnd.x = LOWORD(lParam);
+            DrwEnd.y = HIWORD(lParam);
+
+            MoveToEx(hdc, DrwStart.x, DrwStart.y, NULL);
+            LineTo(hdc, DrwEnd.x, DrwEnd.y);
+
+
+            /**
+            * @brief Lines 안에 있는 구조체 POINT start, POINT end에 DrwStart, DrwEnd 값을 넣는 방식
+            * ex) Lines[0] . start . x == DrwStart . x   Lines[0] . start . y == DrwStart . y
+            * Lines[0] . end . x == DrwEnd . x  Lines[0] . end . y == DrwEnd . y
+            * 선을 그릴 때마다 좌표값이 저장된다 생각하면 편함
+            */
+
+            Lines.push_back({ DrwStart, DrwEnd });
+
+            DrwStart.x = DrwEnd.x;
+            DrwStart.y = DrwEnd.y;
+
+
+            ReleaseDC(hWnd, hdc);
+        }
+    }
+    break;
+
+    case WM_LBUTTONUP:
+    {
+        
+        isDrawing = false;
+        //InvalidateRect(hWnd, NULL, FALSE);
+    }
+    break;
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -152,6 +214,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
+
+
+            /// @TODO: 끝점과 시작점이 계속 이어짐 해결 필요 , 해결 완
+            /// Lines.push_back({ DrwStart, DrwEnd })로 받아온 좌표로 창에 그려 저장
+            
+            
+            for (int i = 0; i < Lines.size(); i++)
+            {
+                MoveToEx(hdc, Lines[i].start.x, Lines[i].start.y, NULL);
+                LineTo(hdc, Lines[i].end.x, Lines[i].end.y);
+            }
+
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             EndPaint(hWnd, &ps);
         }
