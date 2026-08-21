@@ -30,12 +30,18 @@
     <ClInclude Include="DRW_Tool.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="InitUI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainGuestbook.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DRW_Tool.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="InitUI.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -49,6 +55,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="MainGuestbook.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\pen.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
