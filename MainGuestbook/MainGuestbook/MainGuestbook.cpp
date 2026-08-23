@@ -156,6 +156,9 @@ std::vector<Line> gLines;
 
 bool isDrawing = false;
 
+testPen tP;
+HPEN hP = nullptr;
+HPEN Default = nullptr;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -173,14 +176,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         isDrawing = true;
         DrwStart.x = LOWORD(lParam);
         DrwStart.y = HIWORD(lParam);
+
     }
     break;
+    /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
+    //case WM_RBUTTONDOWN:
+    //{
+    //    HDC hdc = GetDC(hWnd);
+
+
+
+    //    hP = tP.hPen();
+
+    //}
+    //break;
 
     case WM_MOUSEMOVE:
     {
         if (isDrawing)
         {
             HDC hdc = GetDC(hWnd);
+            /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
+            //Default = (HPEN)SelectObject(hdc, hP);
+            /*HPEN hPen = CreatePen(PS_DOT, 2, RGB(255, 0, 0));
+            HPEN Default = (HPEN)SelectObject(hdc, hPen);*/
             DrwEnd.x = LOWORD(lParam);
             DrwEnd.y = HIWORD(lParam);
 
@@ -214,6 +233,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
 
+    /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
+    /*
+    case WM_RBUTTONUP:
+    {
+        DeleteObject(hP);
+    }
+    break;
+    */
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -240,7 +268,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             /// @TODO: 끝점과 시작점이 계속 이어짐 해결 필요 , 해결 완
             /// Lines.push_back({ DrwStart, DrwEnd })로 받아온 좌표로 창에 그려 저장
             
-            
+
             for (int i = 0; i < Lines.size(); i++)
             {
                 MoveToEx(hdc, Lines[i].start.x, Lines[i].start.y, NULL);

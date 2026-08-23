@@ -14,7 +14,7 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 	wc.lpfnWndProc = TestWndProc;
 	wc.hInstance = hInst;
 	wc.lpszClassName = L"MainWindowClass";
-	wc.hbrBackground = CreateSolidBrush(RGB(187, 67, 0));
+	wc.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
 	RegisterClass(&wc);
@@ -50,6 +50,9 @@ LRESULT CALLBACK DrwWindow::TestWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	/// @TODO: 공부해서 채워넣자
 	/// 반드시 DefWindowProc로 운영체제에 남은 자원 반환
 	/// 이곳에 그리기 기능 넣기
+	
+	
+	
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
