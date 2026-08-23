@@ -6,6 +6,7 @@
  * @param hWnd UI 요소들이 부착될 메인 부모 창의 리모컨(핸들)
  * @param hInst 현재 실행 중인 인스턴스 핸들
  */
+HWND hToolBar = nullptr; // 전역 변수로 선언하여 다른 함수에서도 접근 가능하도록 함
 void InitUI(HWND hWnd, HINSTANCE  hInst)
 {
   HMENU hMenuBar = CreateMenu();
@@ -53,4 +54,23 @@ void InitUI(HWND hWnd, HINSTANCE  hInst)
   SendMessage(Button, BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hicon);
 
 
+}
+
+// 붓을 만질 핸들러변수
+HBRUSH hBrush = nullptr;
+LRESULT InitColor(WPARAM wParam, LPARAM lParam)
+{
+
+    //HDC 그래픽 자원에 주소 *
+    HDC hdcStatic = (HDC)wParam;
+    // HWND 창 핸들러에 주소 *
+    HWND hChildWnd = (HWND)lParam;
+
+    if (hChildWnd == hToolBar)
+    {
+        //  글자 배경을 투명/흰색으로 복구 할 수 있다
+        SetBkMode(hdcStatic, TRANSPARENT);
+
+        return (LRESULT)hBrush;
+    }
 }

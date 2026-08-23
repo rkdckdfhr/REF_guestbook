@@ -33,6 +33,15 @@
     <ClInclude Include="testpen.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="InitUI.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Pen_tool.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Replay.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainGuestbook.cpp">
@@ -48,6 +57,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="testpen.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="InitUI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Pen_tool.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Replay.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
