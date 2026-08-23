@@ -135,6 +135,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DRW_Tool.cpp" />
+    <ClCompile Include="DRW_Window.cpp" />
+    <ClCompile Include="DRW_Window.h" />
     <ClCompile Include="MainGuestbook.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -38,6 +38,12 @@
     <ClCompile Include="DRW_Tool.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="DRW_Window.h">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DRW_Window.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MainGuestbook.rc">

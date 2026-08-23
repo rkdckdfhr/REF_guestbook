@@ -3,7 +3,7 @@
 
 #include "framework.h"
 #include "MainGuestbook.h"
-#include "DRW_Tool.h"
+
 #include <vector>
 
 
@@ -29,6 +29,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
+
+    
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -99,19 +101,38 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   //HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   //   0, 0, 1280, 640, nullptr, nullptr, hInstance, nullptr);
+
+   HWND hWnd = CreateWindowEx(
+       0, szWindowClass, L"방명록프로젝트", WS_OVERLAPPEDWINDOW,
+       CW_USEDEFAULT, CW_USEDEFAULT,
+       900, 700,
+       NULL, NULL, hInstance, nullptr);
+
+   
+   DrwWindow DW;
 
    if (!hWnd)
    {
       return FALSE;
    }
 
+   
+   if (!DW.NewWnd(hInst, hWnd))
+   {
+       return false;
+   }
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
+ 
+
    return TRUE;
 }
+
+
 
 //
 //  함수: WndProc(HWND, UINT, WPARAM, LPARAM)
