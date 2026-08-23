@@ -129,21 +129,22 @@
   <ItemGroup>
     <ClInclude Include="DRW_Tool.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="InitUI.h" />
     <ClInclude Include="MainGuestbook.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="testpen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DRW_Tool.cpp" />
-    <ClCompile Include="InitUI.cpp" />
+    <ClCompile Include="DRW_Window.cpp" />
+    <ClCompile Include="DRW_Window.h" />
     <ClCompile Include="MainGuestbook.cpp" />
+    <ClCompile Include="testpen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MainGuestbook.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="images\pen.ico" />
     <Image Include="MainGuestbook.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
