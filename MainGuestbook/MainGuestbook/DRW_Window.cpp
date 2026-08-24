@@ -50,7 +50,30 @@ LRESULT CALLBACK DrwWindow::TestWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	/// @TODO: 공부해서 채워넣자
 	/// 반드시 DefWindowProc로 운영체제에 남은 자원 반환
 	/// 이곳에 그리기 기능 넣기
+	switch (message)
+	{
+	case WM_CREATE:
+	{
+		/// TODO: 채워넣기
+	}
+	break;
+
+	case WM_COMMAND:
+	{
+
+	}
+	break;
 	
+	case WM_PAINT:
+	{
+		PAINTSTRUCT cPs;
+		HDC hdc = BeginPaint(hWnd, &cPs);
+
+		EndPaint(hWnd, &cPs);
+	}
+	break;
+
+	}
 	
 	
 	return DefWindowProc(hWnd, message, wParam, lParam);
