@@ -3,7 +3,7 @@
 
 #include "framework.h"
 #include "MainGuestbook.h"
-
+#include "Pen_tool.h"
 #include <vector>
 
 
@@ -200,6 +200,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             //Default = (HPEN)SelectObject(hdc, hP);
             /*HPEN hPen = CreatePen(PS_DOT, 2, RGB(255, 0, 0));
             HPEN Default = (HPEN)SelectObject(hdc, hPen);*/
+
+            Pen_tool myPen; //기본 세팅된 펜
+            HPEN hPen = myPen.Pen();
+            /* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
+           PS_DASH 파선
+		   PS_DASHDOT 점선
+		   PS_DASHDOTDOT 점선
+           */
+            HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
+
             DrwEnd.x = LOWORD(lParam);
             DrwEnd.y = HIWORD(lParam);
 
@@ -219,8 +229,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             DrwStart.x = DrwEnd.x;
             DrwStart.y = DrwEnd.y;
 
+            SelectObject(hdc, oldPen);
+            DeleteObject(hPen);
 
-            ReleaseDC(hWnd, hdc);
+
+           // ReleaseDC(hWnd, hdc);
         }
     }
     break;
