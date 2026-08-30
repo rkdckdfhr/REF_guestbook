@@ -1,5 +1,17 @@
 #pragma once
-#include <windows.h> //pen 그리기 함수들을 사용하기 위해 설정
+#include <windows.h> 
 
-void createPen(HDC hdc, int width, COLORREF color);
+class Pen_tool {
+public:
+	int width; // 펜의 두께
+	int style; // 펜의 스타일
+	COLORREF color; // 펜의 색상
 
+	Pen_tool();
+	Pen_tool(int style, int width, COLORREF color);
+
+	/// 색상 선택 창을 띄우고 내부 color 변수를 직접 변경하는 함수
+	bool SelectColor(HWND hWnd);
+
+	HPEN Pen();
+};
