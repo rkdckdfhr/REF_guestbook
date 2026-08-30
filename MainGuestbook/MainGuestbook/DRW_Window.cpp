@@ -20,31 +20,36 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 	wc.lpfnWndProc = DrawWndProc;
 	wc.hInstance = hInst;
 	wc.lpszClassName = L"MainWindowClass";
-	wc.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
+	wc.hbrBackground = CreateSolidBrush(RGB(230, 230, 230));
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
 	RegisterClass(&wc);
 
-	
+	/// 부모창의 크기를 구하는 코드 자식 창의 크기를 부모창에 맞추기 위함
+	RECT rect;
+	GetClientRect(pHwnd, &rect);
+
+	/// rect.right = 부모창의 너비 , rect.bottom = 부모창의 높이
+
 	HWND hWnd = CreateWindowEx(0,
 		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE,
 		0, 0,
-		300, 200,
+		rect.right, rect.bottom,
 		pHwnd, NULL, hInst, this);
 
 
-	
-	if (!hWnd)
-	{
-		
-		DWORD err = GetLastError();
-		wchar_t buf[256];
-		swprintf_s(buf, L"자식 윈도우 생성 실패, 에러 코드: %lu", err);
-		MessageBoxW(NULL, buf, L"Error", MB_OK);
+	// 자식 윈도우 생성이 되는지 유효성 검사
+	//if (!hWnd)
+	//{
+	//	
+	//	DWORD err = GetLastError();
+	//	wchar_t buf[256];
+	//	swprintf_s(buf, L"자식 윈도우 생성 실패, 에러 코드: %lu", err);
+	//	MessageBoxW(NULL, buf, L"Error", MB_OK);
 
-		return false;
-	}
-	
+	//	return false;
+	//}
+	//
 
 	//ShowWindow(hWnd, NULL);
 	
@@ -99,6 +104,14 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	{
 		DW.is_drawing = false;
 	}
+	break;
+
+	case WM_RBUTTONUP:
+	{
+		//HWND cHwnd = GetWindow(hWnd, GW_CHILD);
+		//ThreadTrigger(cHwnd);
+	}
+	break;
 
 	case WM_COMMAND:
 	{
@@ -106,20 +119,46 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	}
 	break;
 	
+
+	case WM_SIZE:
+	{
+
+	}
+	break;
+	
+	
 	case WM_PAINT:
 	{
 		PAINTSTRUCT cPs;
 		HDC hdc = BeginPaint(hWnd, &cPs);
 
-		for (int i = 0; i < lines.size(); i++)
+		if (isReplaying)
 		{
-			MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
-			LineTo(hdc, lines[i].end.x, lines[i].end.y);
+			for (unsigned i = 0; i < tmp_Replay; i++)
+			{
+				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
+				LineTo(hdc, lines[i].end.x, lines[i].end.y);
+			}
 		}
+		else
+		{
+			for (int i = 0; i < lines.size(); i++)
+			{
+				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
+				LineTo(hdc, lines[i].end.x, lines[i].end.y);
+			}
+		}
+
+		//for (int i = 0; i < lines.size(); i++)
+		//{
+		//	MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
+		//	LineTo(hdc, lines[i].end.x, lines[i].end.y);
+		//}
 
 		EndPaint(hWnd, &cPs);
 	}
 	break;
+
 
 	}
 	

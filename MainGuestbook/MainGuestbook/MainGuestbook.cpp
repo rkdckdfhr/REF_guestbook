@@ -151,7 +151,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 POINT DrwStart; /// 그리기 시작 좌표 저장
 POINT DrwEnd; /// 그리기 끝 좌표 저장
 
-std::vector<Line> Lines;
+std::vector<Line> lines;
 std::vector<Line> gLines;
 
 bool isDrawing = false;
@@ -214,7 +214,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             * 선을 그릴 때마다 좌표값이 저장된다 생각하면 편함
             */
 
-            Lines.push_back({ DrwStart, DrwEnd });
+            lines.push_back({ DrwStart, DrwEnd });
 
             DrwStart.x = DrwEnd.x;
             DrwStart.y = DrwEnd.y;
@@ -234,13 +234,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     break;
 
     /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
-    /*
+    
     case WM_RBUTTONUP:
     {
-        DeleteObject(hP);
+        //DeleteObject(hP);
+        //HWND cHwnd = GetWindow(hWnd, GW_CHILD);
+        //ThreadTrigger(cHwnd);
     }
     break;
-    */
+    
 
     case WM_COMMAND:
         {
@@ -267,13 +269,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             /// @TODO: 끝점과 시작점이 계속 이어짐 해결 필요 , 해결 완
             /// Lines.push_back({ DrwStart, DrwEnd })로 받아온 좌표로 창에 그려 저장
-            
 
-            for (int i = 0; i < Lines.size(); i++)
-            {
-                MoveToEx(hdc, Lines[i].start.x, Lines[i].start.y, NULL);
-                LineTo(hdc, Lines[i].end.x, Lines[i].end.y);
-            }
+            //for (int i = 0; i < Lines.size(); i++)
+            //{
+            //    MoveToEx(hdc, Lines[i].start.x, Lines[i].start.y, NULL);
+            //    LineTo(hdc, Lines[i].end.x, Lines[i].end.y);
+            //}
 
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             EndPaint(hWnd, &ps);
@@ -282,6 +283,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+
+
+    /*
+    부모창의 사이즈가 변경되는 즉시 실행이 되어 
+    pWidth와 pHeight에 크기를 저장하고 GW_CHILD ( 자식 창을 찾아 반환해주는 Win32 제공 변수 ( 5 반환 ) 를 이용해
+    GetWindow(현재 창에 대한 핸들, 검색할 창의 관계); 를 이용해 자식 창의 핸들을 구해
+    MoveWindow 함수로 창의 크기를 맞춰줌
+    MoveWindow(창의 핸들, x, y, 새 너비, 새 높이, 다시 칠할지 여부)
+    */
+    //case WM_SIZE:
+    //{
+    //    int pWidth = LOWORD(lParam);
+    //    int pHeight = HIWORD(lParam);
+
+    //    HWND cHwnd = GetWindow(hWnd, GW_CHILD);
+
+    //    if (cHwnd)
+    //    {
+    //        MoveWindow(cHwnd, 0, 0, pWidth, pHeight, true);
+    //    }
+    //}
+    //break;
+
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
