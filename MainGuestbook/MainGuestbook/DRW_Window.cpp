@@ -33,7 +33,7 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 
 	HWND hWnd = CreateWindowEx(0,
 		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE,
-		0, 0,
+		0, 70,
 		rect.right, rect.bottom,
 		pHwnd, NULL, hInst, this);
 
@@ -57,8 +57,17 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 }
 
 DrwWindow DW;
-INIT_UI ui;
+//INIT_UI ui;
 Pen_tool pt;
+INIT_UI ui;
+Pen_tool myPen; //기본 세팅된 펜
+/* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
+PS_DASH 파선
+PS_DASHDOT 점선
+PS_DASHDOTDOT 점선
+*/
+
+unsigned int a = 1;
 
 LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -70,6 +79,9 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	case WM_CREATE:
 	{
 		/// TODO: 채워넣기
+
+		/// 버튼 생성
+
 		//GetModuleHandle 하면 현재 창나온 인스턴스 핸들을 가져올 수 있음
 		HINSTANCE hInst = GetModuleHandle(NULL);
 		// 인스터스명 그냥 귀찮아서 ui로 변수 명만듬
@@ -95,17 +107,30 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		DW.is_drawing = true;
 		draw_start.x = LOWORD(lParam);
 		draw_start.y = HIWORD(lParam);
+
 	}
 	break;
 
 	case WM_MOUSEMOVE:
 	{
+		if (draw_start.y < 70) DW.is_drawing = false;
+
 		if (DW.is_drawing)
 		{
 			HDC hdc = GetDC(hWnd);
 
 			draw_end.x = LOWORD(lParam);
 			draw_end.y = HIWORD(lParam);
+
+			HPEN hPen = myPen.Pen();
+			HPEN Default = (HPEN)SelectObject(hdc, hPen);
+			myPen.Pen();
+			/* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
+			PS_DASH 파선
+			PS_DASHDOT 점선
+			PS_DASHDOTDOT 점선
+			*/
+			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
 
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 			LineTo(hdc, draw_end.x, draw_end.y);
@@ -114,6 +139,9 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			draw_start = draw_end;
 
+			SelectObject(hdc, oldPen);
+			DeleteObject(hPen);
+			
 			ReleaseDC(hWnd, hdc);
 		}
 	}
@@ -127,18 +155,33 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_RBUTTONUP:
 	{
+		a--;
+		myPen.Pen_tool2(PS_SOLID, a);
 		//HWND cHwnd = GetWindow(hWnd, GW_CHILD);
 		//ThreadTrigger(cHwnd);
-		HPEN hp = pt.Pen();
-		
-		pt.SelectColor(hWnd);
-
 	}
 	break;
 
 	case WM_COMMAND:
 	{
 
+		/// 버튼 클릭시 이벤트 발생 시키는 switch문
+		int wmId = LOWORD(wParam);
+		switch (wmId)
+		{
+		case BUTTON_PEN:
+			myPen.Pen_tool2(PS_SOLID, a);
+			a++;
+			//myPen.Pen();
+			break;
+		case BUTTON_COLOR:
+			myPen.SelectColor(hWnd);
+			break;
+		case BUTTON_ERASER:
+			DW.lines.clear();
+			InvalidateRect(hWnd, NULL, TRUE);
+			break;
+		}
 	}
 	break;
 	

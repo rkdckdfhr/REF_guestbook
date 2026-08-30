@@ -159,6 +159,9 @@ bool isDrawing = false;
 testPen tP;
 HPEN hP = nullptr;
 HPEN Default = nullptr;
+//INIT_UI ui;
+
+Pen_tool pt2;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -167,18 +170,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
     {
         /// @TODO: 만들기
-
+        ////GetModuleHandle 하면 현재 창나온 인스턴스 핸들을 가져올 수 있음
+        //HINSTANCE hInst = GetModuleHandle(NULL);
+        //// 인스터스명 그냥 귀찮아서 ui로 변수 명만듬
+        //ui.InitUI(hWnd, hInst);
     }
     break;
 
     case WM_LBUTTONDOWN:
     {
-        isDrawing = true;
-        DrwStart.x = LOWORD(lParam);
-        DrwStart.y = HIWORD(lParam);
+        //isDrawing = true;
+        //DrwStart.x = LOWORD(lParam);
+        //DrwStart.y = HIWORD(lParam);
 
     }
     break;
+
+    //case WM_CTLCOLORSTATIC:
+    //{
+
+    //    LRESULT hBrush = ui.InitColor(wParam, lParam);
+
+
+    //    if (hBrush != 0)
+    //    {
+    //        return hBrush;
+    //    }
+    //}
+    //break;
+
     /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
     //case WM_RBUTTONDOWN:
     //{
@@ -191,52 +211,52 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     //}
     //break;
 
-    case WM_MOUSEMOVE:
-    {
-        if (isDrawing)
-        {
-            HDC hdc = GetDC(hWnd);
-            /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
-            //Default = (HPEN)SelectObject(hdc, hP);
-            /*HPEN hPen = CreatePen(PS_DOT, 2, RGB(255, 0, 0));
-            HPEN Default = (HPEN)SelectObject(hdc, hPen);*/
+    //case WM_MOUSEMOVE:
+    //{
+    // //   if (isDrawing)
+    // //   {
+    // //       HDC hdc = GetDC(hWnd);
+    // //       /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
+    // //       //Default = (HPEN)SelectObject(hdc, hP);
+    // //       /*HPEN hPen = CreatePen(PS_DOT, 2, RGB(255, 0, 0));
+    // //       HPEN Default = (HPEN)SelectObject(hdc, hPen);*/
 
-            Pen_tool myPen; //기본 세팅된 펜
-            HPEN hPen = myPen.Pen();
-            /* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
-           PS_DASH 파선
-		   PS_DASHDOT 점선
-		   PS_DASHDOTDOT 점선
-           */
-            HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
+    // //       Pen_tool myPen; //기본 세팅된 펜
+    // //       HPEN hPen = myPen.Pen();
+    // //       /* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
+    // //      PS_DASH 파선
+		  // //PS_DASHDOT 점선
+		  // //PS_DASHDOTDOT 점선
+    // //      */
+    // //       HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
 
-            DrwEnd.x = LOWORD(lParam);
-            DrwEnd.y = HIWORD(lParam);
+    // //       DrwEnd.x = LOWORD(lParam);
+    // //       DrwEnd.y = HIWORD(lParam);
 
-            MoveToEx(hdc, DrwStart.x, DrwStart.y, NULL);
-            LineTo(hdc, DrwEnd.x, DrwEnd.y);
-
-
-            /**
-            * @brief Lines 안에 있는 구조체 POINT start, POINT end에 DrwStart, DrwEnd 값을 넣는 방식
-            * ex) Lines[0] . start . x == DrwStart . x   Lines[0] . start . y == DrwStart . y
-            * Lines[0] . end . x == DrwEnd . x  Lines[0] . end . y == DrwEnd . y
-            * 선을 그릴 때마다 좌표값이 저장된다 생각하면 편함
-            */
-
-            lines.push_back({ DrwStart, DrwEnd });
-
-            DrwStart.x = DrwEnd.x;
-            DrwStart.y = DrwEnd.y;
-
-            SelectObject(hdc, oldPen);
-            DeleteObject(hPen);
+    // //       MoveToEx(hdc, DrwStart.x, DrwStart.y, NULL);
+    // //       LineTo(hdc, DrwEnd.x, DrwEnd.y);
 
 
-           // ReleaseDC(hWnd, hdc);
-        }
-    }
-    break;
+    // //       /**
+    // //       * @brief Lines 안에 있는 구조체 POINT start, POINT end에 DrwStart, DrwEnd 값을 넣는 방식
+    // //       * ex) Lines[0] . start . x == DrwStart . x   Lines[0] . start . y == DrwStart . y
+    // //       * Lines[0] . end . x == DrwEnd . x  Lines[0] . end . y == DrwEnd . y
+    // //       * 선을 그릴 때마다 좌표값이 저장된다 생각하면 편함
+    // //       */
+
+    // //       lines.push_back({ DrwStart, DrwEnd });
+
+    // //       DrwStart.x = DrwEnd.x;
+    // //       DrwStart.y = DrwEnd.y;
+
+    // //       SelectObject(hdc, oldPen);
+    // //       DeleteObject(hPen);
+
+
+    //       // ReleaseDC(hWnd, hdc);
+    //    }
+    //}
+    //break;
 
     case WM_LBUTTONUP:
     {
@@ -269,6 +289,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case IDM_EXIT:
             DestroyWindow(hWnd);
             break;
+        //case 3002:
+        //    pt2.SelectColor(hWnd);
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);
         }

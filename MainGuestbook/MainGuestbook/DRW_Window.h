@@ -5,6 +5,7 @@
 #include <vector>
 #include "Replay.h"
 #include "Pen_tool.h"
+#include "Resource.h"
 
 #include "InitUI.h"
 /*

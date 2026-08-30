@@ -16,6 +16,15 @@
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
 #endif
+
+/// 버튼 관련 정의
+/// 3001 ~ 버튼 관련 이벤트 상수
+#define BUTTON_X						/// 아직 안 정함
+#define BUTTON_Y				70		/// 버튼 창에 들어갈 Y 좌표
+#define BUTTON_PEN				3001
+#define BUTTON_COLOR			3002
+#define BUTTON_ERASER			3003
+
 // 다음은 새 개체에 사용할 기본값입니다.
 //
 #ifdef APSTUDIO_INVOKED

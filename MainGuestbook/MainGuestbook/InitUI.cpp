@@ -89,7 +89,14 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   SendMessage(Button, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon); // hion은 핸들러라 정수타입으로 형변환 
 
-  HWND Button2 = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  HWND Button_color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     75, 10, 50, 50,
     hWnd, (HMENU)3002, hInst, nullptr);
+
+  HWND Button_eraser = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+      135, 10, 50, 50,
+      hWnd, (HMENU)3003, hInst, nullptr);
+
+  HICON hicon_eraser = (HICON)LoadImageW(nullptr, L"images/ERASER.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  SendMessage(Button_eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_eraser);
 }

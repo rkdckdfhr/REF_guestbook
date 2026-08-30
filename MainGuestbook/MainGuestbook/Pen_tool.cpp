@@ -8,10 +8,9 @@ Pen_tool::Pen_tool() {
 	color = RGB(0, 0, 0);
 }
 //원하는 값 넣어서 값 세팅
-Pen_tool::Pen_tool(int s, int w, COLORREF c) {
+void Pen_tool::Pen_tool2(int s, int w) {
 	style = s;
 	width = w;
-	color = c;
 }
 
 //진짜 펜 생성
