@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <vector>
-
+#include "Replay.h"
 
 /*
 HINSTANCE는 "Handle to an INSTance"의 약자로,
@@ -39,6 +39,7 @@ public:
 	DrwWindow();
 	~DrwWindow();
 	
+
 	/// 그리기 기능에 필요한 변수들
 	bool is_drawing = false;
 	static std::vector<Line> lines;
