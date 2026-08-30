@@ -1,10 +1,10 @@
 #include <windows.h>
 #include <vector>
-#include "DRW_Tool.h"
+#include "DRW_Window.h"
 #include "Replay.h"
 
 //좌표 위치 저장된걸 가져오는 역할
-extern std::vector<Line> Lines;
+extern std::vector<Line> lines;
 
 //리플레이 중 인지 확인하는 변수
 bool isReplaying = false;
@@ -23,12 +23,12 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
     //그리는 면 지우고 바로 실행 시킬 함수들
     InvalidateRect(hWnd, NULL, TRUE);
 
-    if (!Lines.empty())
+    if (!lines.empty())
     {
-        for (unsigned int i = 0; i < Lines.size(); i++)
+        for (unsigned int i = 0; i < lines.size(); i++)
         {
-            tmp_Replay = i+1;
-            
+            tmp_Replay = i + 1;
+
             InvalidateRect(hWnd, NULL, FALSE);
 
             Sleep(10);

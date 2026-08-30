@@ -21,16 +21,16 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
 
-    
+
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -38,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
-    if (!InitInstance (hInstance, nCmdShow))
+    if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
@@ -57,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-    return (int) msg.wParam;
+    return (int)msg.wParam;
 }
 
 
@@ -73,17 +73,17 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAINGUESTBOOK));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_MAINGUESTBOOK);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAINGUESTBOOK));
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_MAINGUESTBOOK);
+    wcex.lpszClassName = szWindowClass;
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 }
@@ -99,37 +99,37 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   //HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-   //   0, 0, 1280, 640, nullptr, nullptr, hInstance, nullptr);
+    //HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+    //   0, 0, 1280, 640, nullptr, nullptr, hInstance, nullptr);
 
-   HWND hWnd = CreateWindowEx(
-       0, szWindowClass, L"방명록프로젝트", WS_OVERLAPPEDWINDOW,
-       CW_USEDEFAULT, CW_USEDEFAULT,
-       900, 700,
-       NULL, NULL, hInstance, nullptr);
+    HWND hWnd = CreateWindowEx(
+        0, szWindowClass, L"방명록프로젝트", WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT,
+        900, 700,
+        NULL, NULL, hInstance, nullptr);
 
-   
-   DrwWindow DW;
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    DrwWindow DW;
 
-   
-   if (!DW.NewWnd(hInst, hWnd))
-   {
-       return false;
-   }
+    if (!hWnd)
+    {
+        return FALSE;
+    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
 
- 
+    if (!DW.NewWnd(hInst, hWnd))
+    {
+        return false;
+    }
 
-   return TRUE;
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
+
+
+
+    return TRUE;
 }
 
 
@@ -151,7 +151,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 POINT DrwStart; /// 그리기 시작 좌표 저장
 POINT DrwEnd; /// 그리기 끝 좌표 저장
 
-std::vector<Line> Lines;
+std::vector<Line> lines;
 std::vector<Line> gLines;
 
 bool isDrawing = false;
@@ -167,7 +167,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
     {
         /// @TODO: 만들기
-        
+
     }
     break;
 
@@ -214,7 +214,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             * 선을 그릴 때마다 좌표값이 저장된다 생각하면 편함
             */
 
-            Lines.push_back({ DrwStart, DrwEnd });
+            lines.push_back({ DrwStart, DrwEnd });
 
             DrwStart.x = DrwEnd.x;
             DrwStart.y = DrwEnd.y;
@@ -227,61 +227,86 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_LBUTTONUP:
     {
-        
+
         isDrawing = false;
         //InvalidateRect(hWnd, NULL, FALSE);
     }
     break;
 
     /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
-    /*
+
     case WM_RBUTTONUP:
     {
-        DeleteObject(hP);
+        //DeleteObject(hP);
+        //HWND cHwnd = GetWindow(hWnd, GW_CHILD);
+        //ThreadTrigger(cHwnd);
     }
     break;
-    */
+
 
     case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        // 메뉴 선택을 구문 분석합니다:
+        switch (wmId)
         {
-            int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
         }
-        break;
+    }
+    break;
     case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps);
 
 
-            /// @TODO: 끝점과 시작점이 계속 이어짐 해결 필요 , 해결 완
-            /// Lines.push_back({ DrwStart, DrwEnd })로 받아온 좌표로 창에 그려 저장
-            
+        /// @TODO: 끝점과 시작점이 계속 이어짐 해결 필요 , 해결 완
+        /// Lines.push_back({ DrwStart, DrwEnd })로 받아온 좌표로 창에 그려 저장
 
-            for (int i = 0; i < Lines.size(); i++)
-            {
-                MoveToEx(hdc, Lines[i].start.x, Lines[i].start.y, NULL);
-                LineTo(hdc, Lines[i].end.x, Lines[i].end.y);
-            }
+        //for (int i = 0; i < Lines.size(); i++)
+        //{
+        //    MoveToEx(hdc, Lines[i].start.x, Lines[i].start.y, NULL);
+        //    LineTo(hdc, Lines[i].end.x, Lines[i].end.y);
+        //}
 
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            EndPaint(hWnd, &ps);
-        }
-        break;
+        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+        EndPaint(hWnd, &ps);
+    }
+    break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+
+
+        /*
+        부모창의 사이즈가 변경되는 즉시 실행이 되어
+        pWidth와 pHeight에 크기를 저장하고 GW_CHILD ( 자식 창을 찾아 반환해주는 Win32 제공 변수 ( 5 반환 ) 를 이용해
+        GetWindow(현재 창에 대한 핸들, 검색할 창의 관계); 를 이용해 자식 창의 핸들을 구해
+        MoveWindow 함수로 창의 크기를 맞춰줌
+        MoveWindow(창의 핸들, x, y, 새 너비, 새 높이, 다시 칠할지 여부)
+        */
+        //case WM_SIZE:
+        //{
+        //    int pWidth = LOWORD(lParam);
+        //    int pHeight = HIWORD(lParam);
+
+        //    HWND cHwnd = GetWindow(hWnd, GW_CHILD);
+
+        //    if (cHwnd)
+        //    {
+        //        MoveWindow(cHwnd, 0, 0, pWidth, pHeight, true);
+        //    }
+        //}
+        //break;
+
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
