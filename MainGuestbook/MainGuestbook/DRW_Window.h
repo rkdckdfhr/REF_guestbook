@@ -2,6 +2,8 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <vector>
+
 
 /*
 HINSTANCE는 "Handle to an INSTance"의 약자로,
@@ -11,15 +13,44 @@ OS는 여러 프로그램이 동시에 돌아가는 환경이므로
 */
 
 
+/**
+* @brief 점의 시작과 끝 좌표를 구하기 위한 Win32 제공 구조체
+* @brief POINT 내부엔 LONG x, LONG y만 선언 되어있음
+*/
+struct Line
+{
+	POINT start;
+	POINT end;
+};
+
+/*
+struct DrawPoint
+{
+	LONG x;
+	LONG y;
+} DrawStart, DrawEnd;
+*/
+
+
+
 class DrwWindow
 {
 public:
 	DrwWindow();
 	~DrwWindow();
 	
+	/// 그리기 기능에 필요한 변수들
+	bool is_drawing = false;
+	static std::vector<Line> lines;
+
+
+	static POINT draw_start; /// 그리기 시작 좌표 저장
+	static POINT draw_end; /// 그리기 끝 좌표 저장
+
+
 	bool NewWnd(HINSTANCE hInst, HWND pHwnd);
 
-	static LRESULT CALLBACK TestWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
 	HINSTANCE hInstance;
