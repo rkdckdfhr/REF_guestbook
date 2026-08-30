@@ -1,13 +1,15 @@
 #include <windows.h>
 #include <vector>
 #include "DRW_Tool.h"
+#include "Replay.h"
 
 //좌표 위치 저장된걸 가져오는 역할
 extern std::vector<Line> Lines;
 
 //리플레이 중 인지 확인하는 변수
 bool isReplaying = false;
-
+//반복문에서 PAINT에 넘길 때 몇 번째 선인지 기억해주는 변수
+unsigned tmp_Replay = 0;
 
 DWORD WINAPI ReplayThreads(LPVOID lpParam)
 {
@@ -17,23 +19,21 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
 
     HWND hWnd = (HWND)lpParam;
 
+    tmp_Replay = 0;
     //그리는 면 지우고 바로 실행 시킬 함수들
     InvalidateRect(hWnd, NULL, TRUE);
-    UpdateWindow(hWnd);
-
-    HDC hdc = GetDC(hWnd);
 
     if (!Lines.empty())
     {
         for (unsigned int i = 0; i < Lines.size(); i++)
         {
-            MoveToEx(hdc, Lines[i].start.x, Lines[i].start.y, NULL);
-            LineTo(hdc, Lines[i].end.x, Lines[i].end.y);
+            tmp_Replay = i+1;
+            
+            InvalidateRect(hWnd, NULL, FALSE);
+
             Sleep(10);
         }
     }
-
-    ReleaseDC(hWnd, hdc);
 
     isReplaying = false;
 
