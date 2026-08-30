@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <vector>
 #include "Replay.h"
+#include "Pen_tool.h"
 
+#include "InitUI.h"
 /*
 HINSTANCE는 "Handle to an INSTance"의 약자로,
 윈도우 운영체제가 메모리에 로드된 현재 프로그램(실행 파일)을 식별하기 위해 부여하는 고유 ID (시작 주소)임.

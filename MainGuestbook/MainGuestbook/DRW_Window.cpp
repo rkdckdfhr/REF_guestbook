@@ -57,6 +57,8 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 }
 
 DrwWindow DW;
+INIT_UI ui;
+Pen_tool pt;
 
 LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -68,6 +70,23 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	case WM_CREATE:
 	{
 		/// TODO: 채워넣기
+		//GetModuleHandle 하면 현재 창나온 인스턴스 핸들을 가져올 수 있음
+		HINSTANCE hInst = GetModuleHandle(NULL);
+		// 인스터스명 그냥 귀찮아서 ui로 변수 명만듬
+		ui.InitUI(hWnd, hInst);
+	}
+	break;
+
+	case WM_CTLCOLORSTATIC:
+	{
+
+		LRESULT hBrush = ui.InitColor(wParam, lParam);
+
+
+		if (hBrush != 0)
+		{
+			return hBrush;
+		}
 	}
 	break;
 
@@ -110,6 +129,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	{
 		//HWND cHwnd = GetWindow(hWnd, GW_CHILD);
 		//ThreadTrigger(cHwnd);
+		HPEN hp = pt.Pen();
+		
+		pt.SelectColor(hWnd);
+
 	}
 	break;
 

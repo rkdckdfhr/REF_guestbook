@@ -305,19 +305,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         MoveWindow 함수로 창의 크기를 맞춰줌
         MoveWindow(창의 핸들, x, y, 새 너비, 새 높이, 다시 칠할지 여부)
         */
-        //case WM_SIZE:
-        //{
-        //    int pWidth = LOWORD(lParam);
-        //    int pHeight = HIWORD(lParam);
+        case WM_SIZE:
+        {
+            int pWidth = LOWORD(lParam);
+            int pHeight = HIWORD(lParam);
 
-        //    HWND cHwnd = GetWindow(hWnd, GW_CHILD);
+            HWND cHwnd = GetWindow(hWnd, GW_CHILD);
 
-        //    if (cHwnd)
-        //    {
-        //        MoveWindow(cHwnd, 0, 0, pWidth, pHeight, true);
-        //    }
-        //}
-        //break;
+            if (cHwnd)
+            {
+                MoveWindow(cHwnd, 0, 0, pWidth, pHeight, true);
+            }
+        }
+        break;
 
 
     default:
