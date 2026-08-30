@@ -10,5 +10,8 @@ public:
 	Pen_tool();
 	Pen_tool(int style, int width, COLORREF color);
 
+	/// 색상 선택 창을 띄우고 내부 color 변수를 직접 변경하는 함수
+	bool SelectColor(HWND hWnd);
+
 	HPEN Pen();
 };
