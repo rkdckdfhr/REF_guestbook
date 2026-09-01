@@ -53,6 +53,7 @@ INIT_UI::~INIT_UI ()
 // InitUI 함수 작성구간
 void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 {
+  InitCommonControls();
   HMENU hMenuBar = CreateMenu();
 
 
