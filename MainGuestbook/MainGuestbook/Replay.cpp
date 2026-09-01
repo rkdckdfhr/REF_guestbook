@@ -23,19 +23,20 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
     //그리는 면 지우고 바로 실행 시킬 함수들
     InvalidateRect(hWnd, NULL, TRUE);
 
-    if (!lines.empty())
-    {
-        for (unsigned int i = 0; i < lines.size(); i++)
+        for (unsigned int i = 0; i < DrwWindow::lines.size(); i++)
         {
             tmp_Replay = i + 1;
-
+ 
             InvalidateRect(hWnd, NULL, FALSE);
+            UpdateWindow(hWnd);
 
             Sleep(10);
         }
-    }
 
     isReplaying = false;
+    tmp_Replay = 0;
+
+    
 
     return 0;
 }
