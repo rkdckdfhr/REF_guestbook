@@ -8,7 +8,12 @@ class INIT_UI
 public:
   HWND hToolBar = nullptr;
   HBRUSH hBrush = nullptr;
-  HBRUSH hScrollBrush = nullptr;
+
+	HWND hScrollText = nullptr; ///< @brief 스크롤 텍스트 박스 핸들
+  /// <summary>
+  /// 굵기 바 핸들
+  /// </summary>
+  HWND hPenBar = nullptr;
 
   INIT_UI();
   ~INIT_UI();
