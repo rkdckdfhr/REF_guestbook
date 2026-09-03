@@ -1,8 +1,8 @@
 #include "InitUI.h"
 //#include <commctrl.h>
 //#pragma comment(lib, "comctl32.lib")
-#include <commctrl.h>
-#pragma comment(lib, "comctl32.lib")
+  #include <commctrl.h>
+  #pragma comment(lib, "comctl32.lib")
 
 
 
@@ -118,6 +118,10 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HICON hicon_Color = (HICON)LoadImageW(nullptr, L"images/color.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
   SendMessage(Button_Color, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Color);
 
+  //이버튼은 현재 내 붓 색깔을 보여주는 버튼이다
+  HWND Button_ShowColor = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+    395, 10, 50, 50,
+    hWnd, (HMENU)3007, hInst, nullptr);
 
   // 저장 버튼
   HWND Button_Save= CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
@@ -130,7 +134,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   //리플레이 시작버튼
   HWND Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1200, 10, 50, 50,
-    hWnd, (HMENU)3004, hInst, nullptr);
+    hWnd, (HMENU)3005, hInst, nullptr);
 
 	HICON hicon_Play = (HICON)LoadImageW(nullptr, L"images/play1.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
   SendMessage(Button_Play, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Play);
@@ -138,10 +142,12 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   //리플레이 중지 버튼
   HWND Button_Stop = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1260, 10, 50, 50,
-    hWnd, (HMENU)3004, hInst, nullptr);
+    hWnd, (HMENU)3006, hInst, nullptr);
 
   HICON hicon_Stop = (HICON)LoadImageW(nullptr, L"images/stop.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
   SendMessage(Button_Stop, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Stop);
+
+
 
 	/// @brief 굵기 조절 바 생성 버튼 입니다.
   hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
