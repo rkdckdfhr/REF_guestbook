@@ -26,6 +26,12 @@ struct Line
 	POINT end;
 };
 
+
+struct Pen
+{
+	HPEN currentPen;
+};
+
 /*
 struct DrawPoint
 {

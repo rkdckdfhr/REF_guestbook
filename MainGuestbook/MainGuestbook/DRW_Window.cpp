@@ -68,6 +68,7 @@ PS_DASHDOTDOT 점선
 */
 
 unsigned int a = 1;
+std::vector<Pen> current_pen;
 
 LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -124,22 +125,22 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			HPEN hPen = myPen.Pen();
 			HPEN Default = (HPEN)SelectObject(hdc, hPen);
-			myPen.Pen();
+			//myPen.Pen();
 			/* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
 			PS_DASH 파선
 			PS_DASHDOT 점선
 			PS_DASHDOTDOT 점선
 			*/
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
-
+			current_pen.push_back({ myPen.Pen() });
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 			LineTo(hdc, draw_end.x, draw_end.y);
-
 			DW.lines.push_back({ draw_start, draw_end });
 
 			draw_start = draw_end;
 
 			SelectObject(hdc, oldPen);
+
 			DeleteObject(hPen);
 			
 			ReleaseDC(hWnd, hdc);
@@ -157,6 +158,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	{
 		a--;
 		myPen.Pen_tool2(PS_SOLID, a);
+		//current_pen.push_back({ myPen.Pen() });
 		//HWND cHwnd = GetWindow(hWnd, GW_CHILD);
 		//ThreadTrigger(cHwnd);
 	}
@@ -180,6 +182,16 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		case BUTTON_ERASER:
 			DW.lines.clear();
 			InvalidateRect(hWnd, NULL, TRUE);
+			break;
+		case BUTTON_SAVE:
+			MessageBox(hWnd, L"아직 준비 중입니다. 저장", L"저장 버튼", MB_OK);
+			break;
+		case BUTTON_PLAY:
+			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
+			ThreadTrigger(hWnd);
+			break;
+		case BUTTON_STOP:
+			MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
 			break;
 		}
 	}
@@ -210,8 +222,12 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		{
 			for (int i = 0; i < lines.size(); i++)
 			{
+				HPEN NewPen = myPen.Pen();
+				HPEN OldPen = (HPEN)SelectObject(hdc, NewPen);
 				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
 				LineTo(hdc, lines[i].end.x, lines[i].end.y);
+				SelectObject(hdc, OldPen);
+				DeleteObject(NewPen);
 			}
 		}
 
