@@ -6,6 +6,7 @@
 #include "Replay.h"
 #include "Pen_tool.h"
 #include "Resource.h"
+#include "ReplayWindow.h"
 
 #include "InitUI.h"
 /*
@@ -24,21 +25,8 @@ struct Line
 {
 	POINT start;
 	POINT end;
+	LOGPEN current_pen;
 };
-
-
-struct Pen
-{
-	HPEN currentPen;
-};
-
-/*
-struct DrawPoint
-{
-	LONG x;
-	LONG y;
-} DrawStart, DrawEnd;
-*/
 
 
 

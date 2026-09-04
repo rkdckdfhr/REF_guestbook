@@ -107,7 +107,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     HWND hWnd = CreateWindowEx(
         0, szWindowClass, L"방명록프로젝트", WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        900, 700,
+        1520, 980,
         NULL, NULL, hInstance, nullptr);
 
 

@@ -68,7 +68,6 @@ PS_DASHDOTDOT 점선
 */
 
 unsigned int a = 1;
-std::vector<Pen> current_pen;
 
 LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -87,6 +86,45 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		HINSTANCE hInst = GetModuleHandle(NULL);
 		// 인스터스명 그냥 귀찮아서 ui로 변수 명만듬
 		ui.InitUI(hWnd, hInst);
+	}
+	break;
+
+	case WM_COMMAND:
+	{
+
+		/// 버튼 클릭시 이벤트 발생 시키는 switch문
+		int wmId = LOWORD(wParam);
+		switch (wmId)
+		{
+		case BUTTON_PEN:
+			myPen.Pen_tool2(PS_SOLID, a);
+			a++;
+			//myPen.Pen();
+			break;
+		case BUTTON_COLOR:
+			myPen.SelectColor(hWnd);
+			break;
+		case BUTTON_ERASER:
+			DW.lines.clear();
+			InvalidateRect(hWnd, NULL, TRUE);
+			break;
+		case BUTTON_SAVE:
+			MessageBox(hWnd, L"아직 준비 중입니다. 저장", L"저장 버튼", MB_OK);
+			break;
+		case BUTTON_PLAY:
+		{
+
+			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
+			ReplayWindow RW;
+			HINSTANCE DrawHinst = GetModuleHandle(NULL);
+			RW.NewReplayWnd(DrawHinst, hWnd);
+			//ThreadTrigger(hWnd);
+		}
+			break;
+		case BUTTON_STOP:
+			MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
+			break;
+		}
 	}
 	break;
 
@@ -124,6 +162,13 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			draw_end.y = HIWORD(lParam);
 
 			HPEN hPen = myPen.Pen();
+
+			/// LOGPEN = 현재 펜 정보를 담을 수 있는 WIN32 API 제공 구조체
+			LOGPEN new_pen;
+			
+			/// 현재 펜의 오브젝트를 넘겨서 저장
+			GetObject(hPen, sizeof(LOGPEN), &new_pen);
+
 			HPEN Default = (HPEN)SelectObject(hdc, hPen);
 			//myPen.Pen();
 			/* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
@@ -132,10 +177,9 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			PS_DASHDOTDOT 점선
 			*/
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
-			current_pen.push_back({ myPen.Pen() });
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 			LineTo(hdc, draw_end.x, draw_end.y);
-			DW.lines.push_back({ draw_start, draw_end });
+			DW.lines.push_back({ draw_start, draw_end, new_pen });
 
 			draw_start = draw_end;
 
@@ -163,39 +207,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		//ThreadTrigger(cHwnd);
 	}
 	break;
-
-	case WM_COMMAND:
-	{
-
-		/// 버튼 클릭시 이벤트 발생 시키는 switch문
-		int wmId = LOWORD(wParam);
-		switch (wmId)
-		{
-		case BUTTON_PEN:
-			myPen.Pen_tool2(PS_SOLID, a);
-			a++;
-			//myPen.Pen();
-			break;
-		case BUTTON_COLOR:
-			myPen.SelectColor(hWnd);
-			break;
-		case BUTTON_ERASER:
-			DW.lines.clear();
-			InvalidateRect(hWnd, NULL, TRUE);
-			break;
-		case BUTTON_SAVE:
-			MessageBox(hWnd, L"아직 준비 중입니다. 저장", L"저장 버튼", MB_OK);
-			break;
-		case BUTTON_PLAY:
-			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
-			ThreadTrigger(hWnd);
-			break;
-		case BUTTON_STOP:
-			MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
-			break;
-		}
-	}
-	break;
 	
 
 	case WM_SIZE:
@@ -214,38 +225,43 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		{
 			for (unsigned i = 0; i < tmp_Replay; i++)
 			{
+				/// CreatePenIndirect() < WIN32 API 제공 함수
+				/// 현재 current_pen 변수에 펜 장착
+				/// OldPen 펜 정보 저장
+				/// MOUSEMOVE에서 push_back 인수에 펜 정보를 같이 넘겨 받아서
+				/// 그 정보로 선을 그린다고 생각하면 됨
+				HPEN current_pen = CreatePenIndirect(&lines[i].current_pen);
+				HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
 				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
 				LineTo(hdc, lines[i].end.x, lines[i].end.y);
+				SelectObject(hdc, OldPen);
+				DeleteObject(current_pen);
 			}
 		}
 		else
 		{
 			for (int i = 0; i < lines.size(); i++)
 			{
-				HPEN NewPen = myPen.Pen();
-				HPEN OldPen = (HPEN)SelectObject(hdc, NewPen);
+				HPEN current_pen = CreatePenIndirect(&lines[i].current_pen);
+				HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
 				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
 				LineTo(hdc, lines[i].end.x, lines[i].end.y);
 				SelectObject(hdc, OldPen);
-				DeleteObject(NewPen);
+				DeleteObject(current_pen);
 			}
 		}
-
-		//for (int i = 0; i < lines.size(); i++)
-		//{
-		//	MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
-		//	LineTo(hdc, lines[i].end.x, lines[i].end.y);
-		//}
 
 		EndPaint(hWnd, &cPs);
 	}
 	break;
 
 
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	
-	
 	return DefWindowProc(hWnd, message, wParam, lParam);
+
 }
 
 
