@@ -24,6 +24,9 @@
 #define BUTTON_PEN				3001
 #define BUTTON_COLOR			3002
 #define BUTTON_ERASER			3003
+#define BUTTON_SAVE				3004
+#define BUTTON_PLAY				3005
+#define BUTTON_STOP				3006
 
 // 다음은 새 개체에 사용할 기본값입니다.
 //
