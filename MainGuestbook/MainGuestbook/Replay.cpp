@@ -3,11 +3,11 @@
 #include "DRW_Window.h"
 #include "Replay.h"
 
-//좌표 위치 저장된걸 가져오는 역할
-extern std::vector<Line> lines;
 
 //리플레이 중 인지 확인하는 변수
 bool isReplaying = false;
+//리플레이 일시 정지 상태인지 확인 변수 
+bool isWaiting = false;
 //반복문에서 PAINT에 넘길 때 몇 번째 선인지 기억해주는 변수
 unsigned tmp_Replay = 0;
 
@@ -25,6 +25,12 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
 
         for (unsigned int i = 0; i < DrwWindow::lines.size(); i++)
         {
+            while (isWaiting)
+            {
+                    //만약 Sleep을 안 주면 cpu 사용량이 너무 많아짐 필수 사용
+                    Sleep(5);
+            }
+           
             tmp_Replay = i + 1;
  
             InvalidateRect(hWnd, NULL, FALSE);
@@ -34,6 +40,7 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
         }
 
     isReplaying = false;
+    isWaiting = false;
     tmp_Replay = 0;
 
     
@@ -53,3 +60,4 @@ void ThreadTrigger(HWND hWnd)
         CloseHandle(NewThread);
     }
 }
+
