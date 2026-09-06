@@ -3,7 +3,7 @@
 #include <commdlg.h> //공통 대화 상자 헤더파일
 //기본세팅
 Pen_tool::Pen_tool() {
-	width = 1;
+	width = 5;
 	style = PS_SOLID; //실선
 	color = RGB(0, 0, 0);
 }
@@ -15,8 +15,19 @@ void Pen_tool::Pen_tool2(int s, int w) {
 
 //진짜 펜 생성
 HPEN Pen_tool::Pen() {
-	return CreatePen(style, width, color);
+	// 브러시 구조체
+	LOGBRUSH lb;
+	lb.lbStyle = BS_SOLID;				// 단색 채우기 모드
+	lb.lbColor = color;					// 선택한 펜 색상 반영
+	lb.lbHatch = 0;						// 빗금 채우기 모드. 안 쓰는 멤버 변수, 쓰레기값 방지. 안정성.
+	
+	// ExtCreatePen : 굵게해도 펜 형태 유지를 위한 함수
+	// PS_GEOMETRIC : ExtCreatePen 안에 있는 펜 형태 유지 상수
+								//펜 스타일, 펜 두께, 색상채우기주소 X, X
+	return ExtCreatePen(PS_GEOMETRIC | style, width, &lb, 0, NULL);
 }
+
+// TODO : 브러쉬 넣기
 
 /// 생상 선택 상자 구현
 bool Pen_tool::SelectColor(HWND hWnd) {
