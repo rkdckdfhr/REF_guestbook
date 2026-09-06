@@ -1,5 +1,5 @@
 #include "DRW_Window.h"
-
+#include "File_io.h"
 
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;
@@ -109,7 +109,12 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			InvalidateRect(hWnd, NULL, TRUE);
 			break;
 		case BUTTON_SAVE:
-			MessageBox(hWnd, L"아직 준비 중입니다. 저장", L"저장 버튼", MB_OK);
+		{
+
+			wchar_t path[MAX_PATH] = L"";
+			if (ShowFileDialog(hWnd, path, true))
+				File_Save(path, DW.lines);
+		}
 			break;
 		case BUTTON_PLAY:
 		{
@@ -124,6 +129,17 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		case BUTTON_STOP:
 			MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
 			break;
+
+		case 1002:
+		{
+			wchar_t path[MAX_PATH] = L"";
+			if (ShowFileDialog(hWnd, path, false))
+			{
+				File_Call(path, DW.lines);
+				InvalidateRect(hWnd, NULL, TRUE);
+			}
+		}
+		break;
 		}
 	}
 	break;
@@ -138,6 +154,16 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		{
 			return hBrush;
 		}
+	}
+	break;
+
+	/// 펜 두께 슬라이더로 조절
+	case WM_VSCROLL:
+	{
+		// 슬라이더 바 위치로 펜 두께 적용
+		// 날 위한 주석 myPan.width 는 int타입이라 형변환
+		// myPen.width = 31 - 어쩌구 : 보기 편하려고 슬라이더 위 아래를 바꿈
+		myPen.width = 31 - (int)SendMessage(ui.hPenBar, TBM_GETPOS, 0, 0);
 	}
 	break;
 
