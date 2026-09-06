@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h> 
+#include <commctrl.h>	// 슬라이더 바 읽기 위해
 
 class Pen_tool {
 public:
