@@ -264,23 +264,9 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		PAINTSTRUCT cPs;
 		HDC hdc = BeginPaint(hWnd, &cPs);
 
-		if (isReplaying)
-		{
-			for (unsigned i = 0; i < tmp_Replay; i++)
-			{
-				
-				/// MOUSEMOVE에서 push_back 인수에 펜 정보를 같이 넘겨 받아서
-				/// 그 정보로 선을 그린다고 생각하면 됨
-				HPEN current_pen = DrwWindow::GetCurrentPen(&lines[i].current_pen);
-				HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
-				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
-				LineTo(hdc, lines[i].end.x, lines[i].end.y);
-				SelectObject(hdc, OldPen);
-				DeleteObject(current_pen);
-			}
-		}
-		else
-		{
+		
+
+
 			for (int i = 0; i < lines.size(); i++)
 			{
 				HPEN current_pen = DrwWindow::GetCurrentPen(&lines[i].current_pen);
@@ -290,7 +276,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 				SelectObject(hdc, OldPen);
 				DeleteObject(current_pen);
 			}
-		}
+
 
 		EndPaint(hWnd, &cPs);
 	}
