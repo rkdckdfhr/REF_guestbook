@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="File_io.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="InitUI.h" />
     <ClInclude Include="MainGuestbook.h" />
     <ClInclude Include="Pen_tool.h" />
     <ClInclude Include="Replay.h" />
+    <ClInclude Include="ReplayWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="testpen.h" />
@@ -139,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="DRW_Window.cpp" />
     <ClCompile Include="DRW_Window.h" />
+    <ClCompile Include="File_io.cpp" />
     <ClCompile Include="InitUI.cpp" />
     <ClCompile Include="MainGuestbook.cpp" />
     <ClCompile Include="Pen_tool.cpp" />
     <ClCompile Include="Replay.cpp" />
+    <ClCompile Include="ReplayWindow.cpp" />
     <ClCompile Include="testpen.cpp" />
   </ItemGroup>
   <ItemGroup>
