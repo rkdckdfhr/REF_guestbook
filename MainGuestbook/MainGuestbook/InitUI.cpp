@@ -41,9 +41,53 @@ INIT_UI::~INIT_UI ()
 		hBrush = nullptr;
   }
 }
+///@brief UI 요소들을 숨기거나 표시하는 함수입니다.
+void INIT_UI::ToggleUI(bool show) {
 
 
+	if (show) 
+  {
+		show = SW_SHOW; // 키는 옵션
+	} 
+  else 
+  {
+		show = SW_HIDE; // 끄는 옵션
+	}
 
+ ShowWindow(hToolBar, show);
+
+ ShowWindow(hPenBar, show);
+
+  ShowWindow(Button_Pen, show);
+
+  ShowWindow(Button, show);
+
+  ShowWindow(Button_Eraser, show);
+
+  ShowWindow(Button_Color, show);
+
+  ShowWindow(Button_ShowColor, show);
+
+  ShowWindow(Button_Save, show);
+
+  ShowWindow(Button_Play, show);
+
+  ShowWindow(Button_Stop, show);
+  }
+/// @brief 리플레이 전용 UI 버튼 함수 
+void INIT_UI::ReplayUI(HWND RhWnd , HINSTANCE RhInst)
+{
+  HWND Replay_Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+    700, 10, 50, 50,
+   RhWnd, (HMENU)3100, RhInst, nullptr);
+  HICON Replay_hicon_Play = (HICON)LoadImageW(nullptr, L"images/play1.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  SendMessage(Replay_Button_Play, BM_SETIMAGE, IMAGE_ICON, (LPARAM)Replay_hicon_Play);
+
+
+  HWND Replay_Button_Exit = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+    800, 10, 50, 50,
+    RhWnd, (HMENU)3101, RhInst, nullptr);
+}
 /**
 * @brief 프로그램 시작 시 메인 UI 화면을 초기화하고 구성합니다.
 *
@@ -87,14 +131,14 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     hWnd, nullptr, hInst, nullptr);
 
   // 첫번째 버튼!
-  HWND Button_Pen = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  Button_Pen = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     35, 10, 50, 50,
     hWnd, (HMENU)3000, hInst, nullptr);
   HICON hicon_Pen = (HICON)LoadImageW(nullptr, L"images/pen2.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
   SendMessage(Button_Pen, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Pen);
 
 
-  HWND Button = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY ,
+  Button = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY ,
     95, 10, 50, 50,
     hWnd, (HMENU)3001, hInst, nullptr);
 
@@ -103,7 +147,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   SendMessage(Button, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon); // hion은 핸들러라 정수타입으로 형변환 
 
-  HWND Button_Eraser = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  Button_Eraser = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
       155, 10, 50, 50,
       hWnd, (HMENU)3003, hInst, nullptr);
 
@@ -111,7 +155,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button_Eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Eraser);
 
 
-  HWND Button_Color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+ Button_Color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     335, 10, 50, 50,
     hWnd, (HMENU)3002, hInst, nullptr);
 
@@ -119,12 +163,12 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button_Color, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Color);
 
   //이버튼은 현재 내 붓 색깔을 보여주는 버튼이다
-  HWND Button_ShowColor = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  Button_ShowColor = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     395, 10, 50, 50,
     hWnd, (HMENU)3007, hInst, nullptr);
 
   // 저장 버튼
-  HWND Button_Save= CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Save= CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1350, 10, 50, 50,
     hWnd, (HMENU)3004, hInst, nullptr);
 
@@ -132,7 +176,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button_Save, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Save);
 
   //리플레이 시작버튼
-  HWND Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1200, 10, 50, 50,
     hWnd, (HMENU)3005, hInst, nullptr);
 
@@ -140,7 +184,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button_Play, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Play);
 
   //리플레이 중지 버튼
-  HWND Button_Stop = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Stop = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1260, 10, 50, 50,
     hWnd, (HMENU)3006, hInst, nullptr);
 
