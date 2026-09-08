@@ -10,6 +10,23 @@ POINT DrwWindow::draw_end;
 안될땐 꼭 브레이크 걸고 디버그 실행해서 한줄씩 찾기
 */
 
+/// ExtCreatePen을 담기 위한 CreatePenIndirect() 함수 자체 제작
+/// 현재의 펜 정보의 주소를 받아서 ExtCreatePen 함수에 담고
+/// 값을 반환하여 사용 (WM_PAINT)
+HPEN DrwWindow::GetCurrentPen(const EXTLOGPEN* ExtLogPen)
+{
+	if (!ExtLogPen) return NULL;
+
+
+	LOGBRUSH eLb;
+	eLb.lbStyle = ExtLogPen->elpBrushStyle;
+	eLb.lbColor = ExtLogPen->elpColor;
+	eLb.lbHatch = ExtLogPen->elpHatch;
+
+	return ExtCreatePen(ExtLogPen->elpPenStyle, ExtLogPen->elpWidth,
+		&eLb, ExtLogPen->elpNumEntries, NULL);
+}
+
 bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 {
 	hInstance = hInst;
@@ -190,10 +207,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			HPEN hPen = myPen.Pen();
 
 			/// LOGPEN = 현재 펜 정보를 담을 수 있는 WIN32 API 제공 구조체
-			LOGPEN new_pen;
+			EXTLOGPEN new_pen;
 			
 			/// 현재 펜의 오브젝트를 넘겨서 저장
-			GetObject(hPen, sizeof(LOGPEN), &new_pen);
+			GetObject(hPen, sizeof(EXTLOGPEN), &new_pen);
 
 			HPEN Default = (HPEN)SelectObject(hdc, hPen);
 			//myPen.Pen();
@@ -251,12 +268,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		{
 			for (unsigned i = 0; i < tmp_Replay; i++)
 			{
-				/// CreatePenIndirect() < WIN32 API 제공 함수
-				/// 현재 current_pen 변수에 펜 장착
-				/// OldPen 펜 정보 저장
+				
 				/// MOUSEMOVE에서 push_back 인수에 펜 정보를 같이 넘겨 받아서
 				/// 그 정보로 선을 그린다고 생각하면 됨
-				HPEN current_pen = CreatePenIndirect(&lines[i].current_pen);
+				HPEN current_pen = DrwWindow::GetCurrentPen(&lines[i].current_pen);
 				HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
 				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
 				LineTo(hdc, lines[i].end.x, lines[i].end.y);
@@ -268,7 +283,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		{
 			for (int i = 0; i < lines.size(); i++)
 			{
-				HPEN current_pen = CreatePenIndirect(&lines[i].current_pen);
+				HPEN current_pen = DrwWindow::GetCurrentPen(&lines[i].current_pen);
 				HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
 				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
 				LineTo(hdc, lines[i].end.x, lines[i].end.y);
@@ -289,6 +304,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	return DefWindowProc(hWnd, message, wParam, lParam);
 
 }
+
 
 
 DrwWindow::DrwWindow()

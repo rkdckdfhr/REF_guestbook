@@ -25,7 +25,7 @@ struct Line
 {
 	POINT start;
 	POINT end;
-	LOGPEN current_pen;
+	EXTLOGPEN current_pen;
 };
 
 
@@ -49,6 +49,9 @@ public:
 	bool NewWnd(HINSTANCE hInst, HWND pHwnd);
 
 	static LRESULT CALLBACK DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	
+	/// EXTLOGPEN받기 용 CreatePenindirect 함수 만들기
+	static HPEN GetCurrentPen(const EXTLOGPEN* ExtLogPen);
 
 private:
 	HINSTANCE hInstance;
