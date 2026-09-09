@@ -26,6 +26,19 @@ HPEN DrwWindow::GetCurrentPen(const EXTLOGPEN* ExtLogPen)
 		&eLb, ExtLogPen->elpNumEntries, NULL);
 }
 
+void GetPaintLine(HDC currentDc, std::vector<Line>* lines)
+{
+	for (int i = 0; i < lines->size(); i++)
+	{
+		HPEN current_pen = DrwWindow::GetCurrentPen(&(*lines)[i].current_pen);
+		HPEN OldPen = (HPEN)SelectObject(currentDc, current_pen);
+		MoveToEx(currentDc, (*lines)[i].start.x, (*lines)[i].start.y, NULL);
+		LineTo(currentDc, (*lines)[i].end.x, (*lines)[i].end.y);
+		SelectObject(currentDc, OldPen);
+		DeleteObject(current_pen);
+	}
+}
+
 bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 {
 	hInstance = hInst;
@@ -264,17 +277,17 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		HDC hdc = BeginPaint(hWnd, &cPs);
 
 		
+		GetPaintLine(hdc, &lines);
 
-
-			for (int i = 0; i < lines.size(); i++)
-			{
-				HPEN current_pen = DrwWindow::GetCurrentPen(&lines[i].current_pen);
-				HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
-				MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
-				LineTo(hdc, lines[i].end.x, lines[i].end.y);
-				SelectObject(hdc, OldPen);
-				DeleteObject(current_pen);
-			}
+			//for (int i = 0; i < lines.size(); i++)
+			//{
+			//	HPEN current_pen = DrwWindow::GetCurrentPen(&lines[i].current_pen);
+			//	HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
+			//	MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
+			//	LineTo(hdc, lines[i].end.x, lines[i].end.y);
+			//	SelectObject(hdc, OldPen);
+			//	DeleteObject(current_pen);
+			//}
 
 
 		EndPaint(hWnd, &cPs);
