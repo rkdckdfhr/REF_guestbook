@@ -1,4 +1,4 @@
-#include "ReplayWindow.h"
+#include "framework.h"
 
 
 bool ReplayWindow::NewReplayWnd(HINSTANCE hInst, HWND dHwnd)

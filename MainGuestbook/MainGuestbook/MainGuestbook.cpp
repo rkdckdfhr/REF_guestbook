@@ -3,7 +3,6 @@
 
 #include "framework.h"
 #include "MainGuestbook.h"
-#include "Pen_tool.h"
 #include <vector>
 
 
@@ -156,7 +155,6 @@ std::vector<Line> gLines;
 
 bool isDrawing = false;
 
-testPen tP;
 HPEN hP = nullptr;
 HPEN Default = nullptr;
 //INIT_UI ui;

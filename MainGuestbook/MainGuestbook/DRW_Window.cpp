@@ -1,5 +1,4 @@
-#include "DRW_Window.h"
-#include "File_io.h"
+#include "framework.h"
 
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;

@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <vector>
-#include "DRW_Window.h"
-#include "Replay.h"
+#include "framework.h"
+
 
 
 //리플레이 중 인지 확인하는 변수

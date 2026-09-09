@@ -1,5 +1,5 @@
 #include <windows.h>
-#include "Pen_tool.h"
+#include "framework.h"
 #include <commdlg.h> //공통 대화 상자 헤더파일
 //기본세팅
 Pen_tool::Pen_tool() {
