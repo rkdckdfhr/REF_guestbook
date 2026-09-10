@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -151,6 +151,14 @@
     <ResourceCompile Include="MainGuestbook.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="images\color.ico" />
+    <Image Include="images\ERASER.ico" />
+    <Image Include="images\icon2.ico" />
+    <Image Include="images\pen2.ico" />
+    <Image Include="images\play1.ico" />
+    <Image Include="images\save.ico" />
+    <Image Include="images\spray.ico" />
+    <Image Include="images\stop.ico" />
     <Image Include="MainGuestbook.ico" />
     <Image Include="small.ico" />
   </ItemGroup>

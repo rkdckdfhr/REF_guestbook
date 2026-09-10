@@ -13,16 +13,15 @@
 #define IDI_SMALL                       108
 #define IDC_MAINGUESTBOOK               109
 #define IDR_MAINFRAME                   128
-// 아이콘 관련 상수 정의	
-#define IDI_SPRAY                       2000 // 스프레이 아이콘	
-#define IDI_FILE                        2001 // 파일 그림 아이콘
-#define IDI_COLOR                       2002 // 색상 아이콘
-#define IDI_ERASER                      2003 // 지우개 아이콘
-#define IDI_PEN                         2004 // 펜 아이콘
-#define IDI_PLAY                        2005 // 재생 아이콘
-#define IDI_SAVE                        2006 // 저장 아이콘
-#define IDI_STOP                        2007 // 중지 아이콘	
-//버튼 관련된 상수 정의
+#define IDI_ICON1                       140
+#define IDI_SPRAY                       2000
+#define IDI_FILE                        2001
+#define IDI_COLOR                       2002
+#define IDI_ERASER                      2003
+#define IDI_PEN                         2004
+#define IDI_PLAY                        2005
+#define IDI_SAVE                        2006
+#define IDI_STOP                        2007
 #define BUTTON_PEN                      3001
 #define BUTTON_COLOR                    3002
 #define BUTTON_ERASER                   3003
@@ -36,7 +35,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        138
+#define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
