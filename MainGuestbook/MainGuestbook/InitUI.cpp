@@ -160,6 +160,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     335, 10, 50, 50,
     hWnd, (HMENU)3002, hInst, nullptr);
 
+
   HICON hicon_Color = (HICON)LoadImageW(nullptr, L"images/color.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
   SendMessage(Button_Color, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Color);
 

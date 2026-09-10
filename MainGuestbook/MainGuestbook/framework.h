@@ -28,3 +28,6 @@
 
 /// 그리기 관련 헤더 파일
 #include "Pen_tool.h"
+
+#include "resource.h"
+#include "Replay.h"
