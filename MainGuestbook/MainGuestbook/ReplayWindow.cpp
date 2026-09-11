@@ -1,5 +1,9 @@
-#include "framework.h"
+#include "ReplayWindow.h"
+#include "Replay.h"
+#include "DRW_Window.h"
+#include "UtilFunc.h"
 
+DrwWindow Draw;
 
 bool ReplayWindow::NewReplayWnd(HINSTANCE hInst, HWND dHwnd)
 {
@@ -32,7 +36,7 @@ bool ReplayWindow::NewReplayWnd(HINSTANCE hInst, HWND dHwnd)
 }
 
 
-DrwWindow Draw;
+//DrwWindow Draw;
 
 LRESULT CALLBACK ReplayWindow::ReplayProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {

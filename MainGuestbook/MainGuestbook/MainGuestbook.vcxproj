@@ -135,7 +135,9 @@
     <ClInclude Include="Replay.h" />
     <ClInclude Include="ReplayWindow.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="StructData.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UtilFunc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DRW_Window.cpp" />
@@ -146,6 +148,8 @@
     <ClCompile Include="Pen_tool.cpp" />
     <ClCompile Include="Replay.cpp" />
     <ClCompile Include="ReplayWindow.cpp" />
+    <ClCompile Include="StructData.cpp" />
+    <ClCompile Include="UtilFunc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MainGuestbook.rc" />

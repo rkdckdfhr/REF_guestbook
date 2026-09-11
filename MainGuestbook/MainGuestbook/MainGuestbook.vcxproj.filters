@@ -42,6 +42,12 @@
     <ClInclude Include="ReplayWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="StructData.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilFunc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainGuestbook.cpp">
@@ -68,6 +74,12 @@
     <ClCompile Include="ReplayWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="StructData.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilFunc.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MainGuestbook.rc">
@@ -79,6 +91,30 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="MainGuestbook.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\color.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\ERASER.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\icon2.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\pen2.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\play1.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\save.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\spray.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="images\stop.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

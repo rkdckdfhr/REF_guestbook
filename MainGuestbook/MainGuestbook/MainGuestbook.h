@@ -1,9 +1,6 @@
 #pragma once
 
+
+#include "framework.h"
+
 #include "resource.h"
-
-#include "DRW_Window.h"
-
-#include "Replay.h"
-
-#include "InitUI.h"

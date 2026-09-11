@@ -1,4 +1,12 @@
 #include "framework.h"
+#include "Replay.h"
+#include "Pen_tool.h"
+#include "Resource.h"
+#include "ReplayWindow.h"
+
+#include "InitUI.h"
+#include "File_io.h"
+//#include "UtilFunc.h"
 
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;
@@ -134,7 +142,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			myPen.SelectColor(hWnd);
 			break;
 		case BUTTON_ERASER:
-			DW.lines.clear();
+			lines.clear();
 			InvalidateRect(hWnd, NULL, TRUE);
 			break;
 		case BUTTON_SAVE:
@@ -142,7 +150,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			wchar_t path[MAX_PATH] = L"";
 			if (ShowFileDialog(hWnd, path, true))
-				File_Save(path, DW.lines);
+				File_Save(path, lines);
 		}
 			break;
 		case BUTTON_PLAY:
@@ -164,7 +172,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			wchar_t path[MAX_PATH] = L"";
 			if (ShowFileDialog(hWnd, path, false))
 			{
-				File_Call(path, DW.lines);
+				File_Call(path, lines);
 				InvalidateRect(hWnd, NULL, TRUE);
 			}
 		}
@@ -234,7 +242,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 			LineTo(hdc, draw_end.x, draw_end.y);
-			DW.lines.push_back({ draw_start, draw_end, new_pen });
+			lines.push_back({ draw_start, draw_end, new_pen });
 
 			draw_start = draw_end;
 

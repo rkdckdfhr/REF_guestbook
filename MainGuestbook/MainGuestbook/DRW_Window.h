@@ -3,12 +3,8 @@
 #include <windows.h>
 #include <stdio.h>
 #include <vector>
-#include "Replay.h"
-#include "Pen_tool.h"
-#include "Resource.h"
-#include "ReplayWindow.h"
+#include "StructData.h"
 
-#include "InitUI.h"
 /*
 HINSTANCE는 "Handle to an INSTance"의 약자로,
 윈도우 운영체제가 메모리에 로드된 현재 프로그램(실행 파일)을 식별하기 위해 부여하는 고유 ID (시작 주소)임.
@@ -21,12 +17,12 @@ OS는 여러 프로그램이 동시에 돌아가는 환경이므로
 * @brief 점의 시작과 끝 좌표를 구하기 위한 Win32 제공 구조체
 * @brief POINT 내부엔 LONG x, LONG y만 선언 되어있음
 */
-struct Line
-{
-	POINT start;
-	POINT end;
-	EXTLOGPEN current_pen;
-};
+//struct Line
+//{
+//	POINT start;
+//	POINT end;
+//	EXTLOGPEN current_pen;
+//};
 
 
 

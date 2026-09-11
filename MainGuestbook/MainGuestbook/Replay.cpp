@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <vector>
-#include "framework.h"
-
+#include "Replay.h"
+#include "DRW_Window.h"
 
 
 //리플레이 중 인지 확인하는 변수
@@ -10,6 +10,8 @@ bool isReplaying = false;
 bool isWaiting = false;
 //반복문에서 PAINT에 넘길 때 몇 번째 선인지 기억해주는 변수
 unsigned tmp_Replay = 0;
+
+
 
 DWORD WINAPI ReplayThreads(LPVOID lpParam)
 {

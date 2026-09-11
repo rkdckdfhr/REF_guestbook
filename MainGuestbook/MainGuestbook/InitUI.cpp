@@ -1,4 +1,4 @@
-#include "framework.h"
+#include "InitUi.h"
 
 //#include <commctrl.h>
 //#pragma comment(lib, "comctl32.lib")

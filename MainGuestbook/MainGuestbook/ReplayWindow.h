@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MainGuestbook.h"
+#include "framework.h"
 
 
 class ReplayWindow

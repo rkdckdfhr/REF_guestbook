@@ -1,10 +1,9 @@
 ﻿// MainGuestbook.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
-#include "framework.h"
 #include "MainGuestbook.h"
 #include <vector>
-
+#include "DRW_Window.h"
 
 #define MAX_LOADSTRING 100
 
@@ -150,7 +149,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 POINT DrwStart; /// 그리기 시작 좌표 저장
 POINT DrwEnd; /// 그리기 끝 좌표 저장
 
-std::vector<Line> lines;
+//std::vector<Line> lines;
 std::vector<Line> gLines;
 
 bool isDrawing = false;
@@ -159,7 +158,7 @@ HPEN hP = nullptr;
 HPEN Default = nullptr;
 //INIT_UI ui;
 
-Pen_tool pt2;
+//Pen_tool pt2;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
