@@ -33,10 +33,24 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
            
             tmp_Replay = i + 1;
  
-            InvalidateRect(hWnd, NULL, FALSE);
-            UpdateWindow(hWnd);
+            // 루프 4번 혹은 마지막 루프일 때 그리게 시킴
+            // 안 쓰면 실제 쓰는 시간과 차이가 많이남
+            if (i % 4 == 0 || i + 1 == DrwWindow::lines.size())
+            {
+                InvalidateRect(hWnd, NULL, FALSE);
+                UpdateWindow(hWnd);
+            }
 
-            Sleep(10);
+            if (i + 1 < DrwWindow::lines.size())
+            {
+                // 시간 저장한거 계산해서 꺼내는 변수
+                DWORD sleep_time = DrwWindow::lines[i + 1].timestamp - DrwWindow::lines[i].timestamp;
+                
+                if (sleep_time > 0)
+                {
+                    Sleep(sleep_time);
+                }
+            }
         }
 
     isReplaying = false;
