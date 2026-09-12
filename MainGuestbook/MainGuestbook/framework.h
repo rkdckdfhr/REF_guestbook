@@ -14,21 +14,3 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-
-/// 헤더 파일 모음입니다.
-
-/// 그리기, 리플레이 창 관련 헤더 파일
-//#include "DRW_Window.h"
-//#include "ReplayWindow.h"
-//
-///// 파일 관련 헤더 파일
-//#include "File_io.h"
-//
-///// 메뉴 관련 헤더 파일
-//#include "InitUI.h"
-//
-///// 그리기 관련 헤더 파일
-//#include "Pen_tool.h"
-//
-//#include "resource.h"
-//#include "Replay.h"

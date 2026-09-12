@@ -18,23 +18,6 @@ POINT DrwWindow::draw_end;
 안될땐 꼭 브레이크 걸고 디버그 실행해서 한줄씩 찾기
 */
 
-/// ExtCreatePen을 담기 위한 CreatePenIndirect() 함수 자체 제작
-/// 현재의 펜 정보의 주소를 받아서 ExtCreatePen 함수에 담고
-/// 값을 반환하여 사용 (WM_PAINT)
-//HPEN DrwWindow::GetCurrentPen(const EXTLOGPEN* ExtLogPen)
-//{
-//	if (!ExtLogPen) return NULL;
-//
-//
-//	LOGBRUSH eLb;
-//	eLb.lbStyle = ExtLogPen->elpBrushStyle;
-//	eLb.lbColor = ExtLogPen->elpColor;
-//	eLb.lbHatch = ExtLogPen->elpHatch;
-//
-//	return ExtCreatePen(ExtLogPen->elpPenStyle, ExtLogPen->elpWidth,
-//		&eLb, ExtLogPen->elpNumEntries, NULL);
-//}
-
 
 bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 {
@@ -83,8 +66,6 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 }
 
 DrwWindow DW;
-//INIT_UI ui;
-Pen_tool pt;
 INIT_UI ui;
 Pen_tool myPen; //기본 세팅된 펜
 /* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
@@ -123,9 +104,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		switch (wmId)
 		{
 		case BUTTON_PEN:
-			myPen.Pen_tool2(PS_SOLID, a);
-			a++;
-			//myPen.Pen();
+			MessageBox(hWnd, L"준비 중", L"펜 스타일", MB_OK);
 			break;
 		case BUTTON_COLOR:
 			myPen.SelectColor(hWnd);
@@ -136,7 +115,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 		case BUTTON_SAVE:
 		{
-
 			wchar_t path[MAX_PATH] = L"";
 			if (ShowFileDialog(hWnd, path, true))
 				File_Save(path, lines);
@@ -144,12 +122,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 		case BUTTON_PLAY:
 		{
-
 			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
 			ReplayWindow RW;
 			HINSTANCE DrawHinst = GetModuleHandle(NULL);
 			RW.NewReplayWnd(DrawHinst, hWnd);
-			//ThreadTrigger(hWnd);
 		}
 			break;
 		case BUTTON_STOP:
@@ -212,6 +188,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			draw_end.x = LOWORD(lParam);
 			draw_end.y = HIWORD(lParam);
+			DWORD get_time = GetTickCount64();
 
 			HPEN hPen = myPen.Pen();
 
@@ -222,7 +199,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			GetObject(hPen, sizeof(EXTLOGPEN), &new_pen);
 
 			HPEN Default = (HPEN)SelectObject(hdc, hPen);
-			//myPen.Pen();
 			/* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
 			PS_DASH 파선
 			PS_DASHDOT 점선
@@ -231,7 +207,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 			LineTo(hdc, draw_end.x, draw_end.y);
-			lines.push_back({ draw_start, draw_end, new_pen });
+			lines.push_back({ draw_start, draw_end, new_pen, get_time });
 
 			draw_start = draw_end;
 
@@ -250,17 +226,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	}
 	break;
 
-	case WM_RBUTTONUP:
-	{
-		a--;
-		myPen.Pen_tool2(PS_SOLID, a);
-		//current_pen.push_back({ myPen.Pen() });
-		//HWND cHwnd = GetWindow(hWnd, GW_CHILD);
-		//ThreadTrigger(cHwnd);
-	}
-	break;
-	
-
 	case WM_SIZE:
 	{
 
@@ -273,18 +238,9 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		PAINTSTRUCT cPs;
 		HDC hdc = BeginPaint(hWnd, &cPs);
 
-		
+		/// 벡터의 내용으로 PAINT에 그리는 함수
+		/// UtilFunc.cpp 참조
 		GetPaintLine(hdc, &lines);
-
-			//for (int i = 0; i < lines.size(); i++)
-			//{
-			//	HPEN current_pen = DrwWindow::GetCurrentPen(&lines[i].current_pen);
-			//	HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
-			//	MoveToEx(hdc, lines[i].start.x, lines[i].start.y, NULL);
-			//	LineTo(hdc, lines[i].end.x, lines[i].end.y);
-			//	SelectObject(hdc, OldPen);
-			//	DeleteObject(current_pen);
-			//}
 
 
 		EndPaint(hWnd, &cPs);

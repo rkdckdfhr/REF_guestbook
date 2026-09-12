@@ -13,16 +13,7 @@ OS는 여러 프로그램이 동시에 돌아가는 환경이므로
 */
 
 
-/**
-* @brief 점의 시작과 끝 좌표를 구하기 위한 Win32 제공 구조체
-* @brief POINT 내부엔 LONG x, LONG y만 선언 되어있음
-*/
-//struct Line
-//{
-//	POINT start;
-//	POINT end;
-//	EXTLOGPEN current_pen;
-//};
+
 
 
 
@@ -46,8 +37,6 @@ public:
 
 	static LRESULT CALLBACK DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	
-	/// EXTLOGPEN받기 용 CreatePenindirect 함수 만들기
-	static HPEN GetCurrentPen(const EXTLOGPEN* ExtLogPen);
 
 private:
 	HINSTANCE hInstance;

@@ -1,6 +1,8 @@
 #include "UtilFunc.h"
 
-
+/// ExtCreatePen을 담기 위한 CreatePenIndirect() 함수 자체 제작
+/// 현재의 펜 정보의 주소를 받아서 ExtCreatePen 함수에 담고
+/// 값을 반환하여 사용 (WM_PAINT)
 HPEN GetCurrentPen(const EXTLOGPEN* ExtLogPen)
 {
 	if (!ExtLogPen) return NULL;
