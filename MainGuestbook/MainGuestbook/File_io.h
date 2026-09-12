@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
-#include "DRW_Window.h"
+#include <vector>
+#include "StructData.h"
 
 bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave);
 bool File_Save(const wchar_t* path, std::vector<Line>& lines);

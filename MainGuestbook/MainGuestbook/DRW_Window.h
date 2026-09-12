@@ -6,16 +6,16 @@
 #include "StructData.h"
 
 /*
-HINSTANCE´Â "Handle to an INSTance"ÀÇ ¾àÀÚ·Î,
-À©µµ¿ì ¿î¿µÃ¼Á¦°¡ ¸Þ¸ð¸®¿¡ ·ÎµåµÈ ÇöÀç ÇÁ·Î±×·¥(½ÇÇà ÆÄÀÏ)À» ½Äº°ÇÏ±â À§ÇØ ºÎ¿©ÇÏ´Â °íÀ¯ ID (½ÃÀÛ ÁÖ¼Ò)ÀÓ.
-OS´Â ¿©·¯ ÇÁ·Î±×·¥ÀÌ µ¿½Ã¿¡ µ¹¾Æ°¡´Â È¯°æÀÌ¹Ç·Î
-"ÀÌ À©µµ¿ì Ã¢ÀÌ ¾î¶² ÇÁ·Î±×·¥ÀÇ °ÍÀÎÁö", "ÀÌ ¾ÆÀÌÄÜÀÌ ¾î¶² ½ÇÇà ÆÄÀÏ¿¡ µé¾îÀÖ´ÂÁö"¸¦ ±¸ºÐÇØ¾ß ÇÒ¶§ HINSTANCEÀÇ ÁÖ¼Ò·Î ±¸ºÐ
+HINSTANCEëŠ” "Handle to an INSTance"ì˜ ì•½ìžë¡œ,
+ìœˆë„ìš° ìš´ì˜ì²´ì œê°€ ë©”ëª¨ë¦¬ì— ë¡œë“œëœ í˜„ìž¬ í”„ë¡œê·¸ëž¨(ì‹¤í–‰ íŒŒì¼)ì„ ì‹ë³„í•˜ê¸° ìœ„í•´ ë¶€ì—¬í•˜ëŠ” ê³ ìœ  ID (ì‹œìž‘ ì£¼ì†Œ)ìž„.
+OSëŠ” ì—¬ëŸ¬ í”„ë¡œê·¸ëž¨ì´ ë™ì‹œì— ëŒì•„ê°€ëŠ” í™˜ê²½ì´ë¯€ë¡œ
+"ì´ ìœˆë„ìš° ì°½ì´ ì–´ë–¤ í”„ë¡œê·¸ëž¨ì˜ ê²ƒì¸ì§€", "ì´ ì•„ì´ì½˜ì´ ì–´ë–¤ ì‹¤í–‰ íŒŒì¼ì— ë“¤ì–´ìžˆëŠ”ì§€"ë¥¼ êµ¬ë¶„í•´ì•¼ í• ë•Œ HINSTANCEì˜ ì£¼ì†Œë¡œ êµ¬ë¶„
 */
 
 
 /**
-* @brief Á¡ÀÇ ½ÃÀÛ°ú ³¡ ÁÂÇ¥¸¦ ±¸ÇÏ±â À§ÇÑ Win32 Á¦°ø ±¸Á¶Ã¼
-* @brief POINT ³»ºÎ¿£ LONG x, LONG y¸¸ ¼±¾ð µÇ¾îÀÖÀ½
+* @brief ì ì˜ ì‹œìž‘ê³¼ ë ì¢Œí‘œë¥¼ êµ¬í•˜ê¸° ìœ„í•œ Win32 ì œê³µ êµ¬ì¡°ì²´
+* @brief POINT ë‚´ë¶€ì—” LONG x, LONG yë§Œ ì„ ì–¸ ë˜ì–´ìžˆìŒ
 */
 //struct Line
 //{
@@ -33,20 +33,20 @@ public:
 	~DrwWindow();
 	
 
-	/// ±×¸®±â ±â´É¿¡ ÇÊ¿äÇÑ º¯¼öµé
+	/// ê·¸ë¦¬ê¸° ê¸°ëŠ¥ì— í•„ìš”í•œ ë³€ìˆ˜ë“¤
 	bool is_drawing = false;
 	static std::vector<Line> lines;
 
 
-	static POINT draw_start; /// ±×¸®±â ½ÃÀÛ ÁÂÇ¥ ÀúÀå
-	static POINT draw_end; /// ±×¸®±â ³¡ ÁÂÇ¥ ÀúÀå
+	static POINT draw_start; /// ê·¸ë¦¬ê¸° ì‹œìž‘ ì¢Œí‘œ ì €ìž¥
+	static POINT draw_end; /// ê·¸ë¦¬ê¸° ë ì¢Œí‘œ ì €ìž¥
 
 
 	bool NewWnd(HINSTANCE hInst, HWND pHwnd);
 
 	static LRESULT CALLBACK DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	
-	/// EXTLOGPEN¹Þ±â ¿ë CreatePenindirect ÇÔ¼ö ¸¸µé±â
+	/// EXTLOGPENë°›ê¸° ìš© CreatePenindirect í•¨ìˆ˜ ë§Œë“¤ê¸°
 	static HPEN GetCurrentPen(const EXTLOGPEN* ExtLogPen);
 
 private:

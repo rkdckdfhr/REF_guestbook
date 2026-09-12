@@ -58,7 +58,7 @@ LRESULT CALLBACK ReplayWindow::ReplayProc(HWND hWnd, UINT message, WPARAM wParam
 			for (unsigned i = 0; i < tmp_Replay; i++)
 			{
 
-				HPEN current_pen = Draw.GetCurrentPen(&Draw.lines[i].current_pen);
+				HPEN current_pen = GetCurrentPen(&Draw.lines[i].current_pen);
 				HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
 				MoveToEx(hdc, Draw.lines[i].start.x, Draw.lines[i].start.y, NULL);
 				LineTo(hdc, Draw.lines[i].end.x, Draw.lines[i].end.y);

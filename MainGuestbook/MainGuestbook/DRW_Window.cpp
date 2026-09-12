@@ -1,3 +1,4 @@
+#include "DRW_Window.h"
 #include "framework.h"
 #include "Replay.h"
 #include "Pen_tool.h"
@@ -6,7 +7,7 @@
 
 #include "InitUI.h"
 #include "File_io.h"
-//#include "UtilFunc.h"
+#include "UtilFunc.h"
 
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;
@@ -14,38 +15,26 @@ POINT DrwWindow::draw_end;
 
 
 /*
-¾ÈµÉ¶© ²À ºê·¹ÀÌÅ© °É°í µğ¹ö±× ½ÇÇàÇØ¼­ ÇÑÁÙ¾¿ Ã£±â
+ì•ˆë ë• ê¼­ ë¸Œë ˆì´í¬ ê±¸ê³  ë””ë²„ê·¸ ì‹¤í–‰í•´ì„œ í•œì¤„ì”© ì°¾ê¸°
 */
 
-/// ExtCreatePenÀ» ´ã±â À§ÇÑ CreatePenIndirect() ÇÔ¼ö ÀÚÃ¼ Á¦ÀÛ
-/// ÇöÀçÀÇ Ææ Á¤º¸ÀÇ ÁÖ¼Ò¸¦ ¹Ş¾Æ¼­ ExtCreatePen ÇÔ¼ö¿¡ ´ã°í
-/// °ªÀ» ¹İÈ¯ÇÏ¿© »ç¿ë (WM_PAINT)
-HPEN DrwWindow::GetCurrentPen(const EXTLOGPEN* ExtLogPen)
-{
-	if (!ExtLogPen) return NULL;
+/// ExtCreatePenì„ ë‹´ê¸° ìœ„í•œ CreatePenIndirect() í•¨ìˆ˜ ìì²´ ì œì‘
+/// í˜„ì¬ì˜ íœ ì •ë³´ì˜ ì£¼ì†Œë¥¼ ë°›ì•„ì„œ ExtCreatePen í•¨ìˆ˜ì— ë‹´ê³ 
+/// ê°’ì„ ë°˜í™˜í•˜ì—¬ ì‚¬ìš© (WM_PAINT)
+//HPEN DrwWindow::GetCurrentPen(const EXTLOGPEN* ExtLogPen)
+//{
+//	if (!ExtLogPen) return NULL;
+//
+//
+//	LOGBRUSH eLb;
+//	eLb.lbStyle = ExtLogPen->elpBrushStyle;
+//	eLb.lbColor = ExtLogPen->elpColor;
+//	eLb.lbHatch = ExtLogPen->elpHatch;
+//
+//	return ExtCreatePen(ExtLogPen->elpPenStyle, ExtLogPen->elpWidth,
+//		&eLb, ExtLogPen->elpNumEntries, NULL);
+//}
 
-
-	LOGBRUSH eLb;
-	eLb.lbStyle = ExtLogPen->elpBrushStyle;
-	eLb.lbColor = ExtLogPen->elpColor;
-	eLb.lbHatch = ExtLogPen->elpHatch;
-
-	return ExtCreatePen(ExtLogPen->elpPenStyle, ExtLogPen->elpWidth,
-		&eLb, ExtLogPen->elpNumEntries, NULL);
-}
-
-void GetPaintLine(HDC currentDc, std::vector<Line>* lines)
-{
-	for (int i = 0; i < lines->size(); i++)
-	{
-		HPEN current_pen = DrwWindow::GetCurrentPen(&(*lines)[i].current_pen);
-		HPEN OldPen = (HPEN)SelectObject(currentDc, current_pen);
-		MoveToEx(currentDc, (*lines)[i].start.x, (*lines)[i].start.y, NULL);
-		LineTo(currentDc, (*lines)[i].end.x, (*lines)[i].end.y);
-		SelectObject(currentDc, OldPen);
-		DeleteObject(current_pen);
-	}
-}
 
 bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 {
@@ -62,11 +51,11 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 
 	RegisterClass(&wc);
 
-	/// ºÎ¸ğÃ¢ÀÇ Å©±â¸¦ ±¸ÇÏ´Â ÄÚµå ÀÚ½Ä Ã¢ÀÇ Å©±â¸¦ ºÎ¸ğÃ¢¿¡ ¸ÂÃß±â À§ÇÔ
+	/// ë¶€ëª¨ì°½ì˜ í¬ê¸°ë¥¼ êµ¬í•˜ëŠ” ì½”ë“œ ìì‹ ì°½ì˜ í¬ê¸°ë¥¼ ë¶€ëª¨ì°½ì— ë§ì¶”ê¸° ìœ„í•¨
 	RECT rect;
 	GetClientRect(pHwnd, &rect);
 
-	/// rect.right = ºÎ¸ğÃ¢ÀÇ ³Êºñ , rect.bottom = ºÎ¸ğÃ¢ÀÇ ³ôÀÌ
+	/// rect.right = ë¶€ëª¨ì°½ì˜ ë„ˆë¹„ , rect.bottom = ë¶€ëª¨ì°½ì˜ ë†’ì´
 
 	HWND hWnd = CreateWindowEx(0,
 		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE,
@@ -75,13 +64,13 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 		pHwnd, NULL, hInst, this);
 
 
-	// ÀÚ½Ä À©µµ¿ì »ı¼ºÀÌ µÇ´ÂÁö À¯È¿¼º °Ë»ç
+	// ìì‹ ìœˆë„ìš° ìƒì„±ì´ ë˜ëŠ”ì§€ ìœ íš¨ì„± ê²€ì‚¬
 	//if (!hWnd)
 	//{
 	//	
 	//	DWORD err = GetLastError();
 	//	wchar_t buf[256];
-	//	swprintf_s(buf, L"ÀÚ½Ä À©µµ¿ì »ı¼º ½ÇÆĞ, ¿¡·¯ ÄÚµå: %lu", err);
+	//	swprintf_s(buf, L"ìì‹ ìœˆë„ìš° ìƒì„± ì‹¤íŒ¨, ì—ëŸ¬ ì½”ë“œ: %lu", err);
 	//	MessageBoxW(NULL, buf, L"Error", MB_OK);
 
 	//	return false;
@@ -97,31 +86,31 @@ DrwWindow DW;
 //INIT_UI ui;
 Pen_tool pt;
 INIT_UI ui;
-Pen_tool myPen; //±âº» ¼¼ÆÃµÈ Ææ
-/* Ææ ½ºÅ¸ÀÏ ¿É¼Ç ÁÙ¶§ °ıÈ£¾È¿¡ ½ºÅ¸ÀÏ,µÎ²²,»ö»óÁÖ±â
-PS_DASH ÆÄ¼±
-PS_DASHDOT Á¡¼±
-PS_DASHDOTDOT Á¡¼±
+Pen_tool myPen; //ê¸°ë³¸ ì„¸íŒ…ëœ íœ
+/* íœ ìŠ¤íƒ€ì¼ ì˜µì…˜ ì¤„ë•Œ ê´„í˜¸ì•ˆì— ìŠ¤íƒ€ì¼,ë‘ê»˜,ìƒ‰ìƒì£¼ê¸°
+PS_DASH íŒŒì„ 
+PS_DASHDOT ì ì„ 
+PS_DASHDOTDOT ì ì„ 
 */
 
 unsigned int a = 1;
 
 LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	/// @TODO: °øºÎÇØ¼­ Ã¤¿ö³ÖÀÚ
-	/// ¹İµå½Ã DefWindowProc·Î ¿î¿µÃ¼Á¦¿¡ ³²Àº ÀÚ¿ø ¹İÈ¯
-	/// ÀÌ°÷¿¡ ±×¸®±â ±â´É ³Ö±â
+	/// @TODO: ê³µë¶€í•´ì„œ ì±„ì›Œë„£ì
+	/// ë°˜ë“œì‹œ DefWindowProcë¡œ ìš´ì˜ì²´ì œì— ë‚¨ì€ ìì› ë°˜í™˜
+	/// ì´ê³³ì— ê·¸ë¦¬ê¸° ê¸°ëŠ¥ ë„£ê¸°
 	switch (message)
 	{
 	case WM_CREATE:
 	{
-		/// TODO: Ã¤¿ö³Ö±â
+		/// TODO: ì±„ì›Œë„£ê¸°
 
-		/// ¹öÆ° »ı¼º
+		/// ë²„íŠ¼ ìƒì„±
 
-		//GetModuleHandle ÇÏ¸é ÇöÀç Ã¢³ª¿Â ÀÎ½ºÅÏ½º ÇÚµéÀ» °¡Á®¿Ã ¼ö ÀÖÀ½
+		//GetModuleHandle í•˜ë©´ í˜„ì¬ ì°½ë‚˜ì˜¨ ì¸ìŠ¤í„´ìŠ¤ í•¸ë“¤ì„ ê°€ì ¸ì˜¬ ìˆ˜ ìˆìŒ
 		HINSTANCE hInst = GetModuleHandle(NULL);
-		// ÀÎ½ºÅÍ½º¸í ±×³É ±ÍÂú¾Æ¼­ ui·Î º¯¼ö ¸í¸¸µë
+		// ì¸ìŠ¤í„°ìŠ¤ëª… ê·¸ëƒ¥ ê·€ì°®ì•„ì„œ uië¡œ ë³€ìˆ˜ ëª…ë§Œë“¬
 		ui.InitUI(hWnd, hInst);
 	}
 	break;
@@ -129,7 +118,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	case WM_COMMAND:
 	{
 
-		/// ¹öÆ° Å¬¸¯½Ã ÀÌº¥Æ® ¹ß»ı ½ÃÅ°´Â switch¹®
+		/// ë²„íŠ¼ í´ë¦­ì‹œ ì´ë²¤íŠ¸ ë°œìƒ ì‹œí‚¤ëŠ” switchë¬¸
 		int wmId = LOWORD(wParam);
 		switch (wmId)
 		{
@@ -156,7 +145,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		case BUTTON_PLAY:
 		{
 
-			MessageBox(hWnd, L"¾ÆÁ÷ ÁØºñ ÁßÀÔ´Ï´Ù. Àç»ı", L"Àç»ı ¹öÆ°", MB_OK);
+			MessageBox(hWnd, L"ì•„ì§ ì¤€ë¹„ ì¤‘ì…ë‹ˆë‹¤. ì¬ìƒ", L"ì¬ìƒ ë²„íŠ¼", MB_OK);
 			ReplayWindow RW;
 			HINSTANCE DrawHinst = GetModuleHandle(NULL);
 			RW.NewReplayWnd(DrawHinst, hWnd);
@@ -164,7 +153,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		}
 			break;
 		case BUTTON_STOP:
-			MessageBox(hWnd, L"¾ÆÁ÷ ÁØºñ ÁßÀÔ´Ï´Ù. Á¤Áö", L"Á¤Áö ¹öÆ°", MB_OK);
+			MessageBox(hWnd, L"ì•„ì§ ì¤€ë¹„ ì¤‘ì…ë‹ˆë‹¤. ì •ì§€", L"ì •ì§€ ë²„íŠ¼", MB_OK);
 			break;
 
 		case 1002:
@@ -194,12 +183,12 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	}
 	break;
 
-	/// Ææ µÎ²² ½½¶óÀÌ´õ·Î Á¶Àı
+	/// íœ ë‘ê»˜ ìŠ¬ë¼ì´ë”ë¡œ ì¡°ì ˆ
 	case WM_VSCROLL:
 	{
-		// ½½¶óÀÌ´õ ¹Ù À§Ä¡·Î Ææ µÎ²² Àû¿ë
-		// ³¯ À§ÇÑ ÁÖ¼® myPan.width ´Â intÅ¸ÀÔÀÌ¶ó Çüº¯È¯
-		// myPen.width = 31 - ¾îÂ¼±¸ : º¸±â ÆíÇÏ·Á°í ½½¶óÀÌ´õ À§ ¾Æ·¡¸¦ ¹Ù²Ş
+		// ìŠ¬ë¼ì´ë” ë°” ìœ„ì¹˜ë¡œ íœ ë‘ê»˜ ì ìš©
+		// ë‚  ìœ„í•œ ì£¼ì„ myPan.width ëŠ” intíƒ€ì…ì´ë¼ í˜•ë³€í™˜
+		// myPen.width = 31 - ì–´ì©Œêµ¬ : ë³´ê¸° í¸í•˜ë ¤ê³  ìŠ¬ë¼ì´ë” ìœ„ ì•„ë˜ë¥¼ ë°”ê¿ˆ
 		myPen.width = 31 - (int)SendMessage(ui.hPenBar, TBM_GETPOS, 0, 0);
 	}
 	break;
@@ -226,18 +215,18 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			HPEN hPen = myPen.Pen();
 
-			/// LOGPEN = ÇöÀç Ææ Á¤º¸¸¦ ´ãÀ» ¼ö ÀÖ´Â WIN32 API Á¦°ø ±¸Á¶Ã¼
+			/// LOGPEN = í˜„ì¬ íœ ì •ë³´ë¥¼ ë‹´ì„ ìˆ˜ ìˆëŠ” WIN32 API ì œê³µ êµ¬ì¡°ì²´
 			EXTLOGPEN new_pen;
 			
-			/// ÇöÀç ÆæÀÇ ¿ÀºêÁ§Æ®¸¦ ³Ñ°Ü¼­ ÀúÀå
+			/// í˜„ì¬ íœì˜ ì˜¤ë¸Œì íŠ¸ë¥¼ ë„˜ê²¨ì„œ ì €ì¥
 			GetObject(hPen, sizeof(EXTLOGPEN), &new_pen);
 
 			HPEN Default = (HPEN)SelectObject(hdc, hPen);
 			//myPen.Pen();
-			/* Ææ ½ºÅ¸ÀÏ ¿É¼Ç ÁÙ¶§ °ıÈ£¾È¿¡ ½ºÅ¸ÀÏ,µÎ²²,»ö»óÁÖ±â
-			PS_DASH ÆÄ¼±
-			PS_DASHDOT Á¡¼±
-			PS_DASHDOTDOT Á¡¼±
+			/* íœ ìŠ¤íƒ€ì¼ ì˜µì…˜ ì¤„ë•Œ ê´„í˜¸ì•ˆì— ìŠ¤íƒ€ì¼,ë‘ê»˜,ìƒ‰ìƒì£¼ê¸°
+			PS_DASH íŒŒì„ 
+			PS_DASHDOT ì ì„ 
+			PS_DASHDOTDOT ì ì„ 
 			*/
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
