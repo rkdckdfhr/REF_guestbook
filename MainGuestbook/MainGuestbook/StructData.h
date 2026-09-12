@@ -11,5 +11,5 @@ struct Line
 	POINT start;
 	POINT end;
 	EXTLOGPEN current_pen;
-	DWORD timestamp;
+	ULONGLONG timestamp;
 };

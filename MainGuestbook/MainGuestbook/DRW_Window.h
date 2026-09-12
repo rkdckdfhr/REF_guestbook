@@ -39,5 +39,4 @@ public:
 	
 
 private:
-	HINSTANCE hInstance;
 };

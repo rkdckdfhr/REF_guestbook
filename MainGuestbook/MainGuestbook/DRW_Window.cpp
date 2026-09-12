@@ -21,9 +21,7 @@ POINT DrwWindow::draw_end;
 
 bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 {
-	hInstance = hInst;
 
-	//WCHAR ClassName = L"TestClass";
 
 	WNDCLASS wc = {};
 	wc.lpfnWndProc = DrawWndProc;
@@ -124,6 +122,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		{
 			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
 			ReplayWindow RW;
+			/// 현재 윈도우의 핸들 받아와서 넘기기 리플레이 윈도우의 부모 핸들로 넘김
 			HINSTANCE DrawHinst = GetModuleHandle(NULL);
 			RW.NewReplayWnd(DrawHinst, hWnd);
 		}
@@ -188,7 +187,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			draw_end.x = LOWORD(lParam);
 			draw_end.y = HIWORD(lParam);
-			DWORD get_time = GetTickCount64();
+			ULONGLONG get_time = GetTickCount64();
 
 			HPEN hPen = myPen.Pen();
 

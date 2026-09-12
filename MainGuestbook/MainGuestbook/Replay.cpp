@@ -46,7 +46,7 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
             if (i + 1 < DrwWindow::lines.size())
             {
                 // 시간 저장한거 계산해서 꺼내는 변수
-                DWORD sleep_time = DrwWindow::lines[i + 1].timestamp - DrwWindow::lines[i].timestamp;
+                ULONGLONG sleep_time = DrwWindow::lines[i + 1].timestamp - DrwWindow::lines[i].timestamp;
                 
                 if (sleep_time > 0)
                 {
