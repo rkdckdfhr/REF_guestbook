@@ -162,6 +162,7 @@
     <Image Include="images\color.ico" />
     <Image Include="images\ERASER.ico" />
     <Image Include="images\icon2.ico" />
+    <Image Include="images\load.ico" />
     <Image Include="images\pen2.ico" />
     <Image Include="images\play1.ico" />
     <Image Include="images\save.ico" />

@@ -101,6 +101,16 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		int wmId = LOWORD(wParam);
 		switch (wmId)
 		{
+		case BUTTON_LOAD:
+		{
+			wchar_t path[MAX_PATH] = L"";
+			if (ShowFileDialog(hWnd, path, false))
+			{
+				File_Call(path, lines);
+				InvalidateRect(hWnd, NULL, TRUE);
+			}
+		}
+			break;
 		case BUTTON_PEN:
 			MessageBox(hWnd, L"준비 중", L"펜 스타일", MB_OK);
 			break;

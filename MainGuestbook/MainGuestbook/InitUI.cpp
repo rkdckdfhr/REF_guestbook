@@ -133,11 +133,11 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     hWnd, nullptr, hInst, nullptr);
 
   // 첫번째 버튼!
-  Button_Pen = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  Button_Load = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     35, 10, 50, 50,
     hWnd, (HMENU)3000, hInst, nullptr);
-  HICON hicon_Pen = ((HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PEN), IMAGE_ICON, 50, 50, 0));
-  SendMessage(Button_Pen, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Pen);
+  HICON hicon_Load = ((HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_LOAD), IMAGE_ICON, 50, 50, 0));
+  SendMessage(Button_Load, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Load);
 
 
   Button = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY ,

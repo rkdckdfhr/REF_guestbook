@@ -16,6 +16,7 @@ public:
   HWND Button_Save = nullptr;
 	HWND Button_Play = nullptr;
   HWND Button_Stop = nullptr;
+  HWND Button_Load = nullptr;
 
 	HWND hScrollText = nullptr; ///< @brief 스크롤 텍스트 박스 핸들
   /// <summary>
