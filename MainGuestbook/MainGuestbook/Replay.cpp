@@ -48,6 +48,12 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
                 // 시간 저장한거 계산해서 꺼내는 변수
                 ULONGLONG sleep_time = DrwWindow::lines[i + 1].timestamp - DrwWindow::lines[i].timestamp;
                 
+
+                // 만약 Sleep(5)를 초과하는 시간의 딜레이가 있으면 그냥 Sleep(5)의 속도로 리플레이 하는 if문
+                if (sleep_time > 5)
+                {
+                    sleep_time = 5;
+                }
                 if (sleep_time > 0)
                 {
                     Sleep(sleep_time);
