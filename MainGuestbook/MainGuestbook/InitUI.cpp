@@ -1,4 +1,5 @@
 #include "InitUi.h"
+#include "resource.h"
 
 //#include <commctrl.h>
 //#pragma comment(lib, "comctl32.lib")
@@ -135,7 +136,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   Button_Pen = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     35, 10, 50, 50,
     hWnd, (HMENU)3000, hInst, nullptr);
-  HICON hicon_Pen = (HICON)LoadImageW(nullptr, L"images/pen2.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  HICON hicon_Pen = ((HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PEN), IMAGE_ICON, 50, 50, 0));
   SendMessage(Button_Pen, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Pen);
 
 
@@ -144,7 +145,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     hWnd, (HMENU)3001, hInst, nullptr);
 
   // 아이콘 파일명만 주면 바로 그 파일안에서 어려 정보를 불러오는 함수이다 ex 아이콘,비트맵그림,마우스커서그림 
-  HICON hicon = (HICON)LoadImageW(nullptr, L"images/spray.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  HICON hicon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SPRAY), IMAGE_ICON, 50, 50, 0);
 
   SendMessage(Button, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon); // hion은 핸들러라 정수타입으로 형변환 
 
@@ -152,7 +153,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
       155, 10, 50, 50,
       hWnd, (HMENU)3003, hInst, nullptr);
 
-  HICON hicon_Eraser = (HICON)LoadImageW(nullptr, L"images/ERASER.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  HICON hicon_Eraser = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_ERASER), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Eraser);
 
 
@@ -161,7 +162,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     hWnd, (HMENU)3002, hInst, nullptr);
 
 
-  HICON hicon_Color = (HICON)LoadImageW(nullptr, L"images/color.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  HICON hicon_Color = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_COLOR), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Color, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Color);
 
   //이버튼은 현재 내 붓 색깔을 보여주는 버튼이다
@@ -174,7 +175,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     1350, 10, 50, 50,
     hWnd, (HMENU)3004, hInst, nullptr);
 
-  HICON hicon_Save = (HICON)LoadImageW(nullptr, L"images/save.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  HICON hicon_Save = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Save, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Save);
 
   //리플레이 시작버튼
@@ -182,7 +183,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     1200, 10, 50, 50,
     hWnd, (HMENU)3005, hInst, nullptr);
 
-	HICON hicon_Play = (HICON)LoadImageW(nullptr, L"images/play1.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+	HICON hicon_Play = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PLAY), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Play, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Play);
 
   //리플레이 중지 버튼
@@ -190,7 +191,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     1260, 10, 50, 50,
     hWnd, (HMENU)3006, hInst, nullptr);
 
-  HICON hicon_Stop = (HICON)LoadImageW(nullptr, L"images/stop.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
+  HICON hicon_Stop = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_STOP), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Stop, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Stop);
 
 
