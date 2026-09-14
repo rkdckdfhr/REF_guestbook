@@ -3,7 +3,6 @@
 #include "Replay.h"
 #include "Pen_tool.h"
 #include "Resource.h"
-#include "ReplayWindow.h"
 
 #include "InitUI.h"
 #include "File_io.h"
@@ -72,8 +71,6 @@ PS_DASHDOT 점선
 PS_DASHDOTDOT 점선
 */
 
-unsigned int a = 1;
-
 LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	/// @TODO: 공부해서 채워넣자
@@ -131,10 +128,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		case BUTTON_PLAY:
 		{
 			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
-			ReplayWindow RW;
-			/// 현재 윈도우의 핸들 받아와서 넘기기 리플레이 윈도우의 부모 핸들로 넘김
-			HINSTANCE DrawHinst = GetModuleHandle(NULL);
-			RW.NewReplayWnd(DrawHinst, hWnd);
+			ThreadTrigger(hWnd);
 		}
 			break;
 		case BUTTON_STOP:
@@ -180,6 +174,8 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_LBUTTONDOWN:
 	{
+		if (isReplaying) break;
+
 		DW.is_drawing = true;
 		draw_start.x = LOWORD(lParam);
 		draw_start.y = HIWORD(lParam);
@@ -207,12 +203,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			/// 현재 펜의 오브젝트를 넘겨서 저장
 			GetObject(hPen, sizeof(EXTLOGPEN), &new_pen);
 
-			HPEN Default = (HPEN)SelectObject(hdc, hPen);
-			/* 펜 스타일 옵션 줄때 괄호안에 스타일,두께,색상주기
-			PS_DASH 파선
-			PS_DASHDOT 점선
-			PS_DASHDOTDOT 점선
-			*/
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 			LineTo(hdc, draw_end.x, draw_end.y);
@@ -249,7 +239,14 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 		/// 벡터의 내용으로 PAINT에 그리는 함수
 		/// UtilFunc.cpp 참조
-		GetPaintLine(hdc, &lines);
+		if (isReplaying)
+		{
+			GetPaintLine(hdc, &lines, true);
+		}
+		else
+		{
+			GetPaintLine(hdc, &lines);
+		}
 
 
 		EndPaint(hWnd, &cPs);

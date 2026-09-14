@@ -1,4 +1,5 @@
 #include "UtilFunc.h"
+#include "Replay.h"
 
 /// ExtCreatePen을 담기 위한 CreatePenIndirect() 함수 자체 제작
 /// 현재의 펜 정보의 주소를 받아서 ExtCreatePen 함수에 담고
@@ -17,15 +18,31 @@ HPEN GetCurrentPen(const EXTLOGPEN* ExtLogPen)
 		&eLb, ExtLogPen->elpNumEntries, NULL);
 }
 
-void GetPaintLine(HDC currentDc, std::vector<Line>* lines)
+void GetPaintLine(HDC currentDc, std::vector<Line>* lines, bool replayFlag)
 {
-	for (int i = 0; i < lines->size(); i++)
+	if (replayFlag)
 	{
-		HPEN current_pen = GetCurrentPen(&(*lines)[i].current_pen);
-		HPEN OldPen = (HPEN)SelectObject(currentDc, current_pen);
-		MoveToEx(currentDc, (*lines)[i].start.x, (*lines)[i].start.y, NULL);
-		LineTo(currentDc, (*lines)[i].end.x, (*lines)[i].end.y);
-		SelectObject(currentDc, OldPen);
-		DeleteObject(current_pen);
+		for (unsigned i = 0; i < tmp_Replay; i++)
+		{
+
+			HPEN current_pen = GetCurrentPen(&(*lines)[i].current_pen);
+			HPEN OldPen = (HPEN)SelectObject(currentDc, current_pen);
+			MoveToEx(currentDc, (*lines)[i].start.x, (*lines)[i].start.y, NULL);
+			LineTo(currentDc, (*lines)[i].end.x, (*lines)[i].end.y);
+			SelectObject(currentDc, OldPen);
+			DeleteObject(current_pen);
+		}
+	}
+	else
+	{
+	for (int i = 0; i < lines->size(); i++)
+		{
+			HPEN current_pen = GetCurrentPen(&(*lines)[i].current_pen);
+			HPEN OldPen = (HPEN)SelectObject(currentDc, current_pen);
+			MoveToEx(currentDc, (*lines)[i].start.x, (*lines)[i].start.y, NULL);
+			LineTo(currentDc, (*lines)[i].end.x, (*lines)[i].end.y);
+			SelectObject(currentDc, OldPen);
+			DeleteObject(current_pen);
+		}
 	}
 }
