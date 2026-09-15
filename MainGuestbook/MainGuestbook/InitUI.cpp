@@ -42,6 +42,10 @@ INIT_UI::~INIT_UI ()
     DeleteObject(hBrush);
 		hBrush = nullptr;
   }
+
+  if (g_current_color != NULL) {
+    DeleteObject(g_current_color);
+  }
 }
 ///@brief UI 요소들을 숨기거나 표시하는 함수입니다.
 void INIT_UI::ToggleUI(bool show) {
@@ -134,7 +138,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   // 첫번째 버튼!
   Button_Load = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    35, 10, 50, 50,
+    1310, 10, 50, 50,
     hWnd, (HMENU)3000, hInst, nullptr);
   HICON hicon_Load = ((HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_LOAD), IMAGE_ICON, 50, 50, 0));
   SendMessage(Button_Load, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Load);
@@ -156,6 +160,8 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HICON hicon_Eraser = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_ERASER), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Eraser);
 
+  
+
 
  Button_Color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     335, 10, 50, 50,
@@ -172,15 +178,23 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   // 저장 버튼
   Button_Save= CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
-    1350, 10, 50, 50,
+    1250, 10, 50, 50,
     hWnd, (HMENU)3004, hInst, nullptr);
 
   HICON hicon_Save = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Save, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Save);
 
-  //리플레이 시작버튼
+  //새로 만들기 버튼
+  button_new = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+    35, 10, 50, 50,
+    hWnd, (HMENU)3008, hInst, nullptr);
+
+  HICON hicon_new = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_FILE), IMAGE_ICON, 50, 50, 0);
+  SendMessage(button_new, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_new);
+
+  //리플레이 시작버튼 
   Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
-    1200, 10, 50, 50,
+    1100, 10, 50, 50,
     hWnd, (HMENU)3005, hInst, nullptr);
 
 	HICON hicon_Play = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PLAY), IMAGE_ICON, 50, 50, 0);
@@ -188,7 +202,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   //리플레이 중지 버튼
   Button_Stop = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
-    1260, 10, 50, 50,
+    1160, 10, 50, 50,
     hWnd, (HMENU)3006, hInst, nullptr);
 
   HICON hicon_Stop = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_STOP), IMAGE_ICON, 50, 50, 0);
@@ -204,5 +218,5 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     (HMENU)5000, hInst, nullptr);
 
   SendMessage(hPenBar, TBM_SETRANGE, TRUE, MAKELPARAM(1, 30)); // 스크롤에 최소값과 최대값을 지정해줌 TBM_SETRANGE -> 범위
-  SendMessage(hPenBar, TBM_SETPOS, TRUE, 5); // 창이 켜졌을때 5값에 버튼이 위치하게 세팅 TBM_SETPOS -> 위치
+  SendMessage(hPenBar, TBM_SETPOS, TRUE, 26); // 창이 켜졌을때 5값에 버튼이 위치하게 세팅 TBM_SETPOS -> 위치
 }

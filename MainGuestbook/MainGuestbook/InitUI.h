@@ -8,6 +8,8 @@ class INIT_UI
 public:
   HWND hToolBar = nullptr;
   HBRUSH hBrush = nullptr;
+	/// @brief 현재 선택된 색상을 나타내는 브러쉬 핸들
+  HBRUSH g_current_color = nullptr;
 	HWND Button_Pen = nullptr;
 	HWND Button = nullptr;
   HWND Button_Eraser = nullptr;
@@ -17,6 +19,7 @@ public:
 	HWND Button_Play = nullptr;
   HWND Button_Stop = nullptr;
   HWND Button_Load = nullptr;
+	HWND button_new = nullptr;  
 
 	HWND hScrollText = nullptr; ///< @brief 스크롤 텍스트 박스 핸들
   /// <summary>
