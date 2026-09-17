@@ -3,6 +3,19 @@
 #include <stdio.h>
 #pragma comment(lib, "comdlg32.lib")// 윈도우 기본 파일 대화상자 기능을 쓰기 위해 시스템 라이브러리 연결
 
+// 실행 파일(.exe) 위치를 기준으로 자동저장 폴더 경로를 만드는 함수
+// 컴퓨터, 폴더 위치가 달라져도 항상 exe 옆에 폴더를 만들도록 함
+void Folder_Road(wchar_t* outFolder, size_t bufferSize)
+{
+    wchar_t exePath[MAX_PATH];
+    GetModuleFileNameW(NULL, exePath, MAX_PATH); // 지금 실행 중인 exe의 전체 경로를 실시간으로 알아냄
+
+    wchar_t* lastSlash = wcsrchr(exePath, L'\\'); // 경로에서 마지막 \ 위치 찾기
+    if (lastSlash) *lastSlash = L'\0';            // 그 자리를 문자열 끝으로 잘라서 파일명(.exe) 제거, 폴더 경로만 남김
+
+    swprintf_s(outFolder, bufferSize, L"%s\\저장 파일", exePath); 
+}
+
 bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave)
 {
     OPENFILENAMEW ofn = {};
@@ -11,7 +24,12 @@ bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave)
     ofn.lpstrFile = filePath;   // 사용자가 선택한 파일 경로를 담아올 빈 문자열 
     ofn.nMaxFile = MAX_PATH;    // 경로 최대 길이 제한
     ofn.lpstrFilter = L"Drawing Files\0*.drw\0"; // 사용자에게 보여줄 확장자 종류
+    ofn.nFilterIndex = 1;       // 필터 목록 중 1번째를 기본으로 사용
     ofn.lpstrDefExt = L"drw";   // 기본 확장자 설정
+
+    wchar_t initDir[MAX_PATH];
+    Folder_Road(initDir, MAX_PATH);   // 다이얼로그가 자동저장 폴더에서 열리도록
+    ofn.lpstrInitialDir = initDir;
 
     if (isSave)
         return GetSaveFileNameW(&ofn);  //저장
@@ -58,7 +76,8 @@ bool File_Check(const wchar_t* path) //중복 파일 검사
 
 bool File_AutoSave(std::vector<Line>& lines)
 {
-    const wchar_t* folder = L"C:\\래퍼런스\\REF_guestbook\\MainGuestbook\\MainGuestbook\\저장 파일들";
+    wchar_t folder[MAX_PATH];
+    Folder_Road(folder, MAX_PATH);
 
     CreateDirectoryW(folder, NULL);// 자동 저장용 폴더 생성 
 
