@@ -1,4 +1,4 @@
-#include "InitUi.h"
+ï»¿#include "InitUi.h"
 #include "resource.h"
 
 //#include <commctrl.h>
@@ -18,15 +18,15 @@
 LRESULT INIT_UI::InitColor(WPARAM wParam, LPARAM lParam)
 {
 
-  //HDC ±×·¡ÇÈ ÀÚ¿ø¿¡ ÁÖ¼Ò *
+  //HDC ê·¸ëž˜í”½ ìžì›ì— ì£¼ì†Œ *
   HDC hdcStatic = (HDC)wParam;
-  // HWND Ã¢ ÇÚµé·¯¿¡ ÁÖ¼Ò *
+  // HWND ì°½ í•¸ë“¤ëŸ¬ì— ì£¼ì†Œ *
   HWND hChildWnd = (HWND)lParam;
 
   if (hChildWnd == hToolBar)
   {
     hBrush = CreateSolidBrush(RGB(10, 200, 200));
-    //  ±ÛÀÚ ¹è°æÀ» Åõ¸í/Èò»öÀ¸·Î º¹±¸ ÇÒ ¼ö ÀÖ´Ù
+    //  ê¸€ìž ë°°ê²½ì„ íˆ¬ëª…/í°ìƒ‰ìœ¼ë¡œ ë³µêµ¬ í•  ìˆ˜ ìžˆë‹¤
     SetBkMode(hdcStatic, TRANSPARENT);
 
     return (LRESULT)hBrush;
@@ -47,17 +47,17 @@ INIT_UI::~INIT_UI ()
     DeleteObject(g_current_color);
   }
 }
-///@brief UI ¿ä¼ÒµéÀ» ¼û±â°Å³ª Ç¥½ÃÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù.
+///@brief UI ìš”ì†Œë“¤ì„ ìˆ¨ê¸°ê±°ë‚˜ í‘œì‹œí•˜ëŠ” í•¨ìˆ˜ìž…ë‹ˆë‹¤.
 void INIT_UI::ToggleUI(bool show) {
 
 
 	if (show) 
   {
-		show = SW_SHOW; // Å°´Â ¿É¼Ç
+		show = SW_SHOW; // í‚¤ëŠ” ì˜µì…˜
 	} 
   else 
   {
-		show = SW_HIDE; // ²ô´Â ¿É¼Ç
+		show = SW_HIDE; // ë„ëŠ” ì˜µì…˜
 	}
 
  ShowWindow(hToolBar, show);
@@ -80,7 +80,7 @@ void INIT_UI::ToggleUI(bool show) {
 
   ShowWindow(Button_Stop, show);
   }
-/// @brief ¸®ÇÃ·¹ÀÌ Àü¿ë UI ¹öÆ° ÇÔ¼ö 
+/// @brief ë¦¬í”Œë ˆì´ ì „ìš© UI ë²„íŠ¼ í•¨ìˆ˜ 
 void INIT_UI::ReplayUI(HWND RhWnd , HINSTANCE RhInst)
 {
   HWND Replay_Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
@@ -95,12 +95,12 @@ void INIT_UI::ReplayUI(HWND RhWnd , HINSTANCE RhInst)
     RhWnd, (HMENU)3101, RhInst, nullptr);
 }
 /**
-* @brief ÇÁ·Î±×·¥ ½ÃÀÛ ½Ã ¸ÞÀÎ UI È­¸éÀ» ÃÊ±âÈ­ÇÏ°í ±¸¼ºÇÕ´Ï´Ù.
+* @brief í”„ë¡œê·¸ëž¨ ì‹œìž‘ ì‹œ ë©”ì¸ UI í™”ë©´ì„ ì´ˆê¸°í™”í•˜ê³  êµ¬ì„±í•©ë‹ˆë‹¤.
 *
-* @param hWnd UI ¿ä¼ÒµéÀÌ ºÎÂøµÉ ¸ÞÀÎ ºÎ¸ð Ã¢ÀÇ ¸®¸ðÄÁ(ÇÚµé)
-* @param hInst ÇöÀç ½ÇÇà ÁßÀÎ ÀÎ½ºÅÏ½º ÇÚµé
+* @param hWnd UI ìš”ì†Œë“¤ì´ ë¶€ì°©ë  ë©”ì¸ ë¶€ëª¨ ì°½ì˜ ë¦¬ëª¨ì»¨(í•¸ë“¤)
+* @param hInst í˜„ìž¬ ì‹¤í–‰ ì¤‘ì¸ ì¸ìŠ¤í„´ìŠ¤ í•¸ë“¤
 */
-// InitUI ÇÔ¼ö ÀÛ¼º±¸°£
+// InitUI í•¨ìˆ˜ ìž‘ì„±êµ¬ê°„
 void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 {
   InitCommonControls();
@@ -110,24 +110,24 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HMENU hFileMenu = CreatePopupMenu();
 
 
-  AppendMenu(hFileMenu, MF_STRING, 1001, L"ÀúÀåÇÏ±â");
-  AppendMenu(hFileMenu, MF_STRING, 1002, L"ºÒ·¯¿À±â");
-  AppendMenu(hFileMenu, MF_STRING, 1005, L"»ó¿íÀÌ");
+  AppendMenu(hFileMenu, MF_STRING, 1001, L"ì €ìž¥í•˜ê¸°");
+  AppendMenu(hFileMenu, MF_STRING, 1002, L"ë¶ˆëŸ¬ì˜¤ê¸°");
+  AppendMenu(hFileMenu, MF_STRING, 1005, L"ìƒìš±ì´");
   AppendMenu(hFileMenu, MF_SEPARATOR, 0, nullptr);
-  AppendMenu(hFileMenu, MF_STRING, 1003, L"³¡³»±â");
+  AppendMenu(hFileMenu, MF_STRING, 1003, L"ëë‚´ê¸°");
 
-  AppendMenu(hMenuBar, MF_POPUP, (UINT_PTR)hFileMenu, L"ÆÄÀÏ");
+  AppendMenu(hMenuBar, MF_POPUP, (UINT_PTR)hFileMenu, L"íŒŒì¼");
 
-  // ¼¼ÆÃ ¸Þ´º¸¦ À§ÇÑ ÄÚµåµé
+  // ì„¸íŒ… ë©”ë‰´ë¥¼ ìœ„í•œ ì½”ë“œë“¤
   HMENU hSetting = CreatePopupMenu();
 
   AppendMenu(hSetting, MF_STRING, 2001, L"1");
   AppendMenu(hSetting, MF_STRING, 2002, L"2");
   AppendMenu(hSetting, MF_STRING, 2003, L"3");
 
-  AppendMenu(hMenuBar, MF_POPUP, (UINT_PTR)hSetting, L"¼¼ÆÃ");
+  AppendMenu(hMenuBar, MF_POPUP, (UINT_PTR)hSetting, L"ì„¸íŒ…");
 
-  SetMenu(hWnd, hMenuBar); // ¹Ù¸¦ È­¸éÀÎµ¥¿¡ ºÙÈ÷´Â ÇÔ¼ö
+  SetMenu(hWnd, hMenuBar); // ë°”ë¥¼ í™”ë©´ì¸ë°ì— ë¶™ížˆëŠ” í•¨ìˆ˜
 
 
   hToolBar = CreateWindowW(L"STATIC", L"",
@@ -136,7 +136,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     2000, 70,
     hWnd, nullptr, hInst, nullptr);
 
-  // Ã¹¹øÂ° ¹öÆ°!
+  // ì²«ë²ˆì§¸ ë²„íŠ¼!
   Button_Load = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     1310, 10, 50, 50,
     hWnd, (HMENU)3000, hInst, nullptr);
@@ -148,12 +148,12 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     95, 10, 50, 50,
     hWnd, (HMENU)3001, hInst, nullptr);
 
-  // ¾ÆÀÌÄÜ ÆÄÀÏ¸í¸¸ ÁÖ¸é ¹Ù·Î ±× ÆÄÀÏ¾È¿¡¼­ ¾î·Á Á¤º¸¸¦ ºÒ·¯¿À´Â ÇÔ¼öÀÌ´Ù ex ¾ÆÀÌÄÜ,ºñÆ®¸Ê±×¸²,¸¶¿ì½ºÄ¿¼­±×¸² 
+  // ì•„ì´ì½˜ íŒŒì¼ëª…ë§Œ ì£¼ë©´ ë°”ë¡œ ê·¸ íŒŒì¼ì•ˆì—ì„œ ì–´ë ¤ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” í•¨ìˆ˜ì´ë‹¤ ex ì•„ì´ì½˜,ë¹„íŠ¸ë§µê·¸ë¦¼,ë§ˆìš°ìŠ¤ì»¤ì„œê·¸ë¦¼ 
   HICON hicon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SPRAY), IMAGE_ICON, 50, 50, 0);
 
-  SendMessage(Button, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon); // hionÀº ÇÚµé·¯¶ó Á¤¼öÅ¸ÀÔÀ¸·Î Çüº¯È¯ 
+  SendMessage(Button, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon); // hionì€ í•¸ë“¤ëŸ¬ë¼ ì •ìˆ˜íƒ€ìž…ìœ¼ë¡œ í˜•ë³€í™˜ 
 
-  Button_Eraser = CreateWindowW(L"STATIC", L"¼±ÅÃ", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  Button_Eraser = CreateWindowW(L"STATIC", L"ì„ íƒ", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
       155, 10, 50, 50,
       hWnd, (HMENU)3003, hInst, nullptr);
 
@@ -163,7 +163,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   
 
 
- Button_Color = CreateWindowW(L"STATIC", L"¼±ÅÃ", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+ Button_Color = CreateWindowW(L"STATIC", L"ì„ íƒ", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     335, 10, 50, 50,
     hWnd, (HMENU)3002, hInst, nullptr);
 
@@ -171,12 +171,12 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HICON hicon_Color = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_COLOR), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Color, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Color);
 
-  //ÀÌ¹öÆ°Àº ÇöÀç ³» º× »ö±òÀ» º¸¿©ÁÖ´Â ¹öÆ°ÀÌ´Ù
-  Button_ShowColor = CreateWindowW(L"STATIC", L"¼±ÅÃ", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  //ì´ë²„íŠ¼ì€ í˜„ìž¬ ë‚´ ë¶“ ìƒ‰ê¹”ì„ ë³´ì—¬ì£¼ëŠ” ë²„íŠ¼ì´ë‹¤
+  Button_ShowColor = CreateWindowW(L"STATIC", L"ì„ íƒ", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     395, 10, 50, 50,
     hWnd, (HMENU)3007, hInst, nullptr);
 
-  // ÀúÀå ¹öÆ°
+  // ì €ìž¥ ë²„íŠ¼
   Button_Save= CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1250, 10, 50, 50,
     hWnd, (HMENU)3004, hInst, nullptr);
@@ -184,7 +184,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HICON hicon_Save = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Save, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Save);
 
-  //»õ·Î ¸¸µé±â ¹öÆ°
+  //ìƒˆë¡œ ë§Œë“¤ê¸° ë²„íŠ¼
   button_new = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     35, 10, 50, 50,
     hWnd, (HMENU)3008, hInst, nullptr);
@@ -192,7 +192,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HICON hicon_new = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_FILE), IMAGE_ICON, 50, 50, 0);
   SendMessage(button_new, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_new);
 
-  //¸®ÇÃ·¹ÀÌ ½ÃÀÛ¹öÆ° 
+  //ë¦¬í”Œë ˆì´ ì‹œìž‘ë²„íŠ¼ 
   Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1100, 10, 50, 50,
     hWnd, (HMENU)3005, hInst, nullptr);
@@ -200,7 +200,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 	HICON hicon_Play = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PLAY), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Play, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Play);
 
-  //¸®ÇÃ·¹ÀÌ ÁßÁö ¹öÆ°
+  //ë¦¬í”Œë ˆì´ ì¤‘ì§€ ë²„íŠ¼
   Button_Stop = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
     1160, 10, 50, 50,
     hWnd, (HMENU)3006, hInst, nullptr);
@@ -210,13 +210,13 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
 
 
-	/// @brief ±½±â Á¶Àý ¹Ù »ý¼º ¹öÆ° ÀÔ´Ï´Ù.
+	/// @brief êµµê¸° ì¡°ì ˆ ë°” ìƒì„± ë²„íŠ¼ ìž…ë‹ˆë‹¤.
   hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
-    WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_VERT, // ¼¼·ÎÇü ½ºÅ¸ÀÏ
+    WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_VERT, // ì„¸ë¡œí˜• ìŠ¤íƒ€ì¼
     10, 150, 40, 300, 
     hWnd, 
     (HMENU)5000, hInst, nullptr);
 
-  SendMessage(hPenBar, TBM_SETRANGE, TRUE, MAKELPARAM(1, 30)); // ½ºÅ©·Ñ¿¡ ÃÖ¼Ò°ª°ú ÃÖ´ë°ªÀ» ÁöÁ¤ÇØÁÜ TBM_SETRANGE -> ¹üÀ§
-  SendMessage(hPenBar, TBM_SETPOS, TRUE, 26); // Ã¢ÀÌ ÄÑÁ³À»¶§ 5°ª¿¡ ¹öÆ°ÀÌ À§Ä¡ÇÏ°Ô ¼¼ÆÃ TBM_SETPOS -> À§Ä¡
+  SendMessage(hPenBar, TBM_SETRANGE, TRUE, MAKELPARAM(1, 30)); // ìŠ¤í¬ë¡¤ì— ìµœì†Œê°’ê³¼ ìµœëŒ€ê°’ì„ ì§€ì •í•´ì¤Œ TBM_SETRANGE -> ë²”ìœ„
+  SendMessage(hPenBar, TBM_SETPOS, TRUE, 26); // ì°½ì´ ì¼œì¡Œì„ë•Œ 5ê°’ì— ë²„íŠ¼ì´ ìœ„ì¹˜í•˜ê²Œ ì„¸íŒ… TBM_SETPOS -> ìœ„ì¹˜
 }
