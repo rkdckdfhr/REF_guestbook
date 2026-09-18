@@ -98,6 +98,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		int wmId = LOWORD(wParam);
 		switch (wmId)
 		{
+			/// 버튼 기능 관련 연결부
 		case BUTTON_LOAD:
 		{
 			wchar_t path[MAX_PATH] = L"";
@@ -115,8 +116,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			myPen.SelectColor(hWnd);
 			break;
 		case BUTTON_ERASER:
-			lines.clear();
-			InvalidateRect(hWnd, NULL, TRUE);
 			break;
 		case BUTTON_SAVE:
 		{
@@ -135,16 +134,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
 			break;
 
-		case 1002:
-		{
-			wchar_t path[MAX_PATH] = L"";
-			if (ShowFileDialog(hWnd, path, false))
-			{
-				File_Call(path, lines);
-				InvalidateRect(hWnd, NULL, TRUE);
-			}
-		}
-		break;
+		case BUTTON_NEW:
+			lines.clear();
+			InvalidateRect(hWnd, NULL, TRUE);
+			break;
 		}
 	}
 	break;
