@@ -71,3 +71,9 @@ bool Pen_tool::SelectColor(HWND hWnd) {
 	}
 	return false; //변경 취소
 }
+
+COLORREF Pen_tool::GetColor()
+{
+	return color;
+}
+

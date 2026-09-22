@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="buffer.h" />
     <ClInclude Include="DRW_Window.h" />
     <ClInclude Include="File_io.h" />
     <ClInclude Include="framework.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="UtilFunc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="buffer.cpp" />
     <ClCompile Include="DRW_Window.cpp" />
     <ClCompile Include="File_io.cpp" />
     <ClCompile Include="InitUI.cpp" />
