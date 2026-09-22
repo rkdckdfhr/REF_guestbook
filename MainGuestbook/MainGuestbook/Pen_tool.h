@@ -14,5 +14,8 @@ public:
 	/// 색상 선택 창을 띄우고 내부 color 변수를 직접 변경하는 함수
 	bool SelectColor(HWND hWnd);
 
+	/// 마우스 위치 주변으로 점을 뿌리는 스프레이 함수
+	void DrawSpray(HDC hdc, int x, int y);
+
 	HPEN Pen();
 };
