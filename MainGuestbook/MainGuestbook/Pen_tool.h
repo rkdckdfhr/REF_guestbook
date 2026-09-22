@@ -17,5 +17,7 @@ public:
 	/// 마우스 위치 주변으로 점을 뿌리는 스프레이 함수
 	void DrawSpray(HDC hdc, int x, int y);
 
+	COLORREF GetColor();
+
 	HPEN Pen();
 };

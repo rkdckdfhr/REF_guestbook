@@ -7,6 +7,7 @@
 #include "InitUI.h"
 #include "File_io.h"
 #include "UtilFunc.h"
+#include "buffer.h"	
 
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;
@@ -62,6 +63,9 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 	return true;
 }
 
+
+bool g_isManualReplay = false; ///수동 재생 모드인지 확인하는 전역 변수   
+bool g_isScreenSaverOn = false; ///화면 보호기 모드인지 확인하는 전역 변수 
 DrwWindow DW;
 INIT_UI ui;
 Pen_tool myPen; //기본 세팅된 펜
@@ -70,6 +74,8 @@ PS_DASH 파선
 PS_DASHDOT 점선
 PS_DASHDOTDOT 점선
 */
+
+ReplayBuffer replay_buffer;
 
 LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -88,6 +94,26 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		HINSTANCE hInst = GetModuleHandle(NULL);
 		// 인스터스명 그냥 귀찮아서 ui로 변수 명만듬
 		ui.InitUI(hWnd, hInst);
+		// 1번 타이머를 5000밀리초(5초) 간격으로 설정합니다.
+		SetTimer(hWnd, 1, 5000, NULL);
+	}
+	break;
+
+	case WM_TIMER:
+	{
+
+		if (wParam == 1)
+		{
+
+			g_isScreenSaverOn = true;
+			g_isManualReplay = false;
+			KillTimer(hWnd, 1);
+			InvalidateRect(hWnd, NULL, TRUE);
+			UpdateWindow(hWnd); // 윈도우를 즉시 갱신하는 함수
+
+			ThreadTrigger(hWnd);
+
+		}
 	}
 	break;
 
@@ -119,19 +145,31 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 		case BUTTON_SAVE:
 		{
-			wchar_t path[MAX_PATH] = L"";
-			if (ShowFileDialog(hWnd, path, true))
-				File_Save(path, lines);
+			if (MessageBox(hWnd, L"저장하시겠습니까?", L"저장 확인", MB_YESNO) == IDYES)
+			{
+				File_AutoSave(lines);
+			}
 		}
 			break;
 		case BUTTON_PLAY:
 		{
 			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
+
+			g_isManualReplay = true;
+
+			// 재생 중에 화면 보호기가 겹치지 않도록 타이머는 잠시 꺼둡니다.
+			KillTimer(hWnd, 1);
+
+			// 화면을 백지로 지우고 스레드 발사!
+			InvalidateRect(hWnd, NULL, TRUE);
+			UpdateWindow(hWnd);
 			ThreadTrigger(hWnd);
 		}
 			break;
 		case BUTTON_STOP:
 			MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
+			g_isManualReplay = false;
+			g_isScreenSaverOn = false;
 			break;
 
 		case BUTTON_NEW:
@@ -144,14 +182,29 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_CTLCOLORSTATIC:
 	{
-
+		HDC hdcStatic = (HDC)wParam;
+		HWND hwndStatic = (HWND)lParam;
 		LRESULT hBrush = ui.InitColor(wParam, lParam);
-
-
 		if (hBrush != 0)
 		{
 			return hBrush;
 		}
+
+
+		if (hwndStatic == ui.Button_ShowColor)
+		{
+
+			if (ui.g_current_color != NULL) {
+				DeleteObject(ui.g_current_color);
+			}
+
+
+			ui.g_current_color = CreateSolidBrush(myPen.GetColor());
+
+
+			return (INT_PTR)ui.g_current_color;
+		}
+
 	}
 	break;
 
@@ -167,6 +220,17 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_LBUTTONDOWN:
 	{
+		SetTimer(hWnd, 1, 5000, NULL);
+		if (g_isScreenSaverOn == true)
+
+		{
+
+			g_isScreenSaverOn = false;
+
+			InvalidateRect(hWnd, NULL, TRUE);
+
+		}
+	
 		if (isReplaying) break;
 
 		DW.is_drawing = true;
@@ -178,6 +242,18 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_MOUSEMOVE:
 	{
+
+		SetTimer(hWnd, 1, 5000, NULL);
+		if (g_isScreenSaverOn == true)
+
+		{
+
+			g_isScreenSaverOn = false;
+
+			InvalidateRect(hWnd, NULL, TRUE);
+
+		}
+
 		if (draw_start.y < 70) DW.is_drawing = false;
 
 		if (DW.is_drawing)
@@ -197,8 +273,25 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			GetObject(hPen, sizeof(EXTLOGPEN), &new_pen);
 
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
+			if ((myPen.style == PS_USERSTYLE))
+			{
+				myPen.DrawSpray(hdc, draw_end.x, draw_end.y);
+			}	
 			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 			LineTo(hdc, draw_end.x, draw_end.y);
+			if (replay_buffer.bf_dc)
+			{
+				// 버퍼 쪽에도 그림 그리는 코드
+
+				// 버퍼쪽에서 hpen 빌려쓰고
+				HPEN oldBufPen = (HPEN)SelectObject(replay_buffer.bf_dc, hPen);
+
+				MoveToEx(replay_buffer.bf_dc, draw_start.x, draw_start.y, NULL);
+
+				LineTo(replay_buffer.bf_dc, draw_end.x, draw_end.y);
+				// 다시 반납
+				SelectObject(replay_buffer.bf_dc, oldBufPen);
+			}
 			lines.push_back({ draw_start, draw_end, new_pen, get_time });
 
 			draw_start = draw_end;
