@@ -140,9 +140,12 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 		case BUTTON_COLOR:
 			myPen.SelectColor(hWnd);
+			InvalidateRect(ui.Button_ShowColor, NULL, TRUE);
 			break;
 		case BUTTON_ERASER:
-			break;
+			lines.clear();
+			InvalidateRect(hWnd, NULL, TRUE);
+					break;
 		case BUTTON_SAVE:
 		{
 			if (MessageBox(hWnd, L"저장하시겠습니까?", L"저장 확인", MB_YESNO) == IDYES)
@@ -160,7 +163,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			// 재생 중에 화면 보호기가 겹치지 않도록 타이머는 잠시 꺼둡니다.
 			KillTimer(hWnd, 1);
 
-			// 화면을 백지로 지우고 스레드 발사!
+			
 			InvalidateRect(hWnd, NULL, TRUE);
 			UpdateWindow(hWnd);
 			ThreadTrigger(hWnd);
@@ -282,7 +285,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			if (replay_buffer.bf_dc)
 			{
 				// 버퍼 쪽에도 그림 그리는 코드
-
+					
 				// 버퍼쪽에서 hpen 빌려쓰고
 				HPEN oldBufPen = (HPEN)SelectObject(replay_buffer.bf_dc, hPen);
 

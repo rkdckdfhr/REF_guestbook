@@ -27,6 +27,14 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
 
         for (unsigned int i = 0; i < DrwWindow::lines.size(); i++)
         {
+          extern bool g_isScreenSaverOn;
+          extern bool g_isManualReplay;
+
+          //이건 for문안에
+          if (g_isScreenSaverOn == false && g_isManualReplay == false)
+          {
+            break;
+          }
             while (isWaiting)
             {
                     //만약 Sleep을 안 주면 cpu 사용량이 너무 많아짐 필수 사용
