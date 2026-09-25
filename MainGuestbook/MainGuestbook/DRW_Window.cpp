@@ -237,6 +237,8 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		if (isReplaying) break;
 
 		DW.is_drawing = true;
+		/// 마우스가 나가도 마우스 메세지를 현재 창으로 보내주는 함수
+		SetCapture(hWnd);
 		draw_start.x = LOWORD(lParam);
 		draw_start.y = HIWORD(lParam);
 
@@ -311,6 +313,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	case WM_LBUTTONUP:
 	{
 		DW.is_drawing = false;
+		ReleaseCapture();
 	}
 	break;
 
