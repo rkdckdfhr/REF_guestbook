@@ -167,6 +167,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 		case BUTTON_PEN:
 			MessageBox(hWnd, L"준비 중", L"펜 스타일", MB_OK);
+			myPen.style = 7;
 			break;
 		case BUTTON_COLOR:
 			myPen.SelectColor(hWnd);
@@ -312,8 +313,11 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			{
 				myPen.DrawSpray(hdc, draw_end.x, draw_end.y);
 			}	
-			MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
-			LineTo(hdc, draw_end.x, draw_end.y);
+			else
+			{
+				MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
+				LineTo(hdc, draw_end.x, draw_end.y);
+			}
 			if (replay_buffer.bf_dc)
 			{
 				// 버퍼 쪽에도 그림 그리는 코드
