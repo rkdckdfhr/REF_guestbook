@@ -84,6 +84,36 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	/// 이곳에 그리기 기능 넣기
 	switch (message)
 	{
+	case WM_ERASEBKGND:
+	{
+		// 화면 또 지울 필요 없다는 return 1
+		// 깜빡임 문제 해결을 위해 필요
+		return 1;
+	}
+	case WM_SIZE:
+	{
+		RECT rect;
+
+		// 그릴 수 있는 영역 크기와 좌표 알려주는 API
+		GetClientRect(hWnd, &rect);
+
+		int width = rect.right - rect.left;
+		int height = rect.bottom - rect.top;
+
+		if (width > 0 && height > 0)
+		{
+			HDC hdc = GetDC(hWnd);
+
+			//위에서 받은 형식 받아서 버퍼 생성 & 재구성
+			replay_buffer.CreateBuffer(hdc, width, height);
+			ReleaseDC(hWnd, hdc);
+
+			InvalidateRect(hWnd, NULL, FALSE);
+		}
+	}
+	break;
+
+
 	case WM_CREATE:
 	{
 		/// TODO: 채워넣기
@@ -316,12 +346,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		ReleaseCapture();
 	}
 	break;
-
-	case WM_SIZE:
-	{
-
-	}
-	break;
 	
 	
 	case WM_PAINT:
@@ -329,22 +353,38 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		PAINTSTRUCT cPs;
 		HDC hdc = BeginPaint(hWnd, &cPs);
 
+
+		// 잔상 지우기
+		replay_buffer.ClearBuffer();
+
+		// 펜 형식 안 가져오면 색 안써짐
+		GetPaintLine(replay_buffer.bf_dc, &lines, isReplaying);
+
+		// 그리기
+		replay_buffer.DrawBuffer(hdc);
+
 		/// 벡터의 내용으로 PAINT에 그리는 함수
 		/// UtilFunc.cpp 참조
-		if (isReplaying)
-		{
-			GetPaintLine(hdc, &lines, true);
-		}
-		else
-		{
-			GetPaintLine(hdc, &lines);
-		}
+		//if (isReplaying)
+		//{
+		//	GetPaintLine(hdc, &lines, true);
+		//}
+		//else
+		//{
+		//	GetPaintLine(hdc, &lines);
+		//}
 
 
 		EndPaint(hWnd, &cPs);
 	}
 	break;
 
+	case WM_DESTROY:
+	{
+		replay_buffer.ReleaseBuffer();
+		PostQuitMessage(0);
+	}
+	break;
 
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
