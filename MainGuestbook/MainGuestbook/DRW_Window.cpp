@@ -8,6 +8,7 @@
 #include "File_io.h"
 #include "UtilFunc.h"
 #include "buffer.h"	
+#include "Ui_Window.h"
 
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;
@@ -40,7 +41,7 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 
 	HWND hWnd = CreateWindowEx(0,
 		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE,
-		0, 70,
+		0, 100,
 		rect.right, rect.bottom,
 		pHwnd, NULL, hInst, this);
 
@@ -122,8 +123,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 		//GetModuleHandle 하면 현재 창나온 인스턴스 핸들을 가져올 수 있음
 		HINSTANCE hInst = GetModuleHandle(NULL);
+
+		UiWnd(hInst, hWnd);
 		// 인스터스명 그냥 귀찮아서 ui로 변수 명만듬
-		ui.InitUI(hWnd, hInst);
+		/*ui.InitUI(hWnd, hInst);*/
 		// 1번 타이머를 5000밀리초(5초) 간격으로 설정합니다.
 		SetTimer(hWnd, 1, 5000, NULL);
 	}
@@ -278,6 +281,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_MOUSEMOVE:
 	{
+		//myPen.style = 7;
 
 		SetTimer(hWnd, 1, 5000, NULL);
 		if (g_isScreenSaverOn == true)
@@ -290,7 +294,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 		}
 
-		if (draw_start.y < 70) DW.is_drawing = false;
+		if (draw_start.y < 100) DW.is_drawing = false;
 
 		if (DW.is_drawing)
 		{
@@ -309,11 +313,14 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			GetObject(hPen, sizeof(EXTLOGPEN), &new_pen);
 
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
-			if ((myPen.style == PS_USERSTYLE))
+			RECT draw_rect;
+			GetClientRect(hWnd, &draw_rect);
+			if ((myPen.style == PS_USERSTYLE) && PtInRect(&draw_rect, { draw_end.x, draw_end.y }))
 			{
 				myPen.DrawSpray(hdc, draw_end.x, draw_end.y);
-			}	
-			else
+			}
+
+			else if (PtInRect(&draw_rect, { draw_end.x, draw_end.y })) 
 			{
 				MoveToEx(hdc, draw_start.x, draw_start.y, NULL);
 				LineTo(hdc, draw_end.x, draw_end.y);

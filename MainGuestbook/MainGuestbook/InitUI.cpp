@@ -130,14 +130,14 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SetMenu(hWnd, hMenuBar); // 바를 화면인데에 붙히는 함수
 
 
-  hToolBar = CreateWindowW(L"STATIC", L"",
-    WS_CHILD | WS_VISIBLE,
-    0, 0,
-    2000, 70,
-    hWnd, nullptr, hInst, nullptr);
+  //hToolBar = CreateWindowW(L"STATIC", L"",
+  //  WS_CHILD | WS_VISIBLE,
+  //  0, 0,
+  //  2000, 70,
+  //  hWnd, nullptr, hInst, nullptr);
 
   // 첫번째 버튼!
-  Button_Load = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  Button_Load = CreateWindowExW(WS_EX_DLGMODALFRAME | WS_EX_TOPMOST, L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     1310, 10, 50, 50,
     hWnd, (HMENU)3000, hInst, nullptr);
   HICON hicon_Load = ((HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_LOAD), IMAGE_ICON, 50, 50, 0));
