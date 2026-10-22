@@ -14,6 +14,7 @@ void Folder_Road(wchar_t* outFolder, size_t bufferSize)
     if (lastSlash) *lastSlash = L'\0';            // 그 자리를 문자열 끝으로 잘라서 파일명(.exe) 제거, 폴더 경로만 남김
 
     swprintf_s(outFolder, bufferSize, L"%s\\저장 파일", exePath); 
+    CreateDirectoryW(outFolder, NULL); //// 이 위치에 폴더가 없으면 자동으로 생성
 }
 
 bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave)
@@ -23,9 +24,9 @@ bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave)
     ofn.hwndOwner = hWnd;       // 부모 윈도우 설정
     ofn.lpstrFile = filePath;   // 사용자가 선택한 파일 경로를 담아올 빈 문자열 
     ofn.nMaxFile = MAX_PATH;    // 경로 최대 길이 제한
-    ofn.lpstrFilter = L"Drawing Files\0*.drw\0"; // 사용자에게 보여줄 확장자 종류
+    ofn.lpstrFilter = L"Drawing Files\0*.dat\0"; // 사용자에게 보여줄 확장자 종류
     ofn.nFilterIndex = 1;       // 필터 목록 중 1번째를 기본으로 사용
-    ofn.lpstrDefExt = L"drw";   // 기본 확장자 설정
+    ofn.lpstrDefExt = L"dat";   // 기본 확장자 설정
 
     wchar_t initDir[MAX_PATH];
     Folder_Road(initDir, MAX_PATH);   // 다이얼로그가 자동저장 폴더에서 열리도록
@@ -68,27 +69,8 @@ bool File_Call(const wchar_t* path, std::vector<Line>& lines)
     return true;
 }
 
-bool File_Check(const wchar_t* path) //중복 파일 검사
+bool File_Check(const wchar_t* path)
 {
-    DWORD path_Check = GetFileAttributesW(path); // 
+    DWORD path_Check = GetFileAttributesW(path); 
     return (path_Check != INVALID_FILE_ATTRIBUTES); //에러 찾아주는 상수
-}
-
-bool File_AutoSave(std::vector<Line>& lines)
-{
-    wchar_t folder[MAX_PATH];
-    Folder_Road(folder, MAX_PATH);
-
-    CreateDirectoryW(folder, NULL);// 자동 저장용 폴더 생성 
-
-    wchar_t filename[MAX_PATH];
-    int num = 1;
-
-    do
-    {
-        swprintf_s(filename, L"%s\\file%d.drw", folder, num);//폴더 주소 번호를 합쳐서 파일 이름 문자열 
-        num++;
-    } while (File_Check(filename));
-
-    return File_Save(filename, lines);
 }
