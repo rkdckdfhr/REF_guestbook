@@ -12,4 +12,13 @@ struct Line
 	POINT end;
 	EXTLOGPEN current_pen;
 	ULONGLONG timestamp;
+
+	//2026-10-23 이상욱 스프레이 변수 선언
+	bool is_spray;
+
+	//2026-10-24 이상욱 스프레이 색 버그 해결 선언
+	COLORREF color;
+
+	//2026-10-25 이상욱 스프레이 크기 버그 해결 선언
+	int width;
 };
