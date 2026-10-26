@@ -6,5 +6,5 @@
 bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave); //파일 보여주기
 bool File_Save(const wchar_t* path, std::vector<Line>& lines); //파일저장
 bool File_Call(const wchar_t* path, std::vector<Line>& lines); // 파일불러오기
-bool File_AutoSave(std::vector<Line>& lines); //파일 자동 저장
 void Folder_Road(wchar_t* outFolder, size_t bufferSize); //  폴더 경로 만들기
+bool File_Check(const wchar_t* path); // 파일 중복 검사
