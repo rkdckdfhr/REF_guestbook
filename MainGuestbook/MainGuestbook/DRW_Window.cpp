@@ -181,7 +181,19 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		{
 			if (MessageBox(hWnd, L"저장하시겠습니까?", L"저장 확인", MB_YESNO) == IDYES)
 			{
-				File_AutoSave(lines);
+				wchar_t path[MAX_PATH] = L"";
+
+				if (ShowFileDialog(hWnd, path, true))
+				{
+					if (File_Check(path) == true)
+					{
+						MessageBox(hWnd, L"이미 같은 이름의 파일이 있습니다!\n 다른 이름으로 저장해주세요", L"저장 실패", MB_OK);
+					}
+					else if (File_Save(path, lines))
+					{
+						MessageBox(hWnd, L"저장 완료", L"저장", MB_OK);
+					}
+				}
 			}
 		}
 			break;
@@ -309,7 +321,8 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			GetObject(hPen, sizeof(EXTLOGPEN), &new_pen);
 
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
-			if ((myPen.style == PS_USERSTYLE))
+			bool is_spray = (myPen.style == PS_USERSTYLE);
+			if (is_spray)
 			{
 				myPen.DrawSpray(hdc, draw_end.x, draw_end.y);
 			}	
@@ -325,13 +338,21 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 				// 버퍼쪽에서 hpen 빌려쓰고
 				HPEN oldBufPen = (HPEN)SelectObject(replay_buffer.bf_dc, hPen);
 
+				if (is_spray)
+				{
+					myPen.DrawSpray(replay_buffer.bf_dc, draw_end.x, draw_end.y);
+				}
+				else
+				{
 				MoveToEx(replay_buffer.bf_dc, draw_start.x, draw_start.y, NULL);
 
 				LineTo(replay_buffer.bf_dc, draw_end.x, draw_end.y);
+				}
+
 				// 다시 반납
 				SelectObject(replay_buffer.bf_dc, oldBufPen);
 			}
-			lines.push_back({ draw_start, draw_end, new_pen, get_time });
+			lines.push_back({ draw_start, draw_end, new_pen, get_time, is_spray, myPen.color, myPen.width });
 
 			draw_start = draw_end;
 

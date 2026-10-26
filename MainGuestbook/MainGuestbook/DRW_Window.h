@@ -14,7 +14,8 @@ OS는 여러 프로그램이 동시에 돌아가는 환경이므로
 
 
 
-
+extern bool g_isManualReplay; ///수동 재생 모드인지 확인하는 전역 변수   
+extern bool g_isScreenSaverOn; ///화면 보호기 모드인지 확인하는 전역 변수 
 
 
 class DrwWindow
