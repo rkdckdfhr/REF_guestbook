@@ -72,7 +72,8 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
     isWaiting = false;
     tmp_Replay = 0;
 
-    
+    InvalidateRect(hWnd, NULL, FALSE);         
+    PostMessage(hWnd, WM_REPLAY_DONE, 0, 0);
 
     return 0;
 }

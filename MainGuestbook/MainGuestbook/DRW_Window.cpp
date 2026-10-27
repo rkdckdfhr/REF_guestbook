@@ -8,6 +8,7 @@
 #include "File_io.h"
 #include "UtilFunc.h"
 #include "buffer.h"	
+#include "Screen.h"	
 
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;
@@ -64,8 +65,11 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 }
 
 
+bool g_isSaved = false;   // 저장된 그림인지
 bool g_isManualReplay = false; ///수동 재생 모드인지 확인하는 전역 변수   
 bool g_isScreenSaverOn = false; ///화면 보호기 모드인지 확인하는 전역 변수 
+ScreenSaver saver; ///화면 보호기 모드 관련 클래스	
+
 DrwWindow DW;
 INIT_UI ui;
 Pen_tool myPen; //기본 세팅된 펜
@@ -90,6 +94,16 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		// 깜빡임 문제 해결을 위해 필요
 		return 1;
 	}
+	case WM_REPLAY_DONE:
+	{
+		// 보호기가 끝까지 돌았고(마우스로 끄지 않았고), 저장된 그림이면 3초 뒤 다시 예약
+		if (g_isScreenSaverOn == true && g_isSaved == true)
+		{
+			SetTimer(hWnd, 1, 5000, NULL);
+		}
+	}
+	break;
+
 	case WM_SIZE:
 	{
 		RECT rect;
@@ -131,21 +145,24 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_TIMER:
 	{
-
 		if (wParam == 1)
 		{
+			// 저장된 그림이 아니면 보호기를 쓰지 않고 타이머도 끔
+			if (g_isSaved == false)
+			{
+				KillTimer(hWnd, 1);
+				break;
+			}
 
-			g_isScreenSaverOn = true;
-			g_isManualReplay = false;
+			// 그리는 중이거나 리플레이 중이면 이번엔 건너뜀 
+			if (DW.is_drawing || isReplaying) break;
+
 			KillTimer(hWnd, 1);
-			InvalidateRect(hWnd, NULL, TRUE);
-			UpdateWindow(hWnd); // 윈도우를 즉시 갱신하는 함수
-
-			ThreadTrigger(hWnd);
-
+			saver.StartScreenSaver(hWnd);
 		}
 	}
 	break;
+
 
 	case WM_COMMAND:
 	{
@@ -157,11 +174,19 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			/// 버튼 기능 관련 연결부
 		case BUTTON_LOAD:
 		{
+			if (isReplaying) break;   // 리플레이 중에는 lines를 바꾸면 위험해서 막기
+
 			wchar_t path[MAX_PATH] = L"";
 			if (ShowFileDialog(hWnd, path, false))
 			{
-				File_Call(path, lines);
-				InvalidateRect(hWnd, NULL, TRUE);
+				if (File_Call(path, lines))
+				{
+					g_isSaved = true;
+					KillTimer(hWnd, 1);                 // 저장 후 대기 중이던 보호기 타이머 취소
+					InvalidateRect(hWnd, NULL, TRUE);   // 기존 줄 그대로
+					saver.StartScreenSaver(hWnd);       // 바로 한 번 리플레이
+				}
+
 			}
 		}
 			break;
@@ -192,6 +217,9 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 					else if (File_Save(path, lines))
 					{
 						MessageBox(hWnd, L"저장 완료", L"저장", MB_OK);
+						g_isSaved = true;
+						SetTimer(hWnd, 1, 5000, NULL); //저장하고 5초 후에 화면 보호기 모드로 전환	
+
 					}
 				}
 			}
@@ -204,7 +232,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			g_isManualReplay = true;
 
 			// 재생 중에 화면 보호기가 겹치지 않도록 타이머는 잠시 꺼둡니다.
-			KillTimer(hWnd, 1);
+	
 
 			
 			InvalidateRect(hWnd, NULL, TRUE);
@@ -266,16 +294,18 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_LBUTTONDOWN:
 	{
-		SetTimer(hWnd, 1, 5000, NULL);
+		
 		if (g_isScreenSaverOn == true)
-
 		{
-
 			g_isScreenSaverOn = false;
 
-			InvalidateRect(hWnd, NULL, TRUE);
+			if (g_isSaved == true)
+			{
+				SetTimer(hWnd, 1, 5000, NULL);   // 5초 뒤 보호기 다시 예약
+			}
 
 		}
+
 	
 		if (isReplaying) break;
 
@@ -291,14 +321,15 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	case WM_MOUSEMOVE:
 	{
 
-		SetTimer(hWnd, 1, 5000, NULL);
-		if (g_isScreenSaverOn == true)
-
+		
+		if (g_isScreenSaverOn == true && saver.IsMouseMoved(lParam) == true)
 		{
-
 			g_isScreenSaverOn = false;
 
-			InvalidateRect(hWnd, NULL, TRUE);
+			if (g_isSaved == true)
+			{
+				SetTimer(hWnd, 1, 5000, NULL);   // 5초 뒤 보호기 다시 예약
+			}
 
 		}
 
@@ -353,6 +384,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 				SelectObject(replay_buffer.bf_dc, oldBufPen);
 			}
 			lines.push_back({ draw_start, draw_end, new_pen, get_time, is_spray, myPen.color, myPen.width });
+			g_isSaved = false;
 
 			draw_start = draw_end;
 
