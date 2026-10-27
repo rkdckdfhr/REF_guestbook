@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -140,6 +140,7 @@
     <ClInclude Include="Pen_tool.h" />
     <ClInclude Include="Replay.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="StructData.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UtilFunc.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="MainGuestbook.cpp" />
     <ClCompile Include="Pen_tool.cpp" />
     <ClCompile Include="Replay.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="StructData.cpp" />
     <ClCompile Include="UtilFunc.cpp" />
   </ItemGroup>
