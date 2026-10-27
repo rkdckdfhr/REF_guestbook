@@ -41,6 +41,9 @@
 #define BUTTON_PLAY                     3005
 #define BUTTON_STOP                     3006
 #define BUTTON_NEW						3008
+#define BUTTON_TOOL1					3009
+#define BUTTON_TOOL2					3010
+
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
