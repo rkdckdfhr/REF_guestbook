@@ -164,6 +164,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_COMMAND:
 	{
+		if (isReplaying) break;
 
 		/// 버튼 클릭시 이벤트 발생 시키는 switch문
 		int wmId = LOWORD(wParam);
