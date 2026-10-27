@@ -54,6 +54,9 @@
     <ClInclude Include="Screen.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="UiWindow.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainGuestbook.cpp">
@@ -84,6 +87,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Screen.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UiWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
