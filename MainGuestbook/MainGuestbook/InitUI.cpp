@@ -209,12 +209,13 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button_Stop, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Stop);
 
 
+  HWND hDrawWnd = FindWindowEx(GetParent(hWnd), NULL, L"MainWindowClass", NULL);
 
 	/// @brief 굵기 조절 바 생성 버튼 입니다.
   hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
     WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_VERT, // 세로형 스타일
-    10, 150, 40, 300, 
-    hWnd, 
+    10, 120, 40, 300, 
+    hDrawWnd,   
     (HMENU)5000, hInst, nullptr);
 
   SendMessage(hPenBar, TBM_SETRANGE, TRUE, MAKELPARAM(1, 30)); // 스크롤에 최소값과 최대값을 지정해줌 TBM_SETRANGE -> 범위

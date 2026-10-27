@@ -40,7 +40,7 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 	/// rect.right = 부모창의 너비 , rect.bottom = 부모창의 높이
 
 	HWND hWnd = CreateWindowEx(0,
-		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE,
+		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS,
 		0, 70,
 		rect.right, rect.bottom,
 		pHwnd, NULL, hInst, this);
@@ -136,8 +136,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 		//GetModuleHandle 하면 현재 창나온 인스턴스 핸들을 가져올 수 있음
 		HINSTANCE hInst = GetModuleHandle(NULL);
-		// 인스터스명 그냥 귀찮아서 ui로 변수 명만듬
-		ui.InitUI(hWnd, hInst);
 		// 1번 타이머를 5000밀리초(5초) 간격으로 설정합니다.
 		SetTimer(hWnd, 1, 5000, NULL);
 	}
@@ -254,33 +252,33 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	}
 	break;
 
-	case WM_CTLCOLORSTATIC:
-	{
-		HDC hdcStatic = (HDC)wParam;
-		HWND hwndStatic = (HWND)lParam;
-		LRESULT hBrush = ui.InitColor(wParam, lParam);
-		if (hBrush != 0)
-		{
-			return hBrush;
-		}
+	//case WM_CTLCOLORSTATIC:
+	//{
+	//	HDC hdcStatic = (HDC)wParam;
+	//	HWND hwndStatic = (HWND)lParam;
+	//	LRESULT hBrush = ui.InitColor(wParam, lParam);
+	//	if (hBrush != 0)
+	//	{
+	//		return hBrush;
+	//	}
 
 
-		if (hwndStatic == ui.Button_ShowColor)
-		{
+	//	if (hwndStatic == ui.Button_ShowColor)
+	//	{
 
-			if (ui.g_current_color != NULL) {
-				DeleteObject(ui.g_current_color);
-			}
-
-
-			ui.g_current_color = CreateSolidBrush(myPen.GetColor());
+	//		if (ui.g_current_color != NULL) {
+	//			DeleteObject(ui.g_current_color);
+	//		}
 
 
-			return (INT_PTR)ui.g_current_color;
-		}
+	//		ui.g_current_color = CreateSolidBrush(myPen.GetColor());
 
-	}
-	break;
+
+	//		return (INT_PTR)ui.g_current_color;
+	//	}
+
+	//}
+	//break;
 
 	/// 펜 두께 슬라이더로 조절
 	case WM_VSCROLL:
@@ -312,8 +310,11 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		DW.is_drawing = true;
 		/// 마우스가 나가도 마우스 메세지를 현재 창으로 보내주는 함수
 		SetCapture(hWnd);
-		draw_start.x = LOWORD(lParam);
-		draw_start.y = HIWORD(lParam);
+
+		/// UI 부분에 펜 올라갔을 시에 바닥으로 내리 꽂히는현상 수정 
+		/// (short)로 형변환을 시켜 큰 값으로 변경되는 오류 수정
+		draw_start.x = (short)LOWORD(lParam);
+		draw_start.y = (short)HIWORD(lParam);
 
 	}
 	break;
@@ -333,14 +334,12 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 		}
 
-		if (draw_start.y < 70) DW.is_drawing = false;
-
 		if (DW.is_drawing)
 		{
 			HDC hdc = GetDC(hWnd);
 
-			draw_end.x = LOWORD(lParam);
-			draw_end.y = HIWORD(lParam);
+			draw_end.x = (short)LOWORD(lParam);
+			draw_end.y = (short)HIWORD(lParam);
 			ULONGLONG get_time = GetTickCount64();
 
 			HPEN hPen = myPen.Pen();

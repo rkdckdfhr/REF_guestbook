@@ -4,6 +4,7 @@
 #include "MainGuestbook.h"
 #include <vector>
 #include "DRW_Window.h"
+#include "UiWindow.h"
 
 #define MAX_LOADSTRING 100
 
@@ -108,7 +109,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
         1520, 980,
         NULL, NULL, hInstance, nullptr);
 
-
     DrwWindow DW;
 
     if (!hWnd)
@@ -121,6 +121,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     {
         return false;
     }
+
+    RegisterUiWindowClass(hInstance);
+    CreateUiWindow(hWnd, hInstance, 0, 0, 0, 0);
+
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
@@ -158,10 +162,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
 
 
-
+    case WM_VSCROLL:
     case WM_COMMAND:
     {
+        HWND hDrwWnd = FindWindowEx(hWnd, NULL, L"MainWindowClass", NULL);
+
         int wmId = LOWORD(wParam);
+
+        if (wmId != IDM_ABOUT && wmId != IDM_EXIT && hDrwWnd)
+        {
+            SendMessage(hDrwWnd, message, wParam, lParam);
+        }
+
         // 메뉴 선택을 구문 분석합니다:
         switch (wmId)
         {
@@ -202,11 +214,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             int pWidth = LOWORD(lParam);
             int pHeight = HIWORD(lParam);
 
-            HWND cHwnd = GetWindow(hWnd, GW_CHILD);
-
-            if (cHwnd)
+            HWND hUiWnd = FindWindowEx(hWnd, NULL, L"UiWindowClass", NULL);
+            HWND hDrwWnd = FindWindowEx(hWnd, NULL, L"MainWindowClass", NULL);
+            
+            if (hUiWnd)
             {
-                MoveWindow(cHwnd, 0, 0, pWidth, pHeight, true);
+                MoveWindow(hUiWnd, 0, 0, pWidth, 70, TRUE);
+            }
+            if (hDrwWnd)
+            {
+                MoveWindow(hDrwWnd, 0, 70, pWidth, pHeight - 70, TRUE);
             }
         }
         break;

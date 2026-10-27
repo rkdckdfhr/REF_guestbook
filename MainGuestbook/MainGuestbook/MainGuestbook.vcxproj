@@ -143,6 +143,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="StructData.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UiWindow.h" />
     <ClInclude Include="UtilFunc.h" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClCompile Include="Replay.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="StructData.cpp" />
+    <ClCompile Include="UiWindow.cpp" />
     <ClCompile Include="UtilFunc.cpp" />
   </ItemGroup>
   <ItemGroup>
