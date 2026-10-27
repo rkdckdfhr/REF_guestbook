@@ -160,11 +160,25 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HICON hicon_Eraser = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_ERASER), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Eraser);
 
+  Button_Tool1 = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+    215, 10, 50, 50,
+    hWnd, (HMENU)3009, hInst, nullptr);
+
+  HICON Button_Tool1_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
+  SendMessage(Button_Tool1, BM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool1_icon);
+
+  Button_Tool2 = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+    275, 10, 50, 50,
+    hWnd, (HMENU)3010, hInst, nullptr);
+
+  HICON Button_Tool2_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
+  SendMessage(Button_Tool2, BM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool2_icon);
+
   
 
 
  Button_Color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    335, 10, 50, 50,
+   395, 10, 50, 50,
     hWnd, (HMENU)3002, hInst, nullptr);
 
 
@@ -173,7 +187,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   //이버튼은 현재 내 붓 색깔을 보여주는 버튼이다
   Button_ShowColor = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    395, 10, 50, 50,
+    455, 10, 50, 50,
     hWnd, (HMENU)3007, hInst, nullptr);
 
   // 저장 버튼

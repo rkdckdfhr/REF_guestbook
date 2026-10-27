@@ -20,6 +20,9 @@ public:
   HWND Button_Stop = nullptr;
   HWND Button_Load = nullptr;
 	HWND button_new = nullptr;  
+	HWND Button_Tool1 = nullptr;
+	HWND Button_Tool2 = nullptr;
+	HWND Button_Tool3 = nullptr;
 
 	HWND hScrollText = nullptr; ///< @brief 스크롤 텍스트 박스 핸들
   /// <summary>

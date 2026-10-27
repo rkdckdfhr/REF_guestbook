@@ -40,7 +40,7 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 	/// rect.right = 부모창의 너비 , rect.bottom = 부모창의 높이
 
 	HWND hWnd = CreateWindowEx(0,
-		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS,
+		wc.lpszClassName, L"TestWindow", WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 		0, 70,
 		rect.right, rect.bottom,
 		pHwnd, NULL, hInst, this);
@@ -192,6 +192,14 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		case BUTTON_PEN:
 			MessageBox(hWnd, L"준비 중", L"펜 스타일", MB_OK);
 			myPen.style = 7;
+			break;
+		case BUTTON_TOOL1: // 실선입니다
+			MessageBox(hWnd, L"실선", L"펜 스타일", MB_OK);
+			myPen.style = 0;
+			break;
+		case BUTTON_TOOL2:
+			MessageBox(hWnd, L"점선", L"펜 스타일", MB_OK);
+			myPen.style = 1;
 			break;
 		case BUTTON_COLOR:
 			myPen.SelectColor(hWnd);
