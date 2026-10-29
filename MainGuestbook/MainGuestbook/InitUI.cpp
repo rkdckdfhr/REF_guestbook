@@ -3,8 +3,8 @@
 
 //#include <commctrl.h>
 //#pragma comment(lib, "comctl32.lib")
-  #include <commctrl.h>
-  #pragma comment(lib, "comctl32.lib")
+#include <commctrl.h>
+#pragma comment(lib, "comctl32.lib")
 
 
 
@@ -25,7 +25,7 @@ LRESULT INIT_UI::InitColor(WPARAM wParam, LPARAM lParam)
 
   if (hChildWnd == hToolBar)
   {
-    hBrush = CreateSolidBrush(RGB(10, 200, 200));
+    hBrush = CreateSolidBrush(RGB(255, 255, 255));
     //  글자 배경을 투명/흰색으로 복구 할 수 있다
     SetBkMode(hdcStatic, TRANSPARENT);
 
@@ -35,12 +35,12 @@ LRESULT INIT_UI::InitColor(WPARAM wParam, LPARAM lParam)
 }
 INIT_UI::INIT_UI() {};
 
-INIT_UI::~INIT_UI ()
+INIT_UI::~INIT_UI()
 {
-  if(hBrush != nullptr)
+  if (hBrush != nullptr)
   {
     DeleteObject(hBrush);
-		hBrush = nullptr;
+    hBrush = nullptr;
   }
 
   if (g_current_color != NULL) {
@@ -51,18 +51,18 @@ INIT_UI::~INIT_UI ()
 void INIT_UI::ToggleUI(bool show) {
 
 
-	if (show) 
+  if (show)
   {
-		show = SW_SHOW; // 키는 옵션
-	} 
-  else 
+    show = SW_SHOW; // 키는 옵션
+  }
+  else
   {
-		show = SW_HIDE; // 끄는 옵션
-	}
+    show = SW_HIDE; // 끄는 옵션
+  }
 
- ShowWindow(hToolBar, show);
+  ShowWindow(hToolBar, show);
 
- ShowWindow(hPenBar, show);
+  ShowWindow(hPenBar, show);
 
   ShowWindow(Button_Pen, show);
 
@@ -79,21 +79,8 @@ void INIT_UI::ToggleUI(bool show) {
   ShowWindow(Button_Play, show);
 
   ShowWindow(Button_Stop, show);
-  }
-/// @brief 리플레이 전용 UI 버튼 함수 
-void INIT_UI::ReplayUI(HWND RhWnd , HINSTANCE RhInst)
-{
-  HWND Replay_Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
-    700, 10, 50, 50,
-   RhWnd, (HMENU)3100, RhInst, nullptr);
-  HICON Replay_hicon_Play = (HICON)LoadImageW(nullptr, L"images/play1.ico", IMAGE_ICON, 50, 50, LR_LOADFROMFILE | LR_SHARED);
-  SendMessage(Replay_Button_Play, BM_SETIMAGE, IMAGE_ICON, (LPARAM)Replay_hicon_Play);
-
-
-  HWND Replay_Button_Exit = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
-    800, 10, 50, 50,
-    RhWnd, (HMENU)3101, RhInst, nullptr);
 }
+
 /**
 * @brief 프로그램 시작 시 메인 UI 화면을 초기화하고 구성합니다.
 *
@@ -136,6 +123,14 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     2000, 70,
     hWnd, nullptr, hInst, nullptr);
 
+
+  // 툴바와 도화지를 구분하는 실선
+  HWND hSeparator = CreateWindowW(L"STATIC", L"",
+    WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
+    0, 69,        // y=69 (툴바 높이 70 바로 아래)
+    2000, 3,      // 너비는 툴바와 같게, 두께는 2px
+    hWnd, nullptr, hInst, nullptr);
+
   // 첫번째 버튼!
   Button_Load = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     1310, 10, 50, 50,
@@ -144,7 +139,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button_Load, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Load);
 
 
-  Button = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY ,
+  Button = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     95, 10, 50, 50,
     hWnd, (HMENU)3001, hInst, nullptr);
 
@@ -154,31 +149,31 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon); // hion은 핸들러라 정수타입으로 형변환 
 
   Button_Eraser = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-      155, 10, 50, 50,
-      hWnd, (HMENU)3003, hInst, nullptr);
+    155, 10, 50, 50,
+    hWnd, (HMENU)3003, hInst, nullptr);
 
   HICON hicon_Eraser = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_ERASER), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Eraser);
 
-  Button_Tool1 = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Tool1 = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     215, 10, 50, 50,
     hWnd, (HMENU)3009, hInst, nullptr);
 
-  HICON Button_Tool1_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
-  SendMessage(Button_Tool1, BM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool1_icon);
+  HICON Button_Tool1_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PEN), IMAGE_ICON, 50, 50, 0);
+  SendMessage(Button_Tool1, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool1_icon);
 
-  Button_Tool2 = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Tool2 = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     275, 10, 50, 50,
     hWnd, (HMENU)3010, hInst, nullptr);
 
-  HICON Button_Tool2_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
-  SendMessage(Button_Tool2, BM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool2_icon);
-
-  
+  HICON Button_Tool2_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PENTOOL), IMAGE_ICON, 50, 50, 0);
+  SendMessage(Button_Tool2, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool2_icon);
 
 
- Button_Color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-   395, 10, 50, 50,
+
+  // 컬러버튼
+  Button_Color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+    395, 10, 50, 50,
     hWnd, (HMENU)3002, hInst, nullptr);
 
 
@@ -191,45 +186,45 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     hWnd, (HMENU)3007, hInst, nullptr);
 
   // 저장 버튼
-  Button_Save= CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Save = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     1250, 10, 50, 50,
     hWnd, (HMENU)3004, hInst, nullptr);
 
   HICON hicon_Save = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
-  SendMessage(Button_Save, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Save);
+  SendMessage(Button_Save, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Save);
 
   //새로 만들기 버튼
-  button_new = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  button_new = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     35, 10, 50, 50,
     hWnd, (HMENU)3008, hInst, nullptr);
 
   HICON hicon_new = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_FILE), IMAGE_ICON, 50, 50, 0);
-  SendMessage(button_new, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_new);
+  SendMessage(button_new, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_new);
 
   //리플레이 시작버튼 
-  Button_Play = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Play = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     1100, 10, 50, 50,
     hWnd, (HMENU)3005, hInst, nullptr);
 
-	HICON hicon_Play = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PLAY), IMAGE_ICON, 50, 50, 0);
-  SendMessage(Button_Play, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Play);
+  HICON hicon_Play = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PLAY), IMAGE_ICON, 50, 50, 0);
+  SendMessage(Button_Play, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Play);
 
   //리플레이 중지 버튼
-  Button_Stop = CreateWindowW(L"Button", nullptr, WS_CHILD | WS_VISIBLE | BS_ICON | BS_PUSHBUTTON,
+  Button_Stop = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     1160, 10, 50, 50,
     hWnd, (HMENU)3006, hInst, nullptr);
 
   HICON hicon_Stop = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_STOP), IMAGE_ICON, 50, 50, 0);
-  SendMessage(Button_Stop, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Stop);
+  SendMessage(Button_Stop, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Stop);
 
 
   HWND hDrawWnd = FindWindowEx(GetParent(hWnd), NULL, L"MainWindowClass", NULL);
 
-	/// @brief 굵기 조절 바 생성 버튼 입니다.
+  /// @brief 굵기 조절 바 생성 버튼 입니다.
   hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
     WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_VERT, // 세로형 스타일
-    10, 120, 40, 300, 
-    hDrawWnd,   
+    10, 120, 40, 300,
+    hDrawWnd,
     (HMENU)5000, hInst, nullptr);
 
   SendMessage(hPenBar, TBM_SETRANGE, TRUE, MAKELPARAM(1, 30)); // 스크롤에 최소값과 최대값을 지정해줌 TBM_SETRANGE -> 범위

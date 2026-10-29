@@ -163,6 +163,16 @@
     <ResourceCompile Include="MainGuestbook.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\color.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Eraser.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Load.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\newFile.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\pen.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\pentool1.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Play.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Save.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\spray.ico" />
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\STOP.ico" />
     <Image Include="images\color.ico" />
     <Image Include="images\ERASER.ico" />
     <Image Include="images\icon2.ico" />
