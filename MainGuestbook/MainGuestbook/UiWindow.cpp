@@ -10,7 +10,7 @@ void RegisterUiWindowClass(HINSTANCE hInstance) {
     wc.lpfnWndProc = UiProc;
     wc.hInstance = hInstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = CreateSolidBrush(RGB(245, 240, 220)); // 팔레트 톤 배경
+    wc.hbrBackground = CreateSolidBrush(RGB(240, 240, 240)); // 팔레트 톤 배경
     wc.lpszClassName = TEXT("UiWindowClass");
     RegisterClass(&wc);
 }

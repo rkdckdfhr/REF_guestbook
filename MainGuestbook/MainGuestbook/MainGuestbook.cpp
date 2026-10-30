@@ -219,11 +219,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             
             if (hUiWnd)
             {
-                MoveWindow(hUiWnd, 0, 0, pWidth, 70, TRUE);
+                MoveWindow(hUiWnd, 0, 0, pWidth, 90, TRUE);
             }
             if (hDrwWnd)
             {
-                MoveWindow(hDrwWnd, 0, 70, pWidth, pHeight - 70, TRUE);
+                MoveWindow(hDrwWnd, 0, 90, pWidth, pHeight - 90, TRUE);
             }
         }
         break;
