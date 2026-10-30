@@ -165,10 +165,12 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 	case WM_COMMAND:
 	{
-		if (isReplaying) break;
 
 		/// 버튼 클릭시 이벤트 발생 시키는 switch문
 		int wmId = LOWORD(wParam);
+
+		if (isReplaying && wmId != BUTTON_STOP) break;
+
 		switch (wmId)
 		{
 			/// 버튼 기능 관련 연결부
@@ -251,9 +253,18 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		}
 			break;
 		case BUTTON_STOP:
-			MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
-			g_isManualReplay = false;
-			g_isScreenSaverOn = false;
+		{
+			// 리플레이중 아닐 때 하면 혹시 모르니까 브레이크
+			if (!isReplaying)
+			{
+				break;
+			}
+			// 값 교체
+			isWaiting = !isWaiting;
+
+
+			//MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
+		}
 			break;
 
 		case BUTTON_NEW:
