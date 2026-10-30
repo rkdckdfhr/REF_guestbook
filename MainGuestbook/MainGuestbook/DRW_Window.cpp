@@ -375,6 +375,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			HPEN oldPen = (HPEN)SelectObject(hdc, hPen);
 			bool is_spray = (myPen.style == PS_USERSTYLE);
+
+			/// 스프레이 난수 시드값 생성
+			unsigned int current_seed = (unsigned int)(get_time + rand());
+
 			if (is_spray)
 			{
 				myPen.DrawSpray(hdc, draw_end.x, draw_end.y);
@@ -405,7 +409,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 				// 다시 반납
 				SelectObject(replay_buffer.bf_dc, oldBufPen);
 			}
-			lines.push_back({ draw_start, draw_end, new_pen, get_time, is_spray, myPen.color, myPen.width });
+			lines.push_back({ draw_start, draw_end, new_pen, get_time, is_spray, myPen.color, myPen.width, current_seed }); /// 261030 박종연 맨 끝 인자로 current_seed 추가
 			g_isSaved = false;
 
 			draw_start = draw_end;
