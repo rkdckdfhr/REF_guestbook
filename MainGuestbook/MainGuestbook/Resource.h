@@ -14,36 +14,36 @@
 #define IDC_MAINGUESTBOOK               109
 #define IDR_MAINFRAME                   128
 #define IDI_ICON9                       129
-#define IDI_SPRAY                       129
+#define IDI_COLOR                       131
+#define IDI_ERASER                      132
+#define IDI_LOAD                        133
+#define IDI_FILE                        134
+#define IDI_PEN                         135
+#define IDI_PENTOOL                     136
+#define IDI_PLAY                        137
+#define IDI_SAVE                        138
+#define IDI_SPRAY                       139
+#define IDI_ICON20                      145
+#define IDI_STOP                        140
 #define IDI_ICON1                       2000
-#define IDI_FILE                        2000
 #define IDI_ICON2                       2001
-#define IDI_FILE2                       2001
 #define IDI_ICON3                       2002
-#define IDI_COLOR                       2002
 #define IDI_ICON4                       2003
-#define IDI_ERASER                      2003
 #define IDI_ICON5                       2004
-#define IDI_PEN                         2004
 #define IDI_ICON6                       2005
-#define IDI_PLAY                        2005
 #define IDI_ICON7                       2006
-#define IDI_SAVE                        2006
 #define IDI_ICON8                       2007
-#define IDI_STOP                        2007
 #define IDI_ICON10                      2008
-#define IDI_LOAD					    2009
-#define BUTTON_LOAD						3000
+#define BUTTON_LOAD                     3000
 #define BUTTON_PEN                      3001
 #define BUTTON_COLOR                    3002
 #define BUTTON_ERASER                   3003
 #define BUTTON_SAVE                     3004
 #define BUTTON_PLAY                     3005
 #define BUTTON_STOP                     3006
-#define BUTTON_NEW						3008
-#define BUTTON_TOOL1					3009
-#define BUTTON_TOOL2					3010
-
+#define BUTTON_NEW                      3008
+#define BUTTON_TOOL1                    3009
+#define BUTTON_TOOL2                    3010
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -51,7 +51,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110

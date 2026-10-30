@@ -132,5 +132,35 @@
     <Image Include="images\load.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\color.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Eraser.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Load.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\newFile.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\pen.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\pentool1.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Play.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Save.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\spray.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\STOP.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

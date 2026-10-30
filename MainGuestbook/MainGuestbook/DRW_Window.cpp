@@ -66,6 +66,7 @@ bool DrwWindow::NewWnd(HINSTANCE hInst, HWND pHwnd)
 
 
 bool g_isSaved = false;   // 저장된 그림인지
+bool g_isCall_file = false;   // 불러온 파일 확인
 bool g_isManualReplay = false; ///수동 재생 모드인지 확인하는 전역 변수   
 bool g_isScreenSaverOn = false; ///화면 보호기 모드인지 확인하는 전역 변수 
 ScreenSaver saver; ///화면 보호기 모드 관련 클래스	
@@ -181,6 +182,8 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 				if (File_Call(path, lines))
 				{
 					g_isSaved = true;
+					g_isCall_file = true;
+
 					KillTimer(hWnd, 1);                 // 저장 후 대기 중이던 보호기 타이머 취소
 					InvalidateRect(hWnd, NULL, TRUE);   // 기존 줄 그대로
 					saver.StartScreenSaver(hWnd);       // 바로 한 번 리플레이
@@ -217,7 +220,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 				if (ShowFileDialog(hWnd, path, true))
 				{
-					if (File_Check(path) == true)
+					if (File_Check(path) == true && !g_isCall_file)
 					{
 						MessageBox(hWnd, L"이미 같은 이름의 파일이 있습니다!\n 다른 이름으로 저장해주세요", L"저장 실패", MB_OK);
 					}
