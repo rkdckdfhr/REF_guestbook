@@ -8,6 +8,10 @@
 bool isReplaying = false;
 //리플레이 일시 정지 상태인지 확인 변수 
 bool isWaiting = false;
+//리플레이중 다시 재생 누르면 처음부터 시작하게 하는 플래그
+bool restart_replay= false;
+// 리플레이 강제 종료 변수
+bool exit_replay = false;
 //반복문에서 PAINT에 넘길 때 몇 번째 선인지 기억해주는 변수
 unsigned tmp_Replay = 0;
 
@@ -20,13 +24,30 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
     isReplaying = true;
 
     HWND hWnd = (HWND)lpParam;
-
     tmp_Replay = 0;
+    unsigned int cnt_for = 0;
     //그리는 면 지우고 바로 실행 시킬 함수들
     InvalidateRect(hWnd, NULL, TRUE);
 
-        for (unsigned int i = 0; i < DrwWindow::lines.size(); i++)
+        // 리플레이중 재시작 구현을 위해 while로 교체
+        while (cnt_for < DrwWindow::lines.size())
         {
+            // 리플레이 종료하고 원래 화면 보이게 break 하는 조건문
+            if (exit_replay == true)
+            {
+                exit_replay = false;
+                break;
+            }
+            
+            // 리플레이 도중 재생누르면 처음부터 그리는 조건문
+            if (restart_replay == true)
+            {
+                restart_replay = false;
+                cnt_for = 0;
+                tmp_Replay = 0;
+                InvalidateRect(hWnd, NULL, TRUE);
+                continue;
+            }
 
 
           //이건 for문안에
@@ -40,20 +61,20 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
                     Sleep(5);
             }
            
-            tmp_Replay = i + 1;
+            tmp_Replay = cnt_for + 1;
  
             // 루프 4번 혹은 마지막 루프일 때 그리게 시킴
             // 안 쓰면 실제 쓰는 시간과 차이가 많이남
-            if (i % 4 == 0 || i + 1 == DrwWindow::lines.size())
+            if (cnt_for % 4 == 0 || cnt_for + 1 == DrwWindow::lines.size())
             {
                 InvalidateRect(hWnd, NULL, FALSE);
                 UpdateWindow(hWnd);
             }
 
-            if (i + 1 < DrwWindow::lines.size())
+            if (cnt_for + 1 < DrwWindow::lines.size())
             {
                 // 시간 저장한거 계산해서 꺼내는 변수
-                ULONGLONG sleep_time = DrwWindow::lines[i + 1].timestamp - DrwWindow::lines[i].timestamp;
+                ULONGLONG sleep_time = DrwWindow::lines[cnt_for + 1].timestamp - DrwWindow::lines[cnt_for].timestamp;
                 
 
                 // 만약 Sleep(5)를 초과하는 시간의 딜레이가 있으면 그냥 Sleep(5)의 속도로 리플레이 하는 if문
@@ -66,6 +87,7 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
                     Sleep((DWORD)sleep_time);
                 }
             }
+            cnt_for++;
         }
 
     isReplaying = false;
@@ -80,7 +102,12 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
 
 void ThreadTrigger(HWND hWnd)
 {
-    if (isReplaying == true) return;
+    if (isReplaying == true)
+    {
+        isWaiting = false;
+        restart_replay = true;
+        return;
+    }
 
     HANDLE NewThread = CreateThread(NULL, 0, ReplayThreads, (LPVOID)hWnd, 0, NULL);
 
