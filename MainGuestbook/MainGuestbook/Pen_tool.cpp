@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "Pen_tool.h"
 #include <commdlg.h> //공통 대화 상자 헤더파일
+#include <cmath>
 //기본세팅
 Pen_tool::Pen_tool() {
 	width = 5;
@@ -34,23 +35,48 @@ void Pen_tool::DrawSpray(HDC hdc, int x, int y) {
 	int radius = width * 2;
 
 	/// 마우스가 움직일 때 뿌려질 점의 개수
-	int particle_count = width * 20;
+	int particle_count = width * 9;
 
-	/// 점을 몇 번 찍게 할건지(지정 안 하면 한번만 찍힘)
+	/// 1원 내부 좌표 계산해서 점 찍기
 	for (int i = 0; i < particle_count; i++) {
-		/// 4. 마우스 중심으로 -radius ~ +radius 범위 난수 생성
-		int offset_x = (rand() % (radius * 2 + 1)) - radius;		/// -radius ~ +radius 범위 난수 생성, (radius * 2 + 1)) 하는 이유
-		int offset_y = (rand() % (radius * 2 + 1)) - radius;		/// 마우스 중심으로 상하좌우 골고루 려지기 위해. 사분면이라 x, y가 기준 
-																	/// 한쪽으로 치우쳐지면 동그랗게 안됨
-																	
-		/// 피타고라스 정리로 원 모양 점 찍기(사각형에서 잘라서 만드는 느낌)
-		/// 마우스 위치에서 랜덤으로 직각삼각형(피타고라스 정리)을 임시로 계산
-		/// 빗변(마우스에서 직선거리)가 radius(스프레이 반지름)보다 길다면 무시(점 찍기X)
-		if ((offset_x * offset_x + offset_y * offset_y) <= (radius * radius)) {
-			SetPixel(hdc, x + offset_x, y + offset_y, color);		/// 마우스 위치(x, y) + 난수값(offset)를 하고 그 위치에 점 찍기
-		}
+		/// 1. 0 ~ radius 사이의 무작위 거리(r) 계산 (원 내부)
+		double r = sqrt((double)rand() / RAND_MAX) * radius;
+
+		/// 2. 0 ~ 2π (360도) 사이의 무작위 각도(angle) 생성
+		double angle = ((double)rand() / RAND_MAX) * 2.0 * 3.1415926535;
+
+		/// 3. 삼각함수로 (r, angle)를 (offset_x, offset_y)로 변환
+		int offset_x = (int)(r * cos(angle));
+		int offset_y = (int)(r * sin(angle));
+
+		/// 4. 피타고라스 검사 조건문 없이 원 내부에 정확히 점 찍기(렉 줄이기 위해)
+		SetPixel(hdc, x + offset_x, y + offset_y, color);
 	}
 }
+
+///// 스프레이 구현
+//void Pen_tool::DrawSpray(HDC hdc, int x, int y) {
+//	/// 스프레이 반지름 설정
+//	int radius = width * 2;
+//
+//	/// 마우스가 움직일 때 뿌려질 점의 개수
+//	int particle_count = width * 20;
+//
+//	/// 점을 몇 번 찍게 할건지(지정 안 하면 한번만 찍힘)
+//	for (int i = 0; i < particle_count; i++) {
+//		/// 4. 마우스 중심으로 -radius ~ +radius 범위 난수 생성
+//		int offset_x = (rand() % (radius * 2 + 1)) - radius;		/// -radius ~ +radius 범위 난수 생성, (radius * 2 + 1)) 하는 이유
+//		int offset_y = (rand() % (radius * 2 + 1)) - radius;		/// 마우스 중심으로 상하좌우 골고루 려지기 위해. 사분면이라 x, y가 기준 
+//																	/// 한쪽으로 치우쳐지면 동그랗게 안됨
+//																	
+//		/// 피타고라스 정리로 원 모양 점 찍기(사각형에서 잘라서 만드는 느낌)
+//		/// 마우스 위치에서 랜덤으로 직각삼각형(피타고라스 정리)을 임시로 계산
+//		/// 빗변(마우스에서 직선거리)가 radius(스프레이 반지름)보다 길다면 무시(점 찍기X)
+//		if ((offset_x * offset_x + offset_y * offset_y) <= (radius * radius)) {
+//			SetPixel(hdc, x + offset_x, y + offset_y, color);		/// 마우스 위치(x, y) + 난수값(offset)를 하고 그 위치에 점 찍기
+//		}
+//	}
+//}
 
 /// 생상 선택 상자 구현
 bool Pen_tool::SelectColor(HWND hWnd) {
