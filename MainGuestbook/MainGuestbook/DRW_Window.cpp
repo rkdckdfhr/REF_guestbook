@@ -195,7 +195,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		}
 			break;
 		case BUTTON_PEN:
-			MessageBox(hWnd, L"준비 중", L"펜 스타일", MB_OK);
+			MessageBox(hWnd, L"스프레이", L"펜 스타일", MB_OK);
 			myPen.style = 7;
 			break;
 		case BUTTON_TOOL1: // 실선입니다
@@ -239,7 +239,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 		case BUTTON_PLAY:
 		{
-			MessageBox(hWnd, L"아직 준비 중입니다. 재생", L"재생 버튼", MB_OK);
+			MessageBox(hWnd, L"리플레이가 재생 됩니다", L"재생 버튼", MB_OK);
 
 			g_isManualReplay = true;
 
@@ -261,9 +261,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			}
 			// 값 교체
 			isWaiting = !isWaiting;
-
-
-			//MessageBox(hWnd, L"아직 준비 중입니다. 정지", L"정지 버튼", MB_OK);
 		}
 			break;
 
@@ -274,34 +271,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		}
 	}
 	break;
-
-	//case WM_CTLCOLORSTATIC:
-	//{
-	//	HDC hdcStatic = (HDC)wParam;
-	//	HWND hwndStatic = (HWND)lParam;
-	//	LRESULT hBrush = ui.InitColor(wParam, lParam);
-	//	if (hBrush != 0)
-	//	{
-	//		return hBrush;
-	//	}
-
-
-	//	if (hwndStatic == ui.Button_ShowColor)
-	//	{
-
-	//		if (ui.g_current_color != NULL) {
-	//			DeleteObject(ui.g_current_color);
-	//		}
-
-
-	//		ui.g_current_color = CreateSolidBrush(myPen.GetColor());
-
-
-	//		return (INT_PTR)ui.g_current_color;
-	//	}
-
-	//}
-	//break;
 
 	/// 펜 두께 슬라이더로 조절
 	case WM_VSCROLL:
@@ -446,16 +415,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		// 그리기
 		replay_buffer.DrawBuffer(hdc);
 
-		/// 벡터의 내용으로 PAINT에 그리는 함수
-		/// UtilFunc.cpp 참조
-		//if (isReplaying)
-		//{
-		//	GetPaintLine(hdc, &lines, true);
-		//}
-		//else
-		//{
-		//	GetPaintLine(hdc, &lines);
-		//}
 
 
 		EndPaint(hWnd, &cPs);
