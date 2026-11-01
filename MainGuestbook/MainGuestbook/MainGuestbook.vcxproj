@@ -173,6 +173,8 @@
     <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\Save.ico" />
     <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\spray.ico" />
     <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\STOP.ico" />
+    <Image Include="color.ico" />
+    <Image Include="Eraser.ico" />
     <Image Include="images\color.ico" />
     <Image Include="images\ERASER.ico" />
     <Image Include="images\icon2.ico" />
@@ -182,8 +184,16 @@
     <Image Include="images\save.ico" />
     <Image Include="images\spray.ico" />
     <Image Include="images\stop.ico" />
+    <Image Include="Load.ico" />
     <Image Include="MainGuestbook.ico" />
+    <Image Include="newFile.ico" />
+    <Image Include="pen.ico" />
+    <Image Include="pentool1.ico" />
+    <Image Include="Play.ico" />
+    <Image Include="Save.ico" />
     <Image Include="small.ico" />
+    <Image Include="spray.ico" />
+    <Image Include="STOP.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
