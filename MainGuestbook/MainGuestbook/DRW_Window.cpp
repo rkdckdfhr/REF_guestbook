@@ -169,11 +169,18 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		/// 버튼 클릭시 이벤트 발생 시키는 switch문
 		int wmId = LOWORD(wParam);
 
-		if (isReplaying && wmId != BUTTON_STOP) break;
+		if (isReplaying && (wmId != BUTTON_STOP) && (wmId != BUTTON_PLAY) && (wmId != BUTTON_EXIT)) break;
+	
 
 		switch (wmId)
 		{
 			/// 버튼 기능 관련 연결부
+		case BUTTON_EXIT:
+		{
+			exit_replay = TRUE;
+			ThreadTrigger(hWnd);
+		}
+		break;
 		case BUTTON_LOAD:
 		{
 			if (isReplaying) break;   // 리플레이 중에는 lines를 바꾸면 위험해서 막기
@@ -259,6 +266,15 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			{
 				break;
 			}
+			/// 화면 보호기 모드에서 재생 중지 버튼을
+			/// 눌렀을 때 그냥 무시하는 조건
+
+			if (g_isScreenSaverOn == true &&
+				g_isManualReplay == false)
+			{
+				break;
+			}
+
 			// 값 교체
 			isWaiting = !isWaiting;
 		}
