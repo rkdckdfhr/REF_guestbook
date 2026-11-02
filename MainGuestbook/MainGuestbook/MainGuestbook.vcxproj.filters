@@ -192,5 +192,11 @@
     <Image Include="STOP.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="EXIT.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="STOP (1).ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

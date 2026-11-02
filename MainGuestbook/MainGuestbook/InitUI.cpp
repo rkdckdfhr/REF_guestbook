@@ -214,14 +214,14 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     810, 15, 50, 55,
     hWnd, (HMENU)3006, hInst, nullptr);
 
-  HICON hicon_Stop = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_STOP), IMAGE_ICON, 50, 50, 0);
+  HICON hicon_Stop = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_STOP1), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Stop, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Stop);
   // 리플레이 나가기 버튼 
   Button_Exit = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
     870, 15, 50, 55,
     hWnd, (HMENU)3011, hInst, nullptr);
 
-  HICON hicon_Exit = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_STOP), IMAGE_ICON, 50, 50, 0);
+  HICON hicon_Exit = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_EXIT1), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Exit, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Exit);
 
 

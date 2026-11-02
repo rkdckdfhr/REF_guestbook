@@ -175,6 +175,7 @@
     <Image Include="..\..\..\..\Users\sun31\OneDrive\Desktop\ico 파일\STOP.ico" />
     <Image Include="color.ico" />
     <Image Include="Eraser.ico" />
+    <Image Include="EXIT.ico" />
     <Image Include="images\color.ico" />
     <Image Include="images\ERASER.ico" />
     <Image Include="images\icon2.ico" />
@@ -193,6 +194,7 @@
     <Image Include="Save.ico" />
     <Image Include="small.ico" />
     <Image Include="spray.ico" />
+    <Image Include="STOP (1).ico" />
     <Image Include="STOP.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

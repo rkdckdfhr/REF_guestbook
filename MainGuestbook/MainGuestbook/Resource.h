@@ -23,8 +23,14 @@
 #define IDI_PLAY                        137
 #define IDI_SAVE                        138
 #define IDI_SPRAY                       139
-#define IDI_ICON20                      145
 #define IDI_STOP                        140
+#define IDI_ICON11                      141
+#define IDI_ICON12                      142
+#define IDI_EXIT                        142
+#define IDI_STOP1                       142
+#define IDI_ICON13                      143
+#define IDI_EXIT1                       143
+#define IDI_ICON20                      145
 #define IDI_ICON1                       2000
 #define IDI_ICON2                       2001
 #define IDI_ICON3                       2002
@@ -44,7 +50,7 @@
 #define BUTTON_NEW                      3008
 #define BUTTON_TOOL1                    3009
 #define BUTTON_TOOL2                    3010
-#define BUTTON_EXIT		                    3011	
+#define BUTTON_EXIT                     3011
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -52,7 +58,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        141
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
