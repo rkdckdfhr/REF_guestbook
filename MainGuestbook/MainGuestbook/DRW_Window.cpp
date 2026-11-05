@@ -169,7 +169,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		/// 버튼 클릭시 이벤트 발생 시키는 switch문
 		int wmId = LOWORD(wParam);
 
-		if (isReplaying && (wmId != BUTTON_STOP) && (wmId != BUTTON_PLAY) && (wmId != BUTTON_EXIT)) break;
+		if (isReplaying && (wmId != BUTTON_STOP) && (wmId != BUTTON_PLAY) && (wmId != BUTTON_EXIT) && (wmId != BUTTON_NEW)) break;
 	
 
 		switch (wmId)
@@ -246,6 +246,13 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 		case BUTTON_PLAY:
 		{
+			if (isReplaying)
+			{
+				break;	
+			}
+
+			exit_replay = FALSE;
+
 			MessageBox(hWnd, L"리플레이가 재생 됩니다", L"재생 버튼", MB_OK);
 
 			g_isManualReplay = true;
@@ -281,8 +288,15 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			break;
 
 		case BUTTON_NEW:
+		{
+			if (isReplaying)
+			{
+				exit_replay = TRUE;
+				isReplaying = false;
+			}
 			lines.clear();
 			InvalidateRect(hWnd, NULL, TRUE);
+		}
 			break;
 		}
 	}
@@ -421,17 +435,17 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		PAINTSTRUCT cPs;
 		HDC hdc = BeginPaint(hWnd, &cPs);
 
+		// 리플레이가 아닐때 버퍼를 한번에 지움
+		if (!isReplaying)
+		{
+			replay_buffer.ClearBuffer();
+		}
 
-		// 잔상 지우기
-		replay_buffer.ClearBuffer();
-
-		// 펜 형식 안 가져오면 색 안써짐
-		GetPaintLine(replay_buffer.bf_dc, &lines, isReplaying);
-
-		// 그리기
-		replay_buffer.DrawBuffer(hdc);
-
-
+		if (replay_buffer.bf_dc != nullptr)
+		{
+			GetPaintLine(replay_buffer.bf_dc, &lines, isReplaying);
+			replay_buffer.DrawBuffer(hdc);
+		}
 
 		EndPaint(hWnd, &cPs);
 	}
