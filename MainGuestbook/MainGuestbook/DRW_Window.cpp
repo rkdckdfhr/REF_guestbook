@@ -293,6 +293,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			{
 				exit_replay = TRUE;
 				isReplaying = false;
+				isWaiting = false;
 			}
 			lines.clear();
 			InvalidateRect(hWnd, NULL, TRUE);
