@@ -11,3 +11,5 @@ void GetPaintLine(HDC, std::vector<Line>*, bool replayFlag = false);
 /// EXTCreatePen 함수에 대한 정보를 담고 장착? 시켜주기 위한 함수
 /// 매개변수로 현재 팬의 로그를 받음
 HPEN GetCurrentPen(const EXTLOGPEN* ExtLogPen);
+
+void DrawLineRange(HDC hdc, std::vector<Line>& lines, size_t from, size_t to);

@@ -9,7 +9,7 @@
 #include "UtilFunc.h"
 #include "buffer.h"	
 #include "Screen.h"	
-
+#include "Ui_Sub.h"
 std::vector<Line> DrwWindow::lines;
 POINT DrwWindow::draw_start;
 POINT DrwWindow::draw_end;
@@ -157,7 +157,8 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			if (DW.is_drawing || isReplaying) break;
 
 			KillTimer(hWnd, 1);
-			saver.StartScreenSaver(hWnd);
+			//saver.StartScreenSaver(hWnd);
+			Ui_Sub::open(hWnd); //화면 보호기 전체 창
 		}
 	}
 	break;

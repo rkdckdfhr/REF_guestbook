@@ -129,3 +129,21 @@ void GetPaintLine(HDC currentDc, std::vector<Line>* lines, bool replayFlag)
 		myPen.width = backup_width;
 	}
 }
+
+//	지정한 범위(from ~ to)의 선만 화면에 안전하게 그리는 함수
+void DrawLineRange(HDC hdc, std::vector<Line>& lines, size_t from, size_t to)
+{
+	// 기존 펜 설정(색상, 두께) 임시 저장
+	COLORREF backup_color = myPen.color;
+	int backup_width = myPen.width;
+
+	// from ~ to 범위의 선을 인덱스 초과 없이 렌더링
+	for (size_t i = from; i < to && i < lines.size(); i++)
+	{
+		DrawOneLine(hdc, lines[i], (unsigned int)i);
+	}
+
+	// 3. 펜 설정을 원래 상태로 복구
+	myPen.color = backup_color;
+	myPen.width = backup_width;
+}
