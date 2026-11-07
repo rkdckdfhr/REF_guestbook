@@ -74,3 +74,38 @@ bool File_Check(const wchar_t* path)
     DWORD path_Check = GetFileAttributesW(path); 
     return (path_Check != INVALID_FILE_ATTRIBUTES); //에러 찾아주는 상수
 }
+// 불러오기 폴더 안의 .dat 파일 경로들을 모아서 돌려줌
+std::vector<std::wstring> File_List()
+{
+    std::vector<std::wstring> result;
+
+    wchar_t folder[MAX_PATH];
+    Folder_Road(folder, MAX_PATH);
+
+    std::wstring pattern = std::wstring(folder) + L"\\*.dat";
+
+    WIN32_FIND_DATAW fd;
+    HANDLE h = FindFirstFileW(pattern.c_str(), &fd);
+    if (h == INVALID_HANDLE_VALUE) return result;   // 파일 없음
+
+    do
+    {
+        result.push_back(std::wstring(folder) + L"\\" + fd.cFileName);
+    } while (FindNextFileW(h, &fd));
+
+    FindClose(h);
+    return result;
+}
+
+// 다음 순번 파일 로드 (마지막 파일 달성 시 처음 파일로 순환)
+bool File_LoadNext(int& index, std::vector<Line>& out)
+{
+    std::vector<std::wstring> files = File_List();
+    if (files.empty()) return false;
+
+    if (index >= (int)files.size()) index = 0;
+
+    bool ok = File_Call(files[index].c_str(), out);
+    index++;
+    return ok;
+}
