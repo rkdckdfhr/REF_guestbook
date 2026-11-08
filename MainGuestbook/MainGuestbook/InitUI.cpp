@@ -162,12 +162,12 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   HICON Button_Tool1_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PEN), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Tool1, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool1_icon);
 
-  Button_Tool2 = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    275, 15, 50, 55,
-    hWnd, (HMENU)3010, hInst, nullptr);
+  //Button_Tool2 = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  //  275, 15, 50, 55,
+  //  hWnd, (HMENU)3010, hInst, nullptr);
 
-  HICON Button_Tool2_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PENTOOL), IMAGE_ICON, 50, 50, 0);
-  SendMessage(Button_Tool2, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool2_icon);
+  //HICON Button_Tool2_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PENTOOL), IMAGE_ICON, 50, 50, 0);
+  //SendMessage(Button_Tool2, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool2_icon);
 
 
 

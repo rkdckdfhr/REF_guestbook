@@ -210,10 +210,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			MessageBox(hWnd, L"실선", L"펜 스타일", MB_OK);
 			myPen.style = 0;
 			break;
-		case BUTTON_TOOL2:
-			MessageBox(hWnd, L"점선", L"펜 스타일", MB_OK);
-			myPen.style = 1;
-			break;
+		//case BUTTON_TOOL2:
+		//	MessageBox(hWnd, L"점선", L"펜 스타일", MB_OK);
+		//	myPen.style = 1;
+		//	break;
 		case BUTTON_COLOR:
 			myPen.SelectColor(hWnd);
 			InvalidateRect(ui.Button_ShowColor, NULL, TRUE);
