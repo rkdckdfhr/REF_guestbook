@@ -19,6 +19,8 @@ void Folder_Road(wchar_t* outFolder, size_t bufferSize)
 
 bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave)
 {
+	filePath[0] = L'\0'; // 이전 선택 경로 초기화
+    
     OPENFILENAMEW ofn = {};
     ofn.lStructSize = sizeof(ofn);
     ofn.hwndOwner = hWnd;       // 부모 윈도우 설정
@@ -32,10 +34,15 @@ bool ShowFileDialog(HWND hWnd, wchar_t* filePath, bool isSave)
     Folder_Road(initDir, MAX_PATH);   // 다이얼로그가 자동저장 폴더에서 열리도록
     ofn.lpstrInitialDir = initDir;
 
+	ofn.Flags = OFN_NOCHANGEDIR | OFN_PATHMUSTEXIST; // 작업경로 바뀌는거 방지, 존재하는 경로만 선택 가능
+    if (!isSave)
+    {
+        ofn.Flags |= OFN_FILEMUSTEXIST;
+    }
     if (isSave)
-        return GetSaveFileNameW(&ofn);  //저장
+        return GetSaveFileNameW(&ofn);  // 저장
     else
-        return GetOpenFileNameW(&ofn); //열기
+        return GetOpenFileNameW(&ofn); // 열기
 }
 
 bool File_Save(const wchar_t* path, std::vector<Line>& lines)
