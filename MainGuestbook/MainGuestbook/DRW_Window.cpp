@@ -304,12 +304,12 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 	break;
 
 	/// 펜 두께 슬라이더로 조절
-	case WM_VSCROLL:
+	case WM_HSCROLL:
 	{
 		// 슬라이더 바 위치로 펜 두께 적용
 		// 날 위한 주석 myPan.width 는 int타입이라 형변환
 		// myPen.width = 31 - 어쩌구 : 보기 편하려고 슬라이더 위 아래를 바꿈
-		myPen.width = 31 - (int)SendMessage(ui.hPenBar, TBM_GETPOS, 0, 0);
+		myPen.width = (int)SendMessage(ui.hPenBar, TBM_GETPOS, 0, 0);
 	}
 	break;
 

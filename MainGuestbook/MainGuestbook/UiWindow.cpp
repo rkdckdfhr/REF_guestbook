@@ -32,9 +32,13 @@ LRESULT CALLBACK UiProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         break;
 
     case WM_COMMAND:
-    case WM_VSCROLL:
+    case WM_HSCROLL:
+    {
+        myPen.width = (int)SendMessage(ui.hPenBar, TBM_GETPOS, 0, 0);
         // 발생한 이벤트를 부모(MainGuestbook)로 올려보내 도화지까지 전달되게 함
         SendMessage(GetParent(hWnd), message, wParam, lParam);
+        InvalidateRect(hWnd, NULL, TRUE);
+    }
         break;
 
     case WM_CTLCOLORSTATIC:
@@ -71,10 +75,14 @@ LRESULT CALLBACK UiProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps); 
 
-        // 선 그리기 작업 수행
-        MoveToEx(hdc, 1300, 30, NULL);
-        LineTo(hdc, 1335, 30);
 
+        /// 선 그리기 작업 수행
+        HPEN current_pen = CreatePen(BS_SOLID, myPen.width, myPen.color);
+        HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
+        MoveToEx(hdc, 1690, 40, NULL);
+        LineTo(hdc, 1770, 40);
+        SelectObject(hdc, OldPen);
+        DeleteObject(current_pen);
         EndPaint(hWnd, &ps); 
     }
         break;
