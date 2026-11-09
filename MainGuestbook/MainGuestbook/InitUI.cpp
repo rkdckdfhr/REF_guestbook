@@ -23,7 +23,7 @@ LRESULT INIT_UI::InitColor(WPARAM wParam, LPARAM lParam)
   // HWND 창 핸들러에 주소 *
   HWND hChildWnd = (HWND)lParam;
 
-  if (hChildWnd == hToolBar)
+  if (hChildWnd == hToolBar || hChildWnd == hPenBar)
   {
     hBrush = CreateSolidBrush(RGB(240, 240, 240));
     //  글자 배경을 투명/흰색으로 복구 할 수 있다
@@ -228,12 +228,19 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   HWND hDrawWnd = FindWindowEx(GetParent(hWnd), NULL, L"MainWindowClass", NULL);
 
-  /// @brief 굵기 조절 바 생성 버튼 입니다.
+  ///// @brief 굵기 조절 바 생성 버튼 입니다.
+  //hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
+  //  WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_VERT, // 세로형 스타일
+  //  10, 140, 40, 320,
+  //  hDrawWnd,
+  //  (HMENU)5000, hInst, nullptr);
+
   hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
-    WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_VERT, // 세로형 스타일
-    10, 140, 40, 320,
-    hDrawWnd,
-    (HMENU)5000, hInst, nullptr);
+      WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_HORZ | TBS_BOTTOM, // 가로형 스타일 적용
+      1250, 25, 300, 35, // 펜 툴과 컬러 버튼 사이의 여백에 배치
+      hWnd,             // hDrawWnd에서 hWnd(툴바 창)로 부모 변경
+      (HMENU)5000, hInst, nullptr);
+
 
   SendMessage(hPenBar, TBM_SETRANGE, TRUE, MAKELPARAM(1, 30)); // 스크롤에 최소값과 최대값을 지정해줌 TBM_SETRANGE -> 범위
   SendMessage(hPenBar, TBM_SETPOS, TRUE, 26); // 창이 켜졌을때 5값에 버튼이 위치하게 세팅 TBM_SETPOS -> 위치

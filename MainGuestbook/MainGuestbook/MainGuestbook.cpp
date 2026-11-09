@@ -162,7 +162,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     /// 외부 파일에서 Pen 생성 후 메인으로 불러오는 테스트
 
 
-    case WM_VSCROLL:
+    case WM_HSCROLL:
     case WM_COMMAND:
     {
         HWND hDrwWnd = FindWindowEx(hWnd, NULL, L"MainWindowClass", NULL);
