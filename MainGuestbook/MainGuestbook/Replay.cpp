@@ -78,9 +78,9 @@ DWORD WINAPI ReplayThreads(LPVOID lpParam)
                 
 
                 // 만약 Sleep(5)를 초과하는 시간의 딜레이가 있으면 그냥 Sleep(5)의 속도로 리플레이 하는 if문
-                if (sleep_time > 10)
+                if (sleep_time > 20)
                 {
-                    sleep_time = 15;
+                    sleep_time = 20;
                 }
                 if (sleep_time > 0)
                 {

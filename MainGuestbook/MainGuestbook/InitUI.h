@@ -30,6 +30,8 @@ public:
   /// </summary>
   HWND hPenBar = nullptr;
 
+  LRESULT CALLBACK ToolbarProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
   INIT_UI();
   ~INIT_UI();
 

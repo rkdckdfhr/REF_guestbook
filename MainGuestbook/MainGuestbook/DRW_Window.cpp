@@ -254,7 +254,6 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			exit_replay = FALSE;
 
-			MessageBox(hWnd, L"리플레이가 재생 됩니다", L"재생 버튼", MB_OK);
 
 			g_isManualReplay = true;
 

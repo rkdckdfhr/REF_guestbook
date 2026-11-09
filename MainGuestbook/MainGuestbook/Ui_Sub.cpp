@@ -29,7 +29,7 @@ namespace
         {
           g_shown_count = 0;
         }
-        g_shown_count += 2;       // 한 번에 4개씩 그림
+        g_shown_count += 1;       // 한 번에 4개씩 그림
 
       }
       else if (++g_wait_tick > 60)   // 다 그린 뒤 약 1초 대기

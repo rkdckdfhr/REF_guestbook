@@ -22,10 +22,13 @@ HWND CreateUiWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, 
 }
 
 LRESULT CALLBACK UiProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-    switch (message) {
+    switch (message) 
+    {
     case WM_CREATE:
         // 이 윈도우(UI 영역)에 버튼들을 붙임
+    {
         ui.InitUI(hWnd, ((LPCREATESTRUCT)lParam)->hInstance);
+    }
         break;
 
     case WM_COMMAND:
@@ -59,8 +62,23 @@ LRESULT CALLBACK UiProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
             return (INT_PTR)ui.g_current_color;
         }
 
-
+  
     }
+    break;
+
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps); 
+
+        // 선 그리기 작업 수행
+        MoveToEx(hdc, 1300, 30, NULL);
+        LineTo(hdc, 1335, 30);
+
+        EndPaint(hWnd, &ps); 
+    }
+        break;
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

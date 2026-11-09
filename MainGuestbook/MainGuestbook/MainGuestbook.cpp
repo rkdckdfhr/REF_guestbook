@@ -123,7 +123,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     }
 
     RegisterUiWindowClass(hInstance);
-    CreateUiWindow(hWnd, hInstance, 0, 0, 0, 0);
+    CreateUiWindow(hWnd, hInstance, 0, 0, 2000, 100);
 
 
     ShowWindow(hWnd, nCmdShow);
@@ -192,7 +192,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-
         // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
         EndPaint(hWnd, &ps);
     }

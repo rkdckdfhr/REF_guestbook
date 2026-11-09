@@ -117,11 +117,12 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SetMenu(hWnd, hMenuBar); // 바를 화면인데에 붙히는 함수
 
 
-  hToolBar = CreateWindowW(L"STATIC", L"",
+
+  /*hToolBar = CreateWindowW(L"STATIC", L"",
     WS_CHILD | WS_VISIBLE,
     0, 0,
     2000, 90,
-    hWnd, nullptr, hInst, nullptr);
+    hWnd, nullptr, hInst, nullptr);*/
 
 
   // 툴바와 도화지를 구분하는 실선
