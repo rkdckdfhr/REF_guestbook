@@ -243,5 +243,5 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
 
   SendMessage(hPenBar, TBM_SETRANGE, TRUE, MAKELPARAM(1, 30)); // 스크롤에 최소값과 최대값을 지정해줌 TBM_SETRANGE -> 범위
-  SendMessage(hPenBar, TBM_SETPOS, TRUE, 26); // 창이 켜졌을때 5값에 버튼이 위치하게 세팅 TBM_SETPOS -> 위치
+  SendMessage(hPenBar, TBM_SETPOS, TRUE, 5); // 창이 켜졌을때 5값에 버튼이 위치하게 세팅 TBM_SETPOS -> 위치
 }
