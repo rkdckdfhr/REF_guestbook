@@ -237,7 +237,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
       WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_HORZ | TBS_BOTTOM, // 가로형 스타일 적용
-      1250, 25, 300, 35, // 펜 툴과 컬러 버튼 사이의 여백에 배치
+      1250, 25, 320, 35, // 펜 툴과 컬러 버튼 사이의 여백에 배치
       hWnd,             // hDrawWnd에서 hWnd(툴바 창)로 부모 변경
       (HMENU)5000, hInst, nullptr);
 

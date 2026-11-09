@@ -79,8 +79,8 @@ LRESULT CALLBACK UiProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         /// 선 그리기 작업 수행
         HPEN current_pen = CreatePen(BS_SOLID, myPen.width, myPen.color);
         HPEN OldPen = (HPEN)SelectObject(hdc, current_pen);
-        MoveToEx(hdc, 1690, 40, NULL);
-        LineTo(hdc, 1770, 40);
+        MoveToEx(hdc, 1630, 35, NULL);
+        LineTo(hdc, 1730, 35);
         SelectObject(hdc, OldPen);
         DeleteObject(current_pen);
         EndPaint(hWnd, &ps); 
