@@ -160,6 +160,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
     215, 15, 50, 55,
     hWnd, (HMENU)3009, hInst, nullptr);
 
+
   HICON Button_Tool1_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PEN), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Tool1, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool1_icon);
 

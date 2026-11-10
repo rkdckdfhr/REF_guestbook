@@ -203,11 +203,11 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		}
 			break;
 		case BUTTON_PEN:
-			MessageBox(hWnd, L"스프레이", L"펜 스타일", MB_OK);
+			//MessageBox(hWnd, L"스프레이", L"펜 스타일", MB_OK);
 			myPen.style = 7;
 			break;
 		case BUTTON_TOOL1: // 실선입니다
-			MessageBox(hWnd, L"실선", L"펜 스타일", MB_OK);
+			//MessageBox(hWnd, L"실선", L"펜 스타일", MB_OK);
 			myPen.style = 0;
 			break;
 		//case BUTTON_TOOL2:
@@ -224,8 +224,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 					break;
 		case BUTTON_SAVE:
 		{
-			if (MessageBox(hWnd, L"저장하시겠습니까?", L"저장 확인", MB_YESNO) == IDYES)
-			{
+
 				wchar_t path[MAX_PATH] = L"";
 
 				if (ShowFileDialog(hWnd, path, true))
@@ -242,7 +241,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 					}
 				}
-			}
+			
 		}
 			break;
 		case BUTTON_PLAY:
