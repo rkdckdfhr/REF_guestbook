@@ -11,65 +11,92 @@ namespace
   size_t g_shown_count = 0;           // 지금까지 그린 선 개수
   int    g_wait_tick = 0;             // 다 그린 뒤 대기
   POINT  g_first_mouse = { -1, -1 };  // 마우스 기준점
+  HDC     g_mem_dc = NULL;     // 그림을 쌓아두는 버퍼 (한 번만 만듦)
+  HBITMAP g_mem_bmp = NULL;
+  HBITMAP g_old_bmp = NULL;
+  size_t  g_drawn_count = 0;   // 버퍼에 이미 그려둔 선 개수
 
+  void ClearSaverBuffer()
+  {
+    RECT rc = { 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) };
+    HBRUSH white = (HBRUSH)GetStockObject(WHITE_BRUSH);
+    FillRect(g_mem_dc, &rc, white);
+    g_drawn_count = 0;
+  }
   // 화면보호기 윈도우 프로시저
   LRESULT CALLBACK saver_proc(HWND h_wnd, UINT msg, WPARAM w_param, LPARAM l_param)
   {
     switch (msg)
     {
     case WM_CREATE:
+    {
+      HDC screen_dc = GetDC(h_wnd);
+      int w = GetSystemMetrics(SM_CXSCREEN);
+      int h = GetSystemMetrics(SM_CYSCREEN);
+
+      g_mem_dc = CreateCompatibleDC(screen_dc);
+      g_mem_bmp = CreateCompatibleBitmap(screen_dc, w, h);
+      g_old_bmp = (HBITMAP)SelectObject(g_mem_dc, g_mem_bmp);
+      ReleaseDC(h_wnd, screen_dc);
+
+      ClearSaverBuffer();
       ShowCursor(FALSE);            // 마우스 커서 숨김
       SetTimer(h_wnd, 1, 16, NULL); // 60fps 타이머 설정
       return 0;
-
+    }
+    break;
     case WM_TIMER:
+    {
+      bool need_repaint = false;
+
       if (g_shown_count < g_play_lines.size())
       {
-        if (g_play_lines.size() < g_shown_count)
-        {
-          g_shown_count = 0;
-        }
-        g_shown_count += 1;       // 한 번에 4개씩 그림
-
+        g_shown_count += 1;       // 속도 조절 칸 (주석은 4개씩인데 실제는 1)
+        need_repaint = true;
       }
-      else if (++g_wait_tick > 60)   // 다 그린 뒤 약 1초 대기
+      else
       {
-        g_wait_tick = 0;
-        g_shown_count = 0;
-        // 다음 파일 로드 (없으면 창 닫기)
-        if (!File_LoadNext(g_file_index, g_play_lines) || g_play_lines.empty())
+        g_wait_tick++;
+
+        if (g_wait_tick > 60)     // 다 그린 뒤 약 1초 대기
         {
-          DestroyWindow(h_wnd);
-          return 0;
+          g_wait_tick = 0;
+          g_shown_count = 0;
+          ClearSaverBuffer();     // 다음 그림을 위해 버퍼 비우기
+
+          // 다음 파일 로드 (없으면 창 닫기)
+          if (!File_LoadNext(g_file_index, g_play_lines) || g_play_lines.empty())
+          {
+            DestroyWindow(h_wnd);
+            return 0;
+          }
+          need_repaint = true;
         }
       }
-      InvalidateRect(h_wnd, NULL, FALSE); // 화면 갱신
-      return 0;
 
+      if (need_repaint)
+      {
+        InvalidateRect(h_wnd, NULL, FALSE);
+      }
+      return 0;
+    }
     case WM_PAINT:
     {
       PAINTSTRUCT ps;
       HDC hdc = BeginPaint(h_wnd, &ps);
-      RECT rc;
-      GetClientRect(h_wnd, &rc);
 
-      // 깜빡임 방지: 메모리 DC에 먼저 그린 뒤 한 번에 복사 (더블 버퍼링)
-      HDC mem_dc = CreateCompatibleDC(hdc);
-      HBITMAP mem_bmp = CreateCompatibleBitmap(hdc, rc.right, rc.bottom);
-      HBITMAP old_bmp = (HBITMAP)SelectObject(mem_dc, mem_bmp);
-      FillRect(mem_dc, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+      // 새로 늘어난 선만 버퍼에 추가로 그림
+      DrawLineRange(g_mem_dc, g_play_lines, g_drawn_count, g_shown_count);
+      g_drawn_count = g_shown_count;
 
-      // 현재 개수(g_shown_count)만큼만 선 그리기
-      DrawLineRange(mem_dc, g_play_lines, 0, min(g_shown_count, g_play_lines.size()));
+      // 버퍼를 화면에 한 번 복사
+      int w = GetSystemMetrics(SM_CXSCREEN);
+      int h = GetSystemMetrics(SM_CYSCREEN);
+      BitBlt(hdc, 0, 0, w, h, g_mem_dc, 0, 0, SRCCOPY);
 
-      BitBlt(hdc, 0, 0, rc.right, rc.bottom, mem_dc, 0, 0, SRCCOPY);
-      SelectObject(mem_dc, old_bmp);
-      DeleteObject(mem_bmp);
-      DeleteDC(mem_dc);
       EndPaint(h_wnd, &ps);
       return 0;
     }
-
     case WM_ERASEBKGND:
       return 1; // 배경 지우기 생략 (깜빡임 방지)
 
@@ -89,6 +116,10 @@ namespace
       return 0;
 
     case WM_DESTROY:
+      SelectObject(g_mem_dc, g_old_bmp);
+      DeleteObject(g_mem_bmp);
+      DeleteDC(g_mem_dc);
+      g_mem_dc = NULL;
       KillTimer(h_wnd, 1);
       ShowCursor(TRUE);                        // 마우스 커서 복원
       g_saver_wnd = NULL;                      // 창 닫힐 때 가드 변수 비워줌
