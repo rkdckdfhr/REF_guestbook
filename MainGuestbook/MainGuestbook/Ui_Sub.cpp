@@ -123,7 +123,7 @@ namespace
       KillTimer(h_wnd, 1);
       ShowCursor(TRUE);                        // 마우스 커서 복원
       g_saver_wnd = NULL;                      // 창 닫힐 때 가드 변수 비워줌
-      SetTimer(g_parent_wnd, 1, 7000, NULL);   // 메인 창 타이머(7초) 재예약
+      SetTimer(g_parent_wnd, 1, 30000, NULL);   // 메인 창 타이머(7초) 재예약
       return 0;
     }
     return DefWindowProc(h_wnd, msg, w_param, l_param);
@@ -144,7 +144,7 @@ void Ui_Sub::open(HWND parent_wnd)
   // 보여줄 파일이 없으면 창을 안 띄우고 7초 후 재시도
   if (!File_LoadNext(g_file_index, g_play_lines) || g_play_lines.empty())
   {
-    SetTimer(parent_wnd, 1, 7000, NULL);
+    SetTimer(parent_wnd, 1, 30000, NULL);
     return;
   }
 

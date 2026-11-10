@@ -100,7 +100,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		// 보호기가 끝까지 돌았고(마우스로 끄지 않았고), 저장된 그림이면 3초 뒤 다시 예약
 		if (g_isScreenSaverOn == true && g_isSaved == true)
 		{
-			SetTimer(hWnd, 1, 5000, NULL);
+			SetTimer(hWnd, 1, 30000, NULL);
 		}
 	}
 	break;
@@ -138,7 +138,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 		//GetModuleHandle 하면 현재 창나온 인스턴스 핸들을 가져올 수 있음
 		HINSTANCE hInst = GetModuleHandle(NULL);
 		// 1번 타이머를 5000밀리초(5초) 간격으로 설정합니다.
-		SetTimer(hWnd, 1, 5000, NULL);
+		SetTimer(hWnd, 1, 30000, NULL);
 	}
 	break;
 
@@ -242,7 +242,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 					{
 						MessageBox(hWnd, L"저장 완료", L"저장", MB_OK);
 						g_isSaved = true;
-						SetTimer(hWnd, 1, 5000, NULL); //저장하고 5초 후에 화면 보호기 모드로 전환	
+						SetTimer(hWnd, 1, 30000, NULL); //저장하고 5초 후에 화면 보호기 모드로 전환	
 
 					}
 				}
@@ -326,7 +326,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			if (g_isSaved == true)
 			{
-				SetTimer(hWnd, 1, 5000, NULL);   // 5초 뒤 보호기 다시 예약
+				SetTimer(hWnd, 1, 30000, NULL);   // 5초 뒤 보호기 다시 예약
 			}
 
 		}
@@ -356,7 +356,7 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 			if (g_isSaved == true)
 			{
-				SetTimer(hWnd, 1, 5000, NULL);   // 5초 뒤 보호기 다시 예약
+				SetTimer(hWnd, 1, 30000, NULL);   // 5초 뒤 보호기 다시 예약
 			}
 
 		}
