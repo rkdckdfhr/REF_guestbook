@@ -172,6 +172,11 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 		if (isReplaying && (wmId != BUTTON_STOP) && (wmId != BUTTON_PLAY) && (wmId != BUTTON_EXIT) && (wmId != BUTTON_NEW)) break;
 	
+		if (wmId == 3001 || wmId == 3009) {
+			ui.g_selectedToolID = wmId;
+			InvalidateRect(ui.Button, NULL, TRUE);       // 스프레이
+			InvalidateRect(ui.Button_Tool1, NULL, TRUE); // 실선 펜
+		}
 
 		switch (wmId)
 		{
@@ -218,10 +223,10 @@ LRESULT CALLBACK DrwWindow::DrawWndProc(HWND hWnd, UINT message, WPARAM wParam, 
 			myPen.SelectColor(hWnd);
 			InvalidateRect(ui.Button_ShowColor, NULL, TRUE);
 			break;
-		case BUTTON_ERASER:
-			lines.clear();
-			InvalidateRect(hWnd, NULL, TRUE);
-					break;
+		//case BUTTON_ERASER:
+		//	lines.clear();
+		//	InvalidateRect(hWnd, NULL, TRUE);
+		//			break;
 		case BUTTON_SAVE:
 		{
 

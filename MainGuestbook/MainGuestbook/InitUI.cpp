@@ -18,20 +18,46 @@
 LRESULT INIT_UI::InitColor(WPARAM wParam, LPARAM lParam)
 {
 
-  //HDC 그래픽 자원에 주소 *
-  HDC hdcStatic = (HDC)wParam;
-  // HWND 창 핸들러에 주소 *
-  HWND hChildWnd = (HWND)lParam;
+  ////HDC 그래픽 자원에 주소 *
+  //HDC hdcStatic = (HDC)wParam;
+  //// HWND 창 핸들러에 주소 *
+  //HWND hChildWnd = (HWND)lParam;
 
-  if (hChildWnd == hToolBar || hChildWnd == hPenBar)
-  {
-    hBrush = CreateSolidBrush(RGB(240, 240, 240));
-    //  글자 배경을 투명/흰색으로 복구 할 수 있다
-    SetBkMode(hdcStatic, TRANSPARENT);
+  //if (hChildWnd == hToolBar || hChildWnd == hPenBar)
+  //{
+  //  hBrush = CreateSolidBrush(RGB(240, 240, 240));
+  //  //  글자 배경을 투명/흰색으로 복구 할 수 있다
+  //  SetBkMode(hdcStatic, TRANSPARENT);
 
-    return (LRESULT)hBrush;
-  }
-  return 0;
+  //  return (LRESULT)hBrush;
+  //}
+  //return 0;
+    HDC hdcStatic = (HDC)wParam;
+    HWND hChildWnd = (HWND)lParam;
+    int ctrlID = GetDlgCtrlID(hChildWnd);
+
+    // 1. 선택된 툴 버튼 배경색 (하늘색) 적용
+    if (ctrlID == g_selectedToolID)
+    {
+        if (hSelectedBrush == nullptr) {
+            hSelectedBrush = CreateSolidBrush(RGB(210, 210, 210));
+        }
+        SetBkMode(hdcStatic, TRANSPARENT);
+        return (LRESULT)hSelectedBrush;
+    }
+
+    // 2. 툴바, 펜 굵기 바, 나머지 선택 안 된 버튼들 배경색 (회색) 적용
+    if (hChildWnd == hToolBar || hChildWnd == hPenBar ||
+        ctrlID == 3001 || ctrlID == 3009)
+    {
+        if (hBrush == nullptr) {
+            hBrush = CreateSolidBrush(RGB(240, 240, 240));
+        }
+        SetBkMode(hdcStatic, TRANSPARENT);
+        return (LRESULT)hBrush;
+    }
+
+    return 0;
 }
 INIT_UI::INIT_UI() {};
 
@@ -41,6 +67,10 @@ INIT_UI::~INIT_UI()
   {
     DeleteObject(hBrush);
     hBrush = nullptr;
+  }
+  if (hSelectedBrush != nullptr) {
+      DeleteObject(hSelectedBrush);
+      hSelectedBrush = nullptr;
   }
 
   if (g_current_color != NULL) {
@@ -140,8 +170,15 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
   SendMessage(Button_Load, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Load);
 
 
+  //Button_Eraser = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
+  //  95, 15, 50, 55,
+  //  hWnd, (HMENU)3003, hInst, nullptr);
+
+  //HICON hicon_Eraser = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_ERASER), IMAGE_ICON, 50, 50, 0);
+  //SendMessage(Button_Eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Eraser);
+
   Button = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    95, 15, 50, 55,
+    115, 15, 50, 55,
     hWnd, (HMENU)3001, hInst, nullptr);
 
   // 아이콘 파일명만 주면 바로 그 파일안에서 어려 정보를 불러오는 함수이다 ex 아이콘,비트맵그림,마우스커서그림 
@@ -149,28 +186,14 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   SendMessage(Button, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon); // hion은 핸들러라 정수타입으로 형변환 
 
-  Button_Eraser = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    155, 15, 50, 55,
-    hWnd, (HMENU)3003, hInst, nullptr);
-
-  HICON hicon_Eraser = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_ERASER), IMAGE_ICON, 50, 50, 0);
-  SendMessage(Button_Eraser, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Eraser);
 
   Button_Tool1 = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    215, 15, 50, 55,
+    175, 15, 50, 55,
     hWnd, (HMENU)3009, hInst, nullptr);
 
 
   HICON Button_Tool1_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PEN), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Tool1, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool1_icon);
-
-  //Button_Tool2 = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-  //  275, 15, 50, 55,
-  //  hWnd, (HMENU)3010, hInst, nullptr);
-
-  //HICON Button_Tool2_icon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PENTOOL), IMAGE_ICON, 50, 50, 0);
-  //SendMessage(Button_Tool2, STM_SETIMAGE, IMAGE_ICON, (LPARAM)Button_Tool2_icon);
-
 
 
   // 컬러버튼

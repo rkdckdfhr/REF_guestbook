@@ -6,6 +6,10 @@
 class INIT_UI
 {
 public:
+	int g_selectedToolID = 3009;     // 기본 선택 도구 (실선 펜)
+	HBRUSH hSelectedBrush = nullptr; // 선택된 버튼을 칠할 브러시
+
+
   HWND hToolBar = nullptr;
   HBRUSH hBrush = nullptr;
 	/// @brief 현재 선택된 색상을 나타내는 브러쉬 핸들
