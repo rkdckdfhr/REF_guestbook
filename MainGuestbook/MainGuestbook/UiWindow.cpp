@@ -37,7 +37,8 @@ LRESULT CALLBACK UiProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         myPen.width = (int)SendMessage(ui.hPenBar, TBM_GETPOS, 0, 0);
         // 발생한 이벤트를 부모(MainGuestbook)로 올려보내 도화지까지 전달되게 함
         SendMessage(GetParent(hWnd), message, wParam, lParam);
-        InvalidateRect(hWnd, NULL, TRUE);
+        RECT lineRect = { 1200, 10, 1340, 60 };
+        InvalidateRect(hWnd, &lineRect, TRUE);
     }
         break;
 
