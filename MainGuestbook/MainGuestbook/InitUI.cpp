@@ -134,7 +134,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   // 불러오기 버튼
   Button_Load = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    1110, 15, 50, 55,
+    780 , 15, 50, 55,
     hWnd, (HMENU)3000, hInst, nullptr);
   HICON hicon_Load = ((HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_LOAD), IMAGE_ICON, 50, 50, 0));
   SendMessage(Button_Load, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Load);
@@ -174,7 +174,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   // 컬러버튼
   Button_Color = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    495, 15, 50, 55,
+    320, 15, 50, 55,
     hWnd, (HMENU)3002, hInst, nullptr);
 
 
@@ -183,12 +183,12 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   //이버튼은 현재 내 붓 색깔을 보여주는 버튼이다
   Button_ShowColor = CreateWindowW(L"STATIC", L"선택", WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    555, 15, 50, 50,
+    390, 15, 50, 50,
     hWnd, (HMENU)3007, hInst, nullptr);
 
   // 저장 버튼
   Button_Save = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    1050, 15, 50, 55,
+    710, 15, 50, 55,
     hWnd, (HMENU)3004, hInst, nullptr);
 
   HICON hicon_Save = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SAVE), IMAGE_ICON, 50, 50, 0);
@@ -204,7 +204,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   //리플레이 시작버튼 
   Button_Play = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    750, 15, 50, 55,
+    490, 15, 50, 55,
     hWnd, (HMENU)3005, hInst, nullptr);
 
   HICON hicon_Play = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_PLAY), IMAGE_ICON, 50, 50, 0);
@@ -212,14 +212,14 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   //리플레이 중지 버튼
   Button_Stop = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    810, 15, 50, 55,
+    550, 15, 50, 55,
     hWnd, (HMENU)3006, hInst, nullptr);
 
   HICON hicon_Stop = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_STOP1), IMAGE_ICON, 50, 50, 0);
   SendMessage(Button_Stop, STM_SETIMAGE, IMAGE_ICON, (LPARAM)hicon_Stop);
   // 리플레이 나가기 버튼 
   Button_Exit = CreateWindowW(L"STATIC", nullptr, WS_CHILD | WS_VISIBLE | SS_ICON | SS_NOTIFY,
-    870, 15, 50, 55,
+    610, 15, 50, 55,
     hWnd, (HMENU)3011, hInst, nullptr);
 
   HICON hicon_Exit = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_EXIT1), IMAGE_ICON, 50, 50, 0);
@@ -237,7 +237,7 @@ void INIT_UI::InitUI(HWND hWnd, HINSTANCE hInst)
 
   hPenBar = CreateWindowW(TRACKBAR_CLASSW, L"",
       WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_HORZ | TBS_BOTTOM, // 가로형 스타일 적용
-      1250, 25, 320, 35, // 펜 툴과 컬러 버튼 사이의 여백에 배치
+      870 , 25, 320, 35, // 펜 툴과 컬러 버튼 사이의 여백에 배치
       hWnd,             // hDrawWnd에서 hWnd(툴바 창)로 부모 변경
       (HMENU)5000, hInst, nullptr);
 
